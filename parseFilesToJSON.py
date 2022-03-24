@@ -22,17 +22,17 @@ import matplotlib.pyplot as plt
 #print(co_boundary.head(2))
 
 designated_trails = geopandas.read_file('CPW_Trails/CPWDesignatedTrails02142022.shp')
-designated_trails = designated_trails.to_crs(epsg=4326)
+designated_trails = designated_trails.to_crs(epsg=3857)
 designated_trails.to_file('designated_trails.json', driver="GeoJSON")  
 
 trailhead = geopandas.read_file('CPW_Trails/Trailheads_COTREX02142022.shp')
 trailhead = designated_trails.to_crs(epsg=4326) #3857
-trailhead.to_file('trailhead.json', driver="GeoJSON")  
+#trailhead.to_file('trailhead.json', driver="GeoJSON")  
 #print(trailhead.to_json())
 
 trails = geopandas.read_file('CPW_Trails/Trails_COTREX02142022.shp')
 trails = trails.to_crs(epsg=4326)
-trails.to_file('trails.json', driver="GeoJSON")  
+#trails.to_file('trails.json', driver="GeoJSON")  
 #print(trails.to_json())
 
 #co_boundary = geopandas.read_file('Colorado_State_Boundary/Colorado_State_Boundary.shp')
