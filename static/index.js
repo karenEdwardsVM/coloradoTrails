@@ -5,10 +5,10 @@ window.onload = async () => {
     subdomains: ['a','b','c']
   }).addTo(map);
 
-  const count = (await (await window.fetch('/trailcount')).json()).length;
+  const count = (await getjson('/trailcount')).length;
   const trails = [];
   const plotTrails = async () => {
-    for (let i = 0; i < count / 100; i++) { 
+    for (let i = 0; i < count / 5000; i++) { 
       trails.push((await (await window.fetch(`/gettrail/${i}`)).json()));
     }
     parseTrail(trails.map(el => el["geometry"]["coordinates"]));

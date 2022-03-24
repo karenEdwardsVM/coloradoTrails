@@ -69,6 +69,18 @@ const get = async (url) => {
   });
 };
 
+const trails = loadjson('./static/trails.json');
+
+const fml = (cs) => {
+  return [cs[0], cs[Math.floor(cs.length / 2)], cs[cs.length - 1]];
+};
+
+const distance = (x, y, x1, y1) => {
+  return Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2));
+};
+
+
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
+  trails, fml, distance,
 };
