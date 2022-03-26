@@ -1,1 +1,8 @@
-trails.json
+notes.txt
+images/
+node_modules/
+CPW_Trails/
+Colorado_State_Boundary/
+static/trails.json
+static/trailhead.js
+static/designated_trail.js
