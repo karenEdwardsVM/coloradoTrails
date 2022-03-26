@@ -7,15 +7,16 @@ window.onload = async () => {
 
   const count = (await getjson('/trailcount')).length;
   const trails = [];
+
   const plotTrails = async () => {
     for (let i = 0; i < count / 5000; i++) { 
       trails.push((await (await window.fetch(`/gettrail/${i}`)).json()));
     }
-    parseTrail(trails.map(el => el["geometry"]["coordinates"]));
+    parseTrail(trails.map(el => el.geometry.coordinates));
   };
   plotTrails();
 
-  const dtPoints = desTrails["features"].map(el => el["geometry"]["coordinates"]);
+  const dtPoints = desTrails.features.map(el => el.geometry.coordinates);
   const parseTrail = (l) => {
     for (const p of l) {
       const thPolyline = L.polyline(p, {color: 'red'});
