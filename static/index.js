@@ -5,22 +5,17 @@ window.onload = async () => {
     subdomains: ['a','b','c']
   }).addTo(map);
 
-  const count = (await getjson('/trailcount')).length;
-  const trails = [];
-
-  const plotTrails = async () => {
-    for (let i = 0; i < count / 5000; i++) { 
-      trails.push((await (await window.fetch(`/gettrail/${i}`)).json()));
-    }
-    parseTrail(trails.map(el => el.geometry.coordinates));
-  };
-  plotTrails();
-
-  const dtPoints = desTrails.features.map(el => el.geometry.coordinates);
-  const parseTrail = (l) => {
+  const plotTrails = (l) => {
     for (const p of l) {
-      const thPolyline = L.polyline(p, {color: 'red'});
+      const coords = p.geometry.coordinates;
+      const thPolyline = L.polyline(coords, {color: 'red'});
       thPolyline.addTo(map);
     }
   }
+
+  const plotAround = async (a) => {
+    const nearby = await getTrailsAround(a[0], a[1], 0.3);
+    plotTrails(nearby.trails);
+  };
+  plotAround([39.071445, -108.549728]);
 };

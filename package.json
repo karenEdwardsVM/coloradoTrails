@@ -1,0 +1,22 @@
+{
+  "name": "coloradotrails",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karenEdwardsVM/coloradoTrails.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karenEdwardsVM/coloradoTrails/issues"
+  },
+  "homepage": "https://github.com/karenEdwardsVM/coloradoTrails#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
