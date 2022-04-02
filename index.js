@@ -7,7 +7,7 @@ const p = 5000;
 app.use('/', express.static('static'));
 
 app.get('/gettrail/:id', (req, res) => {
-  res.send(lib.jw(lib.trails.features[parseInt(req.params.id)]));
+  res.send(lib.jw(lib.Trail.fromID(parseInt(req.params.id), true)));
 });
 
 app.get('/getaround/:lat/:lon/:rad', (req, res) => {
@@ -16,12 +16,13 @@ app.get('/getaround/:lat/:lon/:rad', (req, res) => {
         lon = Number(req.params.lon),
         rad = Number(req.params.rad);
 
-  for (const t of lib.trails.features) {
-    if (t && t.geometry && t.geometry.coordinates && t.geometry.coordinates.length > 0) {
+  for (let i = 0; i < lib.trails.features.length; i++) {
+    const t = lib.Trail.fromID(i);
+    if (t && t.geometry && t.geometry.length > 0) {
       let ok = false;
       // we can look at any coordinate instead of first, middle, last, if performance allows.
       //   currently most of the time this route takes is in sending the response back.
-      for (const c of lib.fml(t.geometry.coordinates)) {
+      for (const c of lib.fml(t.geometry)) {
         if (lib.distance(lat, lon, c[0], c[1]) < rad) {
           ok = true; break;
         }
