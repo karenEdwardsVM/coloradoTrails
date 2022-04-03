@@ -38,6 +38,11 @@ app.get('/trailcount', (req, res) => {
 
 app.get('/savedTrails', (req, res) => {});
 
+app.get('/observations', (req, res) => {
+  const obs = csv.toJSON('inat/observations-2022.csv')
+  res.send(lib.jw(obs));
+});
+
 app.listen(p, () => {
   console.log(`Example app listening on port ${p}`);
 });

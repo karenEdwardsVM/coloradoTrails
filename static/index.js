@@ -13,12 +13,28 @@ window.onload = async () => {
       thPolyline.addTo(map);
     }
   }
-  plotTrails(desTrails.features, 'red', 8, 0.5);
-  plotTrails(trailheads.features, 'blue', 5, 0.8);
+  // plot designated trails and trailheads, which are the same
+  //plotTrails(desTrails.features, 'red', 8, 0.5);
+  //plotTrails(trailheads.features, 'blue', 5, 0.8);
 
   const plotAround = async (a) => {
     const nearby = await getTrailsAround(a[0], a[1], 0.3);
-    plotTrails(nearby.trails, 'red', 5);
+    plotTrails(nearby.trails, 'red', 2);
   };
-  //plotAround([39.071445, -108.549728]);
+  plotAround([39.071445, -108.549728]);
+  
+  //plot observations
+  const obs = await getjson(`/observations/`);
+  //console.log(obs);
+  const plotObservations = (o) => {
+    for (let i = 1; i < o.length - 1; i++) {
+      const lati = Number(o[i].latitude);
+      const longi = Number(o[i].longitude);
+      if (isFinite(lati) || isFinite(longi)) {
+        const m = new L.marker([lati, longi]);
+        m.addTo(map);
+      }
+    }
+  };
+  plotObservations(obs);
 };
