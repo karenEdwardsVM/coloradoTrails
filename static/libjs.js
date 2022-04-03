@@ -3,6 +3,9 @@ const hide = (e) => e.style.display = 'none';
 const reveal = (e, d) => e.style.display = d || 'inherit';
 const del = (e) => e && e.parentElement && e.parentElement.removeChild(e);
 const child = (e, n) => e.children[n];
+const distance = (x, y, x1, y1) => {
+  return Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2));
+};
 
 const getjson = async (u) => {
   return (await (await window.fetch(u)).json());

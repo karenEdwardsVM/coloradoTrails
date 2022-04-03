@@ -10,11 +10,18 @@
      crossorigin=""/>
   </head>
   <body>
-    <h1 style="margin-bottom: 0;" id="title"></h1>
+    <h1 style="margin: 0;" id="title"></h1>
     <div style="padding-bottom: 1ch;" id="info">
       <div style="padding-left: 1ch;" id="length"></div>
     </div>
-    <div id="map"></div>
+    <div id="map-container" style="padding-bottom: 1ch;">
+      <div id="map"></div>
+    </div>
+    <div id="body-info">
+      <div style="border: 1px solid black; padding: 1ch;" id="varieties">
+        Along this trail you might find:<br/>
+      </div>
+    </div>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
      crossorigin=""></script>

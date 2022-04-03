@@ -12,8 +12,11 @@ window.onload = async () => {
   map.fitBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
   map.plotTrails([trail.trail], 'blue', 2);
 
+  const varieties = Array.from(new Set(trail.observations.map(e => e.common_name || e.common_guess).filter(e => e)));
+  ge('varieties').innerText += varieties.join('\n\t');
+
   for (const o of trail.observations) {
-    const m = new L.marker(o);
+    const m = new L.marker([Number(o.latitude), Number(o.longitude)]);
     m.addTo(map.map);
   }
 };
