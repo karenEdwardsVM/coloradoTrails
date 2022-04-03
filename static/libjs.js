@@ -48,15 +48,21 @@ class Map {
 
   plotTrails(l, c, w, o) {
     for (const p of l) {
-      const coords = p.geometry.coordinates;
+      const coords = p.trail.geometry.coordinates;
       const thPolyline = this.L.polyline(coords);
       thPolyline.setStyle({color: c, weight: w, opacity: o});
       thPolyline.addTo(this.map);
     }
   }
 
+  plotMarker(lat, lon) {
+    const m = new L.marker([lat, lon]);
+    m.addTo(this.map);
+  }
+
   async plotAround(lat, lon, rad = 0.3) {
     const nearby = await getTrailsAround(lat, lon, rad);
+    //console.log(nearby);
     this.plotTrails(nearby.trails, 'red', 2);
   }
 

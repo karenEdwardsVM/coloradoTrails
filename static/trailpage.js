@@ -7,5 +7,5 @@ window.onload = async () => {
   console.log(trail);
   const bounds = getBounds(trail.trail);
   map.fitBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
-  map.plotTrails([trail.trail], 'blue', 2);
+  map.plotTrails([trail], 'blue', 2);
 };
