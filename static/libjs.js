@@ -15,6 +15,10 @@ const getTrailsAround = async (lat, lon, rad) => {
   return (await getjson(`/getaround/${lat}/${lon}/${rad}`));
 };
 
+const getPlace = async (id) => {
+  return (await getjson(`/getplace/${id}`));
+};
+
 const queryParam = (s) => {
   if (!window.location.search) { return null; }
 
@@ -28,15 +32,6 @@ const queryParam = (s) => {
   }
 
   return null;
-};
-
-const getBounds = (t) => {
-  return t.geometry.coordinates.reduce((o, c) => ({
-    left: isFinite(o.left) ? Math.min(o.left, c[1]) : c[1],
-    top: isFinite(o.top) ? Math.max(o.top, c[0]) : c[0],
-    right: isFinite(o.right) ? Math.max(o.right, c[1]) : c[1],
-    bottom: isFinite(o.bottom) ? Math.min(o.bottom, c[0]) : c[0],
-  }), {});
 };
 
 class Map {

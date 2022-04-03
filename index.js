@@ -10,6 +10,18 @@ app.get('/gettrail/:id', (req, res) => {
   res.send(lib.jw(lib.trailFromID(parseInt(req.params.id), true)));
 });
 
+app.get('/getplace/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const trails = [];
+  for (let i = 0; i < lib.trails.features.length; i++) {
+    const t = lib.trails.features[i];
+    if (t.properties.place_id == id) {
+      trails.push(lib.trailFromID(i, true));
+    }
+  }
+  res.send(lib.jw({trails}));
+});
+
 app.get('/getaround/:lat/:lon/:rad', (req, res) => {
   const out = [],
         lat = Number(req.params.lat),
