@@ -27,6 +27,15 @@ const queryParam = (s) => {
   return null;
 };
 
+const getBounds = (t) => {
+  return t.geometry.coordinates.reduce((o, c) => ({
+    left: isFinite(o.left) ? Math.min(o.left, c[1]) : c[1],
+    top: isFinite(o.top) ? Math.max(o.top, c[0]) : c[0],
+    right: isFinite(o.right) ? Math.max(o.right, c[1]) : c[1],
+    bottom: isFinite(o.bottom) ? Math.min(o.bottom, c[0]) : c[0],
+  }), {});
+};
+
 class Map {
   constructor(L, lat, lon) {
     this.L = L;
@@ -52,5 +61,9 @@ class Map {
   }
 
   async fitBounds(left, top, right, bottom) {
+    this.map.fitBounds([
+      [top, left],
+      [bottom, right],
+    ]);
   }
 }
