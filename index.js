@@ -1,6 +1,5 @@
 const lib = require('./lib.js');
 const express = require('express');
-const csv = require('./convertCSV.js');
 const app = express();
 const p = 5000;
 
@@ -41,7 +40,6 @@ app.get('/savedTrails', (req, res) => {});
 
 app.get('/observations', (req, res) => {
   const obs = csv.toJSON('inat/observations-2022.csv')
-  //console.log(csv.toJSON('inat/observations-2022.csv'));
   res.send(lib.jw(obs));
 });
 

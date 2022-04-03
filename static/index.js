@@ -19,23 +19,21 @@ window.onload = async () => {
 
   const plotAround = async (a) => {
     const nearby = await getTrailsAround(a[0], a[1], 0.3);
-    plotTrails(nearby.trails, 'red', 5);
+    plotTrails(nearby.trails, 'red', 2);
   };
-  //plotAround([39.071445, -108.549728]);
+  plotAround([39.071445, -108.549728]);
   
   //plot observations
   const obs = await getjson(`/observations/`);
-  console.log(obs);
+  //console.log(obs);
   const plotObservations = (o) => {
     for (let i = 1; i < o.length - 1; i++) {
       const lati = Number(o[i].latitude);
       const longi = Number(o[i].longitude);
       if (isFinite(lati) || isFinite(longi)) {
-        console.log(lati, longi);
-        const m = new L.polyline([[lati, longi]], {color:'green'});
+        const m = new L.marker([lati, longi]);
         m.addTo(map);
       }
-      //m.setStyle({color: 'green', weight: 0.5});
     }
   };
   plotObservations(obs);
