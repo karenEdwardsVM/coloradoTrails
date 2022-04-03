@@ -1,5 +1,6 @@
 const fs = require('fs'),
-      https = require('https');
+      https = require('https'),
+      csv = require('./convertCSV.js');
 
 const omap = (o, f) => { const ot = {}; for (const k of Object.keys(o)) { ot[k] = f(k, o[k]); } return ot; };
 const subdir = (p) => { try { fs.mkdirSync(p); } catch (e) { } };
@@ -70,7 +71,7 @@ const get = async (url) => {
 };
 
 const trails = loadjson('./static/trails.json');
-const observations = [];
+const observations = csv.toJSON('inat/observations-2022.csv');
 
 const fml = (cs) => {
   return [cs[0], cs[Math.floor(cs.length / 2)], cs[cs.length - 1]];
@@ -101,7 +102,7 @@ class Trail {
   }
 
   static fromID(id, withobservations = false) {
-    return new Trail(lib.trails.features[id], withobservations);
+    return new Trail(trails.features[id], withobservations);
   }
 }
 

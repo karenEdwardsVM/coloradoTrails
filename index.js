@@ -1,6 +1,5 @@
 const lib = require('./lib.js');
 const express = require('express');
-const csv = require('./convertCSV.js');
 const app = express();
 const p = 5000;
 
@@ -38,8 +37,6 @@ app.get('/trailcount', (req, res) => {
 });
 
 app.get('/savedTrails', (req, res) => {});
-
-console.log(csv.toJSON('inat/observations-2022.csv'));
 
 app.listen(p, () => {
   console.log(`Example app listening on port ${p}`);
