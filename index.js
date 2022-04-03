@@ -6,7 +6,7 @@ const p = 5000;
 app.use('/', express.static('static'));
 
 app.get('/gettrail/:id', (req, res) => {
-  res.send(lib.jw(lib.Trail.fromID(parseInt(req.params.id), true)));
+  res.send(lib.jw(lib.trailFromID(parseInt(req.params.id), true)));
 });
 
 app.get('/getaround/:lat/:lon/:rad', (req, res) => {
@@ -16,7 +16,7 @@ app.get('/getaround/:lat/:lon/:rad', (req, res) => {
         rad = Number(req.params.rad);
 
   for (let i = 0; i < lib.trails.features.length; i++) {
-    const t = lib.Trail.fromID(i);
+    const t = lib.trailFromID(i);
     if (t && t.geometry && t.geometry.length > 0) {
       let ok = false;
       // we can look at any coordinate instead of first, middle, last, if performance allows.

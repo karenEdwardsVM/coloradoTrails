@@ -70,6 +70,8 @@ const get = async (url) => {
   });
 };
 
+const Trail = require('./static/trail.js').Trail;
+
 const trails = loadjson('./static/trails.json');
 const observations = csv.toJSON('inat/observations-2022.csv');
 const obsCoords = observations.map(e => [Number(e.latitude), Number(e.longitude)]); // array of [lat, long] arrays
@@ -99,28 +101,13 @@ test = [[39.14447671120448,-105.12421118204271],[39.144440060937825,-105.1247530
 console.log(observationsAround(test, 0.25));
 //const trailCoords = (trails.features).map(e => e.geometry); // not working
 
-class Trail {
-  // we could share this class with the client, should we?
-  constructor(data, withobservations = false) {
-    this.data = data;
-    if (withobservations) {
-      this.observations = observationsAround(this.data.geometry.coordinates, 0.01);
-    }
-  }
-
-  get properties() { return this.data.properties; }
-  get geometry() { return this.data.geometry && this.data.geometry.coordinates; }
-
-  toJSON() {
-    return {trail: this.data, observations: this.observations};
-  }
-
-  static fromID(id, withobservations = false) {
-    return new Trail(trails.features[id], withobservations);
-  }
-}
+const trailFromID = (id, withobservations = false) => {
+  const trail = trails.features[id];
+  return new Trail({trail,
+                    observations: withobservations ? observationsAround(trail.geometry.coordinates, 0.01) : []});
+};
 
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
-  trails, fml, distance, Trail, observationsAround,
+  trails, fml, distance, observationsAround, Trail, trailFromID,
 };
