@@ -1,9 +1,5 @@
 const lib = require('./lib.js');
 const express = require('express');
-<<<<<<< HEAD
-//const csv = require('./inat/observations-2022.csv');
-=======
->>>>>>> 63d542ec79327bcaf4118cbf6edc1224d963520a
 const csv = require('./convertCSV.js');
 const app = express();
 const p = 5000;

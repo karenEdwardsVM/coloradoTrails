@@ -10,14 +10,10 @@ window.onload = async () => {
   console.log(trail);
   const bounds = getBounds(trail.trail);
   map.fitBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
-<<<<<<< HEAD
   map.plotTrails([trail], 'blue', 2);
-=======
-  map.plotTrails([trail.trail], 'blue', 2);
 
   for (const o of trail.observations) {
     const m = new L.marker(o);
     m.addTo(map.map);
   }
->>>>>>> 63d542ec79327bcaf4118cbf6edc1224d963520a
 };
