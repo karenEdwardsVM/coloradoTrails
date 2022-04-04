@@ -5,7 +5,7 @@ window.onload = async () => {
   trails = (await getPlace(trailID)).trails;
 
   ge('title').innerText = String(trails[0].properties.name);
-  ge('length').innerText = 'is ' + String(trails[0].properties.length_mi_) + ' miles long.';
+  ge('length').innerText = 'is ' + String(trails.reduce((o, t) => o + t.length_mi, 0)) + ' miles long.';
 
   const map = new Map(L, 39.002, -108.666);
   const bounds = trails.map(t => t.bounds).reduce((a, b) => ({

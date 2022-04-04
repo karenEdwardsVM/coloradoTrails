@@ -30,6 +30,8 @@ class Trail {
     return extent;
   }
 
+  get length_mi() { return this.properties.length_mi_; }
+
   get bounds() {
     if (typeof(this.cache.bounds) !== 'undefined') { return this.cache.bounds; }
     this.cache.bounds = this.geometry.reduce((o, c) => ({
