@@ -3,6 +3,9 @@ const hide = (e) => e.style.display = 'none';
 const reveal = (e, d) => e.style.display = d || 'inherit';
 const del = (e) => e && e.parentElement && e.parentElement.removeChild(e);
 const child = (e, n) => e.children[n];
+const clear = (screen) => { screen.innerHTML = ''; };
+const add = (screen, e) => { screen.appendChild(e); return e; };
+const swap = (a, b) => { a.parentElement.replaceChild(b, a); return b; };
 const distance = (x, y, x1, y1) => {
   return Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2));
 };
@@ -16,7 +19,10 @@ const getTrailsAround = async (lat, lon, rad) => {
 };
 
 const getPlace = async (id) => {
-  return (await getjson(`/getplace/${id}`));
+  const p = await getjson(`/getplace/${id}`);
+  return {
+    trails: p.trails.map(t => new Trail(t)),
+  };
 };
 
 const queryParam = (s) => {
@@ -71,3 +77,16 @@ class Map {
     ]);
   }
 }
+
+const centered = (c) => {
+  const e = document.createElement('div');
+  e.className = 'centered';
+  add(e, c);
+  return e;
+};
+
+const img = (url) => {
+  const e = document.createElement('img');
+  e.src = url;
+  return e;
+};

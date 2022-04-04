@@ -102,7 +102,7 @@ const observationsAround = (coordinates, rad) => {
 const trailFromID = (id, withobservations = false) => {
   const trail = trails.features[id];
   return new Trail({trail,
-                    observations: withobservations ? observationsAround(trail.geometry.coordinates, 0.01) : []});
+                    observations: withobservations ? observationsAround(trail.geometry.coordinates, 0.003) : []});
 };
 
 module.exports = {
