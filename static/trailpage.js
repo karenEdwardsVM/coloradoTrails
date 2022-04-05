@@ -40,6 +40,7 @@ window.onload = async () => {
     const c = centered(i);
     i.style.maxWidth = '7vw';
     i.style.maxHeight = '7vh';
+    c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
     add(ge('opics'), c);
   }
