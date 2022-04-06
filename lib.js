@@ -70,10 +70,17 @@ const get = async (url) => {
   });
 };
 
+function loadObservations() {
+  const obs2022 = csv.toJSON('inat/observations-2022.csv');
+  const obs2021 = csv.toJSON('inat/observations-2021.csv');
+  return [].concat(obs2022, obs2021);
+}
+
 const Trail = require('./static/trail.js').Trail;
 
 const trails = loadjson('./static/trails.json');
-const observations = csv.toJSON('inat/observations-2022.csv');
+const observations = loadObservations();
+console.log(observations);
 const obsCoords = observations.map((e, i) => [Number(e.latitude), Number(e.longitude), i]); // array of [lat, long] arrays
 const sortedObs = obsCoords.sort((a, b) => a[0] - b[0]);
 
@@ -86,24 +93,35 @@ const distance = (x, y, x1, y1) => {
 };
 
 // coordinates is a list of all the coordinates in the trail
-// need to return the actual observations and not the list of coordinates
-const observationsAround = (coordinates, rad) => {
+// optimize this, when sorting, also check the edge coordinates of the trail for latitude. 
+// changed coordinates (a trails coordinates) parameter to a trail
+const observationsAround = (trail, rad) => {
   let res = [];
-  for (let i = 0; i < coordinates.length; i++) {
+  const bound = trail.bounds;
+  const coords = trail.geometry;
+  for (let i = 0; i < coords.length; i++) {
     for (let j = 0; j < sortedObs.length; j++) {
-      if (distance(coordinates[i][0], coordinates[i][1], sortedObs[j][0], sortedObs[j][1]) <= rad) {
+      if (bound.top > sortedObs[j][0]) { break; }
+      if (distance(coords[i][0], coords[i][1], sortedObs[j][0], sortedObs[j][1]) <= rad) {
         res.push(sortedObs[j][2]);
       }
     }
   }
   return Array.from(new Set(res)).map(e => observations[e]);
 };
+//observationsAround(trails[30], 0.05);
 
 const trailFromID = (id, withobservations = false) => {
-  const trail = trails.features[id];
-  return new Trail({trail,
-                    observations: withobservations ? observationsAround(trail.geometry.coordinates, 0.01) : []});
+  const trail = new Trail({trail: trails.features[id]});
+  if (withobservations) {
+    trail.observations = observationsAround(trail, 0.01);
+  }
+  return trail
+  //return new Trail({trail,
+  //                  observations: withobservations ? observationsAround(trail.geometry.coordinates, 0.01) : []});
 };
+console.profile(trailFromID(30, true));
+//console.log(trailFromID(30, true));
 
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
