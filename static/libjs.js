@@ -20,9 +20,9 @@ const getTrailsAround = async (lat, lon, rad) => {
 
 const getPlace = async (id) => {
   const p = await getjson(`/getplace/${id}`);
-  return {
+  return new Place({
     trails: p.trails.map(t => new Trail(t)),
-  };
+  });
 };
 
 const queryParam = (s) => {

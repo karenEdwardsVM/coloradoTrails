@@ -1,33 +1,19 @@
-trails = null;
+place = null;
 
 window.onload = async () => {
   const trailID = Number(queryParam('id'));
-  trails = (await getPlace(trailID)).trails;
+  place = await getPlace(trailID);
 
-  ge('title').innerText = String(trails[0].properties.name);
-  ge('length').innerText = 'is ' + String(trails.reduce((o, t) => o + t.length_mi, 0)) + ' miles long.';
+  ge('title').innerText = place.name;
+  ge('length').innerText = 'is ' + String(place.length_mi) + ' miles long.';
 
   const map = new Map(L, 39.002, -108.666);
-  const bounds = trails.map(t => t.bounds).reduce((a, b) => ({
-    left: Math.min(a.left, b.left),
-    top: Math.max(a.top, b.top),
-    right: Math.max(a.right, b.right),
-    bottom: Math.min(a.bottom, b.bottom),
-  }));
+  const bounds = place.bounds;
 
   map.fitBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
-  map.plotTrails(trails, 'red', 2);
+  place.plotTrails(map, 'red', 2);
 
-  const oseen = new Set(), observations = [];
-  for (const t of trails) {
-    for (const o of t.observations) {
-      if (!oseen.has(o.id)) {
-        oseen.add(o.id);
-        observations.push(o);
-      }
-    }
-  }
-
+  const observations = place.observations;
   const varieties = Array.from(new Set(
     observations.map(e => e.common_name || e.species_guess)
                 .filter(e => e)

@@ -48,6 +48,39 @@ class Trail {
   }
 }
 
+class Place {
+  constructor(data) {
+    this.trails = data.trails;
+  }
+
+  get name() { return String(this.trails[0].properties.name); }
+  get length_mi() { return this.trails.reduce((o, t) => o + t.length_mi, 0); }
+
+  get bounds() {
+    return this.trails.map(t => t.bounds).reduce((a, b) => ({
+      left: Math.min(a.left, b.left),
+      top: Math.max(a.top, b.top),
+      right: Math.max(a.right, b.right),
+      bottom: Math.min(a.bottom, b.bottom),
+    }));
+  }
+
+  plotTrails(map, ...as) { map.plotTrails(this.trails, ...as); }
+
+  get observations() {
+    const oseen = new Set(), observations = [];
+    for (const t of this.trails) {
+      for (const o of t.observations) {
+        if (!oseen.has(o.id)) {
+          oseen.add(o.id);
+          observations.push(o);
+        }
+      }
+    }
+    return observations;
+  }
+}
+
 if (typeof(module) !== 'undefined') {
-  module.exports = { Trail, };
+  module.exports = { Trail, Place, };
 }
