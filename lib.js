@@ -117,11 +117,8 @@ const trailFromID = (id, withobservations = false) => {
     trail.observations = observationsAround(trail, 0.01);
   }
   return trail
-  //return new Trail({trail,
-  //                  observations: withobservations ? observationsAround(trail.geometry.coordinates, 0.01) : []});
 };
 console.profile(trailFromID(30, true));
-//console.log(trailFromID(30, true));
 
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
