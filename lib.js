@@ -2,6 +2,35 @@ const fs = require('fs'),
       https = require('https'),
       csv = require('./convertCSV.js');
 
+class OrderedHeap {
+  constructor(maxlen = 1) {
+    this.maxlen = maxlen; this.data = [];
+  }
+
+  bs(l, r, v) {
+    const i = Math.floor((r + l) / 2);
+    if ((r - l) < 1 || !this.data[i]) { return i; }
+    if (this.data[i].v < v) { return this.bs(i + 1, r, v); }
+    if (this.data[i].v > v) { return this.bs(l, i, v); }
+    return i;
+  }
+
+  push(d, v) {
+    const i = this.bs(0, this.data.length, v);
+    if (i < this.maxlen) {
+      this.data.splice(i, 0, {d, v});
+    }
+  }
+
+  take(k) {
+    const out = [];
+    for (let i = 0; i < k && i < this.data.length; i++) {
+      out.push(this.data[i].d);
+    }
+    return out;
+  }
+}
+
 const omap = (o, f) => { const ot = {}; for (const k of Object.keys(o)) { ot[k] = f(k, o[k]); } return ot; };
 const subdir = (p) => { try { fs.mkdirSync(p); } catch (e) { } };
 
@@ -107,5 +136,5 @@ const trailFromID = (id, withobservations = false) => {
 
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
-  trails, fml, distance, observationsAround, Trail, trailFromID,
+  trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap,
 };
