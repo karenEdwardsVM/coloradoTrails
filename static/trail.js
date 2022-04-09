@@ -55,6 +55,7 @@ class Place {
 
   get name() { return String(this.trails[0].properties.name); }
   get length_mi() { return this.trails.reduce((o, t) => o + t.length_mi, 0); }
+  get properties() { return this.trails[0].properties; }
 
   get bounds() {
     return this.trails.map(t => t.bounds).reduce((a, b) => ({
