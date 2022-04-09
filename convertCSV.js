@@ -5,7 +5,7 @@ const toJSON = (fn) => {
   let lines = s.split("\n");
   lines = lines.map(e => e.split(","));
   const json = [];
-  for (let i = 0; i < lines.length; i++) {
+  for (let i = 1; i < lines.length; i++) {
     const d = {};
     for (let j = 0; j < lines[i].length; j++) {
       d[lines[0][j]] = lines[i][j];
