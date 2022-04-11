@@ -31,6 +31,7 @@ class OrderedHeap {
   }
 }
 
+
 const omap = (o, f) => { const ot = {}; for (const k of Object.keys(o)) { ot[k] = f(k, o[k]); } return ot; };
 const subdir = (p) => { try { fs.mkdirSync(p); } catch (e) { } };
 
@@ -108,6 +109,7 @@ function loadObservations() {
 const Trail = require('./static/trail.js').Trail;
 
 const trails = loadjson('./static/trails.json');
+//console.log(trails.features);
 const observations = loadObservations();
 const obsCoords = observations.map((e, i) => [Number(e.latitude), Number(e.longitude), i]); // array of [lat, long] arrays
 const sortedObs = obsCoords.sort((a, b) => a[0] - b[0]);
@@ -150,6 +152,24 @@ const trailFromID = (id, withobservations = false) => {
   }
   return trail
 };
+
+// get approximate lat/lon of a trail by running center on it. Or look at first coord.
+// How to take lat/lon and distance to a trail and turn it to a number? 
+// include lat/lon in parameter? 
+const search = (query) => {
+  let h = new OrderedHeap(50);
+  for (const t of trails.features.slice(10, 12)) {
+    tp = t.properties;
+    let count = 0;
+    for (const k in query) {
+      count += (tp[k] == null) ? 0 : ((query[k] == tp[k]) ? -1 : 1)
+    }
+    console.log(count)
+    h.push(t, count);
+  }
+  return h.data;
+};
+//console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no'}));
 
 const timetaken = timeit(() => {
   for (let i = 20; i < 100; i++) {
