@@ -31,6 +31,7 @@ class OrderedHeap {
   }
 }
 
+
 const omap = (o, f) => { const ot = {}; for (const k of Object.keys(o)) { ot[k] = f(k, o[k]); } return ot; };
 const subdir = (p) => { try { fs.mkdirSync(p); } catch (e) { } };
 
@@ -108,6 +109,7 @@ function loadObservations() {
 const Trail = require('./static/trail.js').Trail;
 
 const trails = loadjson('./static/trails.json');
+//console.log(trails.features);
 const observations = loadObservations();
 const obsCoords = observations.map((e, i) => [Number(e.latitude), Number(e.longitude), i]); // array of [lat, long] arrays
 const sortedObs = obsCoords.sort((a, b) => a[0] - b[0]);
@@ -151,6 +153,40 @@ const trailFromID = (id, withobservations = false) => {
   return trail
 };
 
+const trailsAround = (lat, lon, rad) => {
+  const out = [];
+  for (let i = 0; i < trails.features.length; i++) {
+    const t = trailFromID(i);
+    if (t && t.geometry && t.geometry.length > 0) {
+      let ok = false;
+      // we can look at any coordinate instead of first, middle, last, if performance allows.
+      //   currently most of the time this route takes is in sending the response back.
+      for (const c of fml(t.geometry)) {
+        if (distance(lat, lon, c[0], c[1]) < rad) {
+          ok = true; break;
+        }
+      }
+      if (ok) { out.push(t); }
+    }
+  }
+  return out;
+};
+
+const search = (query, lat, lon, rad) => {
+  ts = trailsAround(lat, lon, rad);
+  let h = new OrderedHeap(50);
+  for (const t of ts) {
+    tp = t.trail.properties;
+    let count = 0;
+    for (const k in query) {
+      count += (tp[k] == null) ? 0 : ((query[k] == tp[k]) ? -1 : 1)
+    }
+    h.push(t, count);
+  }
+  return h.data;
+};
+//console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no'}, 39.071445, -108.549728, 0.2));
+
 const timetaken = timeit(() => {
   for (let i = 20; i < 100; i++) {
     t = trailFromID(i, true);
@@ -162,5 +198,5 @@ const timetaken = timeit(() => {
 
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
-  trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap,
+  trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap, trailsAround, search,
 };

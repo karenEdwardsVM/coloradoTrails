@@ -23,25 +23,10 @@ app.get('/getplace/:id', (req, res) => {
 });
 
 app.get('/getaround/:lat/:lon/:rad', (req, res) => {
-  const out = [],
-        lat = Number(req.params.lat),
+  const lat = Number(req.params.lat),
         lon = Number(req.params.lon),
-        rad = Number(req.params.rad);
-
-  for (let i = 0; i < lib.trails.features.length; i++) {
-    const t = lib.trailFromID(i);
-    if (t && t.geometry && t.geometry.length > 0) {
-      let ok = false;
-      // we can look at any coordinate instead of first, middle, last, if performance allows.
-      //   currently most of the time this route takes is in sending the response back.
-      for (const c of lib.fml(t.geometry)) {
-        if (lib.distance(lat, lon, c[0], c[1]) < rad) {
-          ok = true; break;
-        }
-      }
-      if (ok) { out.push(t); }
-    }
-  }
+        rad = Number(req.params.rad),
+        out = lib.trailsAround(lat, lon, rad);
   res.send(lib.jw({trails: out}));
 });
 
