@@ -80,6 +80,20 @@ class Place {
     }
     return observations;
   }
+
+  view(container, w, h) {
+    if (this.map) { return this.map; }
+    this.mapid = genid();
+    this.mapcontainer = document.createElement('div');
+    this.mapcontainer.style.width = w;
+    this.mapcontainer.style.height = h;
+    this.mapcontainer.setAttribute('id', this.mapid);
+    add(container, this.mapcontainer);
+
+    const bounds = this.bounds;
+    this.map = new Map(L, (bounds.left + bounds.right) / 2, (bounds.bottom + bounds.top) / 2, this.mapid);
+    this.plotTrails(this.map, 'red', 2);
+  }
 }
 
 if (typeof(module) !== 'undefined') {
