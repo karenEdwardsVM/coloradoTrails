@@ -3,17 +3,26 @@
   <head>
     <script type="text/javascript" src="libjs.js"></script>
     <script type="text/javascript" src="index.js"></script>
-    <!-- <script type="text/javascript" src="trailhead.js"></script> -->
-    <script type="text/javascript" src="designated_trails.js"></script>
-    <script type="text/javascript" src="trailhead.js"></script>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
      crossorigin=""/>
   </head>
   <body>
-    <h1>Mapping</h1>
-    <div id="map"></div>
+    <h1>TrailrTrash: a place to find trails.</h1>
+    <div class="padded">
+      Trekspedition is an educational tool that seeks to improve your productivity in the workplace by increasing
+      your enjoyment of the outside world. While hiking is normally good stimulus for your brain and body, hiking
+      while identifying plants, animals, and fungi is much better for your brain.
+    </div>
+    <div class="padded">
+      Improve your memory, improve your focus, improve your life... TrailrTrash.
+    </div>
+
+    <input type="text" id="searchbar" onkeyup="onsearchkey(event);"></input>
+
+    <div id="results"></div>
+
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
      crossorigin=""></script>

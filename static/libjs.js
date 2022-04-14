@@ -1,3 +1,4 @@
+const genid = () => [1,2].map(i => Math.random()).join().replace(/0|\.|,/g,'');
 const ge = (n) => document.getElementById(n);
 const hide = (e) => e.style.display = 'none';
 const reveal = (e, d) => e.style.display = d || 'inherit';
@@ -6,12 +7,30 @@ const child = (e, n) => e.children[n];
 const clear = (screen) => { screen.innerHTML = ''; };
 const add = (screen, e) => { screen.appendChild(e); return e; };
 const swap = (a, b) => { a.parentElement.replaceChild(b, a); return b; };
+const plural = (n, s) => n == 1 ? s : s + "s";
+const after = async (t, f) => {
+  if (f) { window.setTimeout(f, t); } else { return new Promise(resolve => after(t, resolve)); }
+};
 const distance = (x, y, x1, y1) => {
   return Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2));
 };
 
 const getjson = async (u) => {
   return (await (await window.fetch(u)).json());
+};
+
+const debounce = (f, t) => {
+  let lastcall = 0, lastvalue = null;
+  const w = async (...args) => {
+    lastcall = Math.max(Date.now(), lastcall);
+    await after(t + 150);
+    if ((Date.now() - lastcall) > t) {
+      await after(25);
+      lastvalue = await f(...args);
+    }
+    return lastvalue;
+  };
+  return w;
 };
 
 const getTrailsAround = async (lat, lon, rad) => {
@@ -23,6 +42,11 @@ const getPlace = async (id) => {
   return new Place({
     trails: p.trails.map(t => new Trail(t)),
   });
+};
+
+const addquery = (s, q) => {
+  return s.match('([^?]*)?.*')[1] + '?' +
+    Object.keys(q).map(k => `${k}=${q[k]}`).join('&');
 };
 
 const queryParam = (s) => {
@@ -40,10 +64,12 @@ const queryParam = (s) => {
   return null;
 };
 
+// write search function here
+
 class Map {
-  constructor(L, lat, lon) {
+  constructor(L, lat, lon, id = 'map') {
     this.L = L;
-    this.map = L.map('map').setView([lat, lon], 7);
+    this.map = L.map(id).setView([lat, lon], 7);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       subdomains: ['a','b','c']
