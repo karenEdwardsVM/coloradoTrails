@@ -153,23 +153,39 @@ const trailFromID = (id, withobservations = false) => {
   return trail
 };
 
-// get approximate lat/lon of a trail by running center on it. Or look at first coord.
-// How to take lat/lon and distance to a trail and turn it to a number? 
-// include lat/lon in parameter? 
-const search = (query) => {
+const trailsAround = (lat, lon, rad) => {
+  const out = [];
+  for (let i = 0; i < trails.features.length; i++) {
+    const t = trailFromID(i);
+    if (t && t.geometry && t.geometry.length > 0) {
+      let ok = false;
+      // we can look at any coordinate instead of first, middle, last, if performance allows.
+      //   currently most of the time this route takes is in sending the response back.
+      for (const c of fml(t.geometry)) {
+        if (distance(lat, lon, c[0], c[1]) < rad) {
+          ok = true; break;
+        }
+      }
+      if (ok) { out.push(t); }
+    }
+  }
+  return out;
+};
+
+const search = (query, lat, lon, rad) => {
+  ts = trailsAround(lat, lon, rad);
   let h = new OrderedHeap(50);
-  for (const t of trails.features.slice(10, 12)) {
-    tp = t.properties;
+  for (const t of ts) {
+    tp = t.trail.properties;
     let count = 0;
     for (const k in query) {
       count += (tp[k] == null) ? 0 : ((query[k] == tp[k]) ? -1 : 1)
     }
-    console.log(count)
     h.push(t, count);
   }
   return h.data;
 };
-//console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no'}));
+//console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no'}, 39.071445, -108.549728, 0.2));
 
 const timetaken = timeit(() => {
   for (let i = 20; i < 100; i++) {
@@ -182,5 +198,5 @@ const timetaken = timeit(() => {
 
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
-  trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap,
+  trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap, trailsAround, search,
 };
