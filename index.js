@@ -30,6 +30,15 @@ app.get('/getaround/:lat/:lon/:rad', (req, res) => {
   res.send(lib.jw({trails: out}));
 });
 
+app.get('/searcharound/:lat/:lon/:rad', (req, res) => {
+  const lat = Number(req.params.lat),
+        lon = Number(req.params.lon),
+        rad = Number(req.params.rad)
+        q = {'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no'};
+        data = lib.search(q, lat, lon, rad);
+  res.send(lib.jw(data));
+});
+
 app.get('/trailcount', (req, res) => {
   res.send(lib.jw({length: lib.trails.features.length}));
 });
