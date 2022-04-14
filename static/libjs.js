@@ -116,3 +116,16 @@ const img = (url) => {
   e.src = url;
   return e;
 };
+
+const padder = (p) => {
+  const e = document.createElement('span');
+  e.style.padding = p;
+  return e;
+};
+
+const inputBox = (label, value, o = {}) => {
+  const e = document.createElement('input');
+  e.setAttribute('type', 'checkbox');
+  if (o.oncheck) { e.onchange = o.oncheck; }
+  return e;
+};
