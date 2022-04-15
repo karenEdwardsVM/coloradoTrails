@@ -30,11 +30,13 @@ app.get('/getaround/:lat/:lon/:rad', (req, res) => {
   res.send(lib.jw({trails: out}));
 });
 
+// look at question mark after url turning into object
+// client side conversion is url that getjson, append addquery in libjs
 app.get('/searcharound/:lat/:lon/:rad', (req, res) => {
   const lat = Number(req.params.lat),
         lon = Number(req.params.lon),
-        rad = Number(req.params.rad)
-        q = {'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no'};
+        rad = Number(req.params.rad),
+        q = req.query, //{'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no'};
         data = lib.search(q, lat, lon, rad);
   res.send(lib.jw(data));
 });
