@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ "$1" == run ]; then
-  node index.js
+  node server.js
 fi
 
 
