@@ -12,14 +12,18 @@ app.get('/gettrail/:id', (req, res) => {
 
 app.get('/getplace/:id', (req, res) => {
   const id = Number(req.params.id);
-  const trails = [];
-  for (let i = 0; i < lib.trails.features.length; i++) {
-    const t = lib.trails.features[i];
-    if (t.properties.place_id == id) {
-      trails.push(lib.trailFromID(i, true));
+  if (!!id) {
+    const trails = [];
+    for (let i = 0; i < lib.trails.features.length; i++) {
+      const t = lib.trails.features[i];
+      if (t.properties.place_id == id) {
+        trails.push(lib.trailFromID(i, true));
+      }
     }
+    res.send(lib.jw({trails}));
+  } else {
+    res.send(lib.jw({trails: null}));
   }
-  res.send(lib.jw({trails}));
 });
 
 app.get('/getaround/:lat/:lon/:rad', (req, res) => {

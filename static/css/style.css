@@ -16,3 +16,12 @@ html { box-sizing: border-box; }
 .padded {
   padding: 1ch;
 }
+
+#results {
+  display: flex; flex-wrap: wrap;
+}
+
+#searchParams {
+  display: flex; flex-wrap: wrap;
+  align-content: start;
+}

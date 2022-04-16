@@ -84,15 +84,26 @@ class Place {
   view(container, w, h) {
     if (this.map) { return this.map; }
     this.mapid = genid();
+    const outer = padder('2ch');
+    add(outer, messageBox(this.name));
+    add(outer, messageBox(this.observations.length + ' observations'));
+
     this.mapcontainer = document.createElement('div');
     this.mapcontainer.style.width = w;
     this.mapcontainer.style.height = h;
     this.mapcontainer.setAttribute('id', this.mapid);
-    add(container, this.mapcontainer);
+    add(outer, this.mapcontainer)
+    add(container, outer);
 
     const bounds = this.bounds;
-    this.map = new Map(L, (bounds.left + bounds.right) / 2, (bounds.bottom + bounds.top) / 2, this.mapid);
+    this.map = new Map(L, (bounds.bottom + bounds.top) / 2, (bounds.left + bounds.right) / 2, this.mapid, 7, {
+      zoomControl: false,
+      scrollWheelZoom: false,
+      touchZoom: false,
+      attributionControl: false,
+    });
     this.plotTrails(this.map, 'red', 2);
+    this.map.fitBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
   }
 }
 

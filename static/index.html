@@ -2,6 +2,7 @@
 <html>
   <head>
     <script type="text/javascript" src="libjs.js"></script>
+    <script type="text/javascript" src="trail.js"></script>
     <script type="text/javascript" src="index.js"></script>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -19,9 +20,17 @@
       Improve your memory, improve your focus, improve your life... TrailrTrash.
     </div>
 
-    <input type="text" id="searchbar" onkeyup="onsearchkey(event);"></input>
-    <div id="searchParams" class="padded"></div>
-    <div id="results"></div>
+    <div style="padding: 3ch;">
+      <div>where are you?</div>
+      <div style="display: flex;">
+        <div id="findermap" style="width: 45vw; height: 25vh;"></div>
+        <!--<div class="padded">
+          <input class="padded" type="text" id="searchbar" onkeyup="onsearchkey(event);"></input>
+        </div>-->
+        <div id="searchParams" class="padded"></div>
+      </div>
+      <div id="results"></div>
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="

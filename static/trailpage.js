@@ -23,7 +23,7 @@ window.onload = async () => {
   for (const o of observations) {
     map.plotMarker(Number(o.latitude), Number(o.longitude));
     const i = img(o.image_url);
-    const c = centered(i);
+    const c = centered([i]);
     i.style.maxWidth = '7vw';
     i.style.maxHeight = '7vh';
     c.setAttribute('title', o.common_name || o.species_guess);

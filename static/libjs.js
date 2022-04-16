@@ -43,9 +43,13 @@ const getTrailsInSearch = async (query, lat, lon, rad) => {
 
 const getPlace = async (id) => {
   const p = await getjson(`/getplace/${id}`);
-  return new Place({
-    trails: p.trails.map(t => new Trail(t)),
-  });
+  if (p.trails !== null) {
+    return new Place({
+      trails: p.trails.map(t => new Trail(t)),
+    });
+  } else {
+    return null;
+  }
 };
 
 const addquery = (s, q) => {
@@ -71,9 +75,10 @@ const queryParam = (s) => {
 // write search function here
 
 class Map {
-  constructor(L, lat, lon, id = 'map') {
+  constructor(L, lat, lon, id = 'map', zoom = 7, opts = {}) {
     this.L = L;
-    this.map = L.map(id).setView([lat, lon], 7);
+    this.map = L.map(id, opts);
+    this.map.setView([lat, lon], zoom);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       subdomains: ['a','b','c']
@@ -108,10 +113,10 @@ class Map {
   }
 }
 
-const centered = (c) => {
+const centered = (cs) => {
   const e = document.createElement('div');
   e.className = 'centered';
-  add(e, c);
+  for (const c of cs) { add(e, c); }
   return e;
 };
 
@@ -121,9 +126,10 @@ const img = (url) => {
   return e;
 };
 
-const padder = (p) => {
-  const e = document.createElement('span');
+const padder = (p, cs = []) => {
+  const e = document.createElement('div');
   e.style.padding = p;
+  for (const c of cs) { add(e, c); }
   return e;
 };
 
@@ -131,5 +137,11 @@ const inputBox = (label, value, o = {}) => {
   const e = document.createElement('input');
   e.setAttribute('type', 'checkbox');
   if (o.oncheck) { e.onchange = o.oncheck; }
+  return e;
+};
+
+const messageBox = (value) => {
+  const e = document.createElement('div');
+  e.innerText = value;
   return e;
 };

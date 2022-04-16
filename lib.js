@@ -108,7 +108,11 @@ function loadObservations() {
 
 const Trail = require('./static/trail.js').Trail;
 
-const trails = loadjson('./static/trails.json');
+let trails = loadjson('./static/trails.json');
+trails = {
+  ...trails,
+  features: trails.features.filter(f => f.geometry),
+};
 //console.log(trails.features);
 const observations = loadObservations();
 const obsCoords = observations.map((e, i) => [Number(e.latitude), Number(e.longitude), i]); // array of [lat, long] arrays
@@ -131,16 +135,20 @@ const timeit = (f) => {
 // trail is a list of all the coordinates in the trail
 const observationsAround = (trail, rad) => {
   let res = [];
-  const bound = trail.bounds;
-  const cutObs = sortedObs.filter(e => ((e[0] >= bound.bottom - 1) && (e[0] <= bound.top + 1)));
-  //const cutObs = sortedObs;
-  const coords = trail.geometry;
-  for (let i = 0; i < coords.length; i++) {
-    for (let j = 0; j < cutObs.length; j++) {
-      if (distance(coords[i][0], coords[i][1], cutObs[j][0], cutObs[j][1]) <= rad) {
-        res.push(cutObs[j][2]);
+  try {
+    const bound = trail.bounds;
+    const cutObs = sortedObs.filter(e => ((e[0] >= bound.bottom - 1) && (e[0] <= bound.top + 1)));
+    //const cutObs = sortedObs;
+    const coords = trail.geometry;
+    for (let i = 0; i < coords.length; i++) {
+      for (let j = 0; j < cutObs.length; j++) {
+        if (distance(coords[i][0], coords[i][1], cutObs[j][0], cutObs[j][1]) <= rad) {
+          res.push(cutObs[j][2]);
+        }
       }
     }
+  } catch (e) {
+    console.log('Observations around:', trail, 'failed', e);
   }
   return Array.from(new Set(res)).map(e => observations[e]);
 };
@@ -148,9 +156,9 @@ const observationsAround = (trail, rad) => {
 const trailFromID = (id, withobservations = false) => {
   const trail = new Trail({trail: trails.features[id]});
   if (withobservations) {
-    trail.observations = observationsAround(trail, 0.05);
+    trail.observations = observationsAround(trail, 0.02);
   }
-  return trail
+  return trail;
 };
 
 const trailsAround = (lat, lon, rad) => {
