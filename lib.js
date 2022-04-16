@@ -194,7 +194,6 @@ const search = (query, lat, lon, rad) => {
   return h.data;
 };
 //console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no'}, 39.071445, -108.549728, 0.2));
-// {'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no'}/39.071445/-108.549728/0.01
 
 const timetaken = timeit(() => {
   for (let i = 20; i < 100; i++) {

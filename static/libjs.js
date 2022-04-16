@@ -38,7 +38,7 @@ const getTrailsAround = async (lat, lon, rad) => {
 };
 
 const getTrailsInSearch = async (query, lat, lon, rad) => {
-  return (await getjson(`/searcharound/${lat}/${lon}/${rad}`));
+  return (await getjson(addquery(`/searcharound/${lat}/${lon}/${rad}`, query)));
 };
 
 const getPlace = async (id) => {
