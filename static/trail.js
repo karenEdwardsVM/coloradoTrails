@@ -81,16 +81,18 @@ class Place {
     return observations;
   }
 
-  view(container, w, h) {
+  view(container, w, h, uw = 'vw', uh = 'vh') {
     if (this.map) { return this.map; }
     this.mapid = genid();
-    const outer = padder('2ch');
+    const outer = padder('1ch');
+    outer.style.maxWidth = w + uw;
+    outer.style.maxHeight = h + uh;
     add(outer, messageBox(this.name));
     add(outer, messageBox(this.observations.length + ' observations'));
 
     this.mapcontainer = document.createElement('div');
-    this.mapcontainer.style.width = w;
-    this.mapcontainer.style.height = h;
+    this.mapcontainer.style.width = (w - 2) + uw;
+    this.mapcontainer.style.height = (h - 2) + uh;
     this.mapcontainer.setAttribute('id', this.mapid);
     add(outer, this.mapcontainer)
     add(container, outer);

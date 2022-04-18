@@ -31,15 +31,17 @@ window.onload = async () => {
     results.innerHTML = '';
     places = {};
     for (const {d, v} of trails) {
-      const t = new Trail(d);
-      if (!(t.properties.place_id in places)) {
-        const p = await getPlace(t.properties.place_id);
-        if (p) {
-          places[t.properties.place_id] = p;
-          p.view(ge('results'), '18vw', '10vh');
+      if (v < 0) {
+        const t = new Trail(d);
+        if (!(t.properties.place_id in places)) {
+          const p = await getPlace(t.properties.place_id);
+          if (p) {
+            places[t.properties.place_id] = p;
+            p.view(ge('results'), 20, 20);
+          }
+        } else {
+          console.log('already got', t.properties.place_id);
         }
-      } else {
-        console.log('already got', t.properties.place_id);
       }
     }
   }, 200);

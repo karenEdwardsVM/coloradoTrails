@@ -1,5 +1,9 @@
 place = null;
 
+// Preemptive caching guide
+//   on map load, write it to an image and store it in localstorage
+//     or, write a map layer that preemptively caches tiles to localstorage
+
 window.onload = async () => {
   const trailID = Number(queryParam('id'));
   place = await getPlace(trailID);
