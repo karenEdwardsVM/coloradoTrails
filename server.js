@@ -14,8 +14,7 @@ app.get('/getplace/:id', (req, res) => {
   const id = Number(req.params.id);
   if (!!id) {
     const trails = [];
-    for (let i = 0; i < lib.trails.features.length; i++) {
-      const t = lib.trails.features[i];
+    for (let i = 0; i < lib.trails.features.length; i++) { const t = lib.trails.features[i];
       if (t.properties.place_id == id) {
         trails.push(lib.trailFromID(i, true));
       }
