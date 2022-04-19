@@ -184,7 +184,7 @@ const trailsAround = (lat, lon, rad) => {
 const search = (query, lat, lon, rad) => {
   const ts = trailsAround(lat, lon, rad);
   let h = new OrderedHeap(50);
-  for (const t of ts.slice(14, 19)) {
+  for (const t of ts) {
     let range = 0,
         tp = t.trail.properties, 
         count = 0;
@@ -192,8 +192,10 @@ const search = (query, lat, lon, rad) => {
       // for every half mile over or under, add 1 to the score
       if (k == 'length_mi_') {
         range = -5 + (Math.abs(query[k] - tp[k]) / 0.5);
+        count += range;
+      } else {
+        count += ((tp[k] == null) ? 0 : ((query[k] == tp[k]) ? -1 : 1))
       }
-      count += ((tp[k] == null) ? 0 : ((query[k] == tp[k]) ? -1 : 1)) + range
     }
     h.push(t, count);
   }
