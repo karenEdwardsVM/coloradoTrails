@@ -8,6 +8,7 @@ const clear = (screen) => { screen.innerHTML = ''; };
 const add = (screen, e) => { screen.appendChild(e); return e; };
 const swap = (a, b) => { a.parentElement.replaceChild(b, a); return b; };
 const plural = (n, s) => n == 1 ? s : s + "s";
+const toprec = (i, p) => Math.floor(i * Math.pow(10, p)) / Math.pow(10, p);
 const after = async (t, f) => {
   if (f) { window.setTimeout(f, t); } else { return new Promise(resolve => after(t, resolve)); }
 };
