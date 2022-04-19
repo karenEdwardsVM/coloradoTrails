@@ -103,7 +103,7 @@ const get = async (url) => {
 function loadObservations() {
   const obs2022 = csv.toJSON('inat/observations-2022.csv');
   const obs2021 = csv.toJSON('inat/observations-2021.csv');
-  return [].concat(obs2021);
+  return [].concat(obs2021, obs2022);
 }
 
 const Trail = require('./static/trail.js').Trail;

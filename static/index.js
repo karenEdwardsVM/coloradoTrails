@@ -3,15 +3,11 @@ let onsearchkey = null;
 const booleanParams = ['dogs', 'atv', 'hiking', 'horse', 'bike', 'motorcycle', 'access', 'ski'];
 const textParams = ['name', 'surface', 'type', 'manager', 'url'];
 const numericParams = ['min_elevat', 'max_elevat', 'length_mi_'];
+// and, observation count, species type / frequency grades,
 let query = {};
 const booleanBoxes = {};
 const changedBooleans = new Set();
 let places = {};
-
-// and, observation count, species type / frequency grades,
-
-  // const map = new Map(L, 39.002, -108.666);
-  // map.plotAround(39.071445, -108.549728);
 
 window.onload = async () => {
   let lat = 39, lon = -108.66, rad = 0.15;
@@ -51,15 +47,17 @@ window.onload = async () => {
     results.innerHTML = '';
     places = {};
     for (const {d, v} of trails) {
-      const t = new Trail(d);
-      if (!(t.properties.place_id in places)) {
-        const p = await getPlace(t.properties.place_id);
-        if (p) {
-          places[t.properties.place_id] = p;
-          p.view(ge('results'), '18vw', '10vh');
+      if (v < 0) {
+        const t = new Trail(d);
+        if (!(t.properties.place_id in places)) {
+          const p = await getPlace(t.properties.place_id);
+          if (p) {
+            places[t.properties.place_id] = p;
+            p.view(ge('results'), 20, 20);
+          }
+        } else {
+          console.log('already got', t.properties.place_id);
         }
-      } else {
-        console.log('already got', t.properties.place_id);
       }
     }
   }, 200);
