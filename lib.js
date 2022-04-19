@@ -22,10 +22,10 @@ class OrderedHeap {
     }
   }
 
-  take(k) {
+  take(k, keepscore = false) {
     const out = [];
     for (let i = 0; i < k && i < this.data.length; i++) {
-      out.push(this.data[i].d);
+      out.push(keepscore ? this.data[i] : this.data[i].d);
     }
     return out;
   }
@@ -183,8 +183,8 @@ const trailsAround = (lat, lon, rad) => {
 // length in the trails is length_mi_
 const search = (query, lat, lon, rad) => {
   const ts = trailsAround(lat, lon, rad);
-  let h = new OrderedHeap(50);
-  for (const t of ts.slice(5, 10)) {
+  let h = new OrderedHeap(25);
+  for (const t of ts) {
     let range = 0,
         tp = t.trail.properties, 
         count = 0;
@@ -199,7 +199,7 @@ const search = (query, lat, lon, rad) => {
     }
     h.push(t, count);
   }
-  return h.data;
+  return h.take(25, true);
 };
 console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no', 'length_mi_' : 3}, 39.071445, -108.549728, 0.2));
 
