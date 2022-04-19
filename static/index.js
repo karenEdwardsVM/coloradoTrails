@@ -37,13 +37,13 @@ window.onload = async () => {
 
   const onChange = debounce(async (e) => {
     query = {};
-    // console.log(ge('searchbar').value);
     for (let b of booleanParams) {
-      query[b] = booleanBoxes[b].checked ? 'yes' : 'no'; // also don't include if it hasn't been checked
+      if (changedBooleans.has(b)) {
+        query[b] = booleanBoxes[b].checked ? 'yes' : 'no';
+      }
     }
     console.log('query is', query);
     const trails = await getTrailsInSearch(query, lat, lon, rad);
-    console.log(trails);
     results.innerHTML = '';
     places = {};
     for (const {d, v} of trails) {
@@ -53,7 +53,7 @@ window.onload = async () => {
           const p = await getPlace(t.properties.place_id);
           if (p) {
             places[t.properties.place_id] = p;
-            p.view(ge('results'), 20, 20);
+            p.view(ge('results'), 20, 28);
           }
         } else {
           console.log('already got', t.properties.place_id);
@@ -63,14 +63,24 @@ window.onload = async () => {
   }, 200);
 
   for (let b of booleanParams) {
-    // add param to selection
-    booleanBoxes[b] = inputBox(b, false, { oncheck: onChange, });
+    booleanBoxes[b] = inputBox(b, false, { oncheck: (e) => {
+      changedBooleans.add(b);
+      onChange();
+    }, });
     label = document.createElement('label'); label.innerText = b;
     const pad = padder('1ch', [
       centered([label, booleanBoxes[b]]),
     ]);
     add(ge('searchParams'), pad);
   }
+
+  const tlen = padder('1ch', [
+    rangeoption((n, v) => {
+      query['length_mi_'] = v;
+    }, 'Target trail length', 0, 30, 1.1, {unit: ' miles'}), // allow plural
+  ]);
+  tlen.style.width = '30vw';
+  add(ge('searchParams'), tlen);
 
   onsearchkey = onChange;
 };

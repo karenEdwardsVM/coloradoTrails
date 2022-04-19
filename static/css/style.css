@@ -1,4 +1,21 @@
-html { box-sizing: border-box; }
+:root {
+  --onevh: 1vh;
+  --oneunit: 1vh;
+  --npad: var(--oneunit);
+  --nmar: var(--oneunit);
+  --nbord: 1px;
+  --iconh: calc(var(--oneunit) * 12);
+  --bg:white;
+  --fg:black;
+  --mg:gray;
+}
+
+html, body {
+  background-color: var(--bg);
+  color: var(--fg);
+  min-height: -webkit-fill-available;
+  box-sizing: border-box;
+}
 
 #map { height: 40vh; width: 40vw; }
 
@@ -18,10 +35,40 @@ html { box-sizing: border-box; }
 }
 
 #results {
-  display: flex; flex-wrap: wrap;
+  display: flex; flex-wrap: wrap; align-items: center;
 }
 
 #searchParams {
   display: flex; flex-wrap: wrap;
   align-content: start;
 }
+
+textarea, input, div { font-size: 1rem; }
+textarea, input { background-color: var(--bg); color: var(--fg); border-color: transparent; }
+
+.inputrangewrapper {
+  height: 2vh;
+  background-color: var(--fg);
+  width: 100%;
+}
+
+.inputrange {
+  position: relative;
+  width: calc(100% - 3vh);
+  height: 100%;
+}
+
+.inputthumb {
+  position: absolute;
+  background-color: var(--bg);
+  height: calc(2vh - 2px);
+  border: var(--nbord) solid var(--fg);
+  width: 3vh;
+  left: 0; top: 0;
+}
+
+.boxed { border: var(--nbord) solid var(--fg); }
+.boxed-top { border-top: var(--nbord) solid var(--fg); }
+.boxed-left { border-left: var(--nbord) solid var(--fg); }
+.boxed-right { border-right: var(--nbord) solid var(--fg); }
+.boxed-bottom { border-bottom: var(--nbord) solid var(--fg); }
