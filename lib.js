@@ -180,20 +180,26 @@ const trailsAround = (lat, lon, rad) => {
   return out;
 };
 
+// length in the trails is length_mi_
 const search = (query, lat, lon, rad) => {
-  ts = trailsAround(lat, lon, rad);
+  const ts = trailsAround(lat, lon, rad);
   let h = new OrderedHeap(50);
-  for (const t of ts) {
-    tp = t.trail.properties;
-    let count = 0;
+  for (const t of ts.slice(14, 19)) {
+    let range = 0,
+        tp = t.trail.properties, 
+        count = 0;
     for (const k in query) {
-      count += (tp[k] == null) ? 0 : ((query[k] == tp[k]) ? -1 : 1)
+      // for every half mile over or under, add 1 to the score
+      if (k == 'length_mi_') {
+        range = -5 + (Math.abs(query[k] - tp[k]) / 0.5);
+      }
+      count += ((tp[k] == null) ? 0 : ((query[k] == tp[k]) ? -1 : 1)) + range
     }
     h.push(t, count);
   }
   return h.data;
 };
-//console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no'}, 39.071445, -108.549728, 0.2));
+//console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no', 'length_mi_' : 4}, 39.071445, -108.549728, 0.2));
 
 const timetaken = timeit(() => {
   for (let i = 20; i < 100; i++) {
