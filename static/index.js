@@ -16,9 +16,25 @@ let places = {};
 window.onload = async () => {
   let lat = 39, lon = -108.66, rad = 0.15;
   const finder = new Map(L, lat, lon, 'findermap', 5);
+  let mark = finder.plotMarker(lat, lon);
+
+  const error = (err) => {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  };
+  //geolocation needs https 
+  if (navigator.geolocation) {
+    console.log("Geolocation loop");
+    navigator.geolocation.getCurrentPosition((p) => {
+      lat = p.coords.latitude;
+      lon = p.coords.longitude;
+      mark.setLatLng([lat, lon]);
+    }, error);
+  }
+
   finder.map.on('click', (e) => {
     lat = e.latlng.lat;
     lon = e.latlng.lng;
+    mark.setLatLng([lat, lon]);
     // display a circle of rad at lat lon
     console.log('coo', lat, lon);
   });

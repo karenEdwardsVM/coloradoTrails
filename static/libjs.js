@@ -72,8 +72,6 @@ const queryParam = (s) => {
   return null;
 };
 
-// write search function here
-
 class Map {
   constructor(L, lat, lon, id = 'map', zoom = 7, opts = {}) {
     this.L = L;
@@ -97,6 +95,7 @@ class Map {
   plotMarker(lat, lon) {
     const m = new L.marker([lat, lon]);
     m.addTo(this.map);
+    return m;
   }
 
   async plotAround(lat, lon, rad = 0.3) {
