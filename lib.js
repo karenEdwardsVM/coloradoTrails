@@ -22,10 +22,10 @@ class OrderedHeap {
     }
   }
 
-  take(k) {
+  take(k, keepscore = false) {
     const out = [];
     for (let i = 0; i < k && i < this.data.length; i++) {
-      out.push(this.data[i].d);
+      out.push(keepscore ? this.data[i] : this.data[i].d);
     }
     return out;
   }
@@ -199,7 +199,7 @@ const search = (query, lat, lon, rad) => {
     }
     h.push(t, count);
   }
-  return h.take(50);
+  return h.take(50, true);
 };
 //console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no', 'length_mi_' : 4}, 39.071445, -108.549728, 0.2));
 
