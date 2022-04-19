@@ -183,7 +183,7 @@ const trailsAround = (lat, lon, rad) => {
 // length in the trails is length_mi_
 const search = (query, lat, lon, rad) => {
   const ts = trailsAround(lat, lon, rad);
-  let h = new OrderedHeap(50);
+  let h = new OrderedHeap(25);
   for (const t of ts) {
     let range = 0,
         tp = t.trail.properties, 
@@ -199,7 +199,7 @@ const search = (query, lat, lon, rad) => {
     }
     h.push(t, count);
   }
-  return h.take(50, true);
+  return h.take(25, true);
 };
 //console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no', 'length_mi_' : 4}, 39.071445, -108.549728, 0.2));
 

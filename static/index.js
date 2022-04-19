@@ -70,7 +70,7 @@ window.onload = async () => {
   for (let b of booleanParams) {
     booleanBoxes[b] = inputBox(b, false, { oncheck: (e) => {
       changedBooleans.add(b);
-      onChange();
+      // onChange();
     }, });
     label = document.createElement('label'); label.innerText = b;
     const pad = padder('1ch', [
