@@ -53,7 +53,7 @@ window.onload = async () => {
           const p = await getPlace(t.properties.place_id);
           if (p) {
             places[t.properties.place_id] = p;
-            p.view(ge('results'), 20, 20);
+            p.view(ge('results'), 20, 28);
           }
         } else {
           console.log('already got', t.properties.place_id);

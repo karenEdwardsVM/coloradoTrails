@@ -93,7 +93,7 @@ class Place {
 
     this.mapcontainer = document.createElement('div');
     this.mapcontainer.style.width = (w - 2) + uw;
-    this.mapcontainer.style.height = (h - 2) + uh;
+    this.mapcontainer.style.height = (h - 8) + uh;
     this.mapcontainer.setAttribute('id', this.mapid);
     add(outer, this.mapcontainer)
     add(container, outer);

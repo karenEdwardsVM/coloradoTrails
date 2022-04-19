@@ -35,7 +35,7 @@ html, body {
 }
 
 #results {
-  display: flex; flex-wrap: wrap;
+  display: flex; flex-wrap: wrap; align-items: center;
 }
 
 #searchParams {
