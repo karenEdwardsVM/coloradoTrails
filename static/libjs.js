@@ -100,7 +100,6 @@ class Map {
 
   async plotAround(lat, lon, rad = 0.3) {
     const nearby = await getTrailsAround(lat, lon, rad);
-    //console.log(nearby);
     this.plotTrails(nearby.trails, 'red', 2);
   }
 
@@ -112,40 +111,6 @@ class Map {
   }
 }
 
-const centered = (cs) => {
-  const e = document.createElement('div');
-  e.className = 'centered';
-  for (const c of cs) { add(e, c); }
-  return e;
-};
-
-const img = (url) => {
-  const e = document.createElement('img');
-  e.src = url;
-  return e;
-};
-
-const padder = (p, cs = []) => {
-  const e = document.createElement('div');
-  e.style.padding = p;
-  for (const c of cs) { add(e, c); }
-  return e;
-};
-
-const inputBox = (label, value, o = {}) => {
-  const e = document.createElement('input');
-  e.setAttribute('type', 'checkbox');
-  if (o.oncheck) { e.onchange = o.oncheck; }
-  return e;
-};
-
-const messageBox = (value) => {
-  const e = document.createElement('div');
-  e.innerText = value;
-  return e;
-};
-
-const dims = (e) => e.getBoundingClientRect();
 const dca = t => document.createElement(t);
 const ext = async (pe1, ce1) => {
   if (!pe1 || !ce1) {
@@ -155,6 +120,50 @@ const ext = async (pe1, ce1) => {
   else if (ce1 instanceof Promise || ce1.constructor.name == 'AsyncFunction') { pe1.appendChild(await ce1); }
   else if (ce1) { pe1.appendChild(ce1); }
 };
+
+const centered = (cs) => {
+  const e = dca('div');
+  e.className = 'centered';
+  for (const c of cs) { ext(e, c); }
+  return e;
+};
+
+const img = (url) => {
+  const e = dca('img'); e.src = url; return e;
+};
+
+const padder = (p, cs = []) => {
+  const e = dca('div');
+  e.style.padding = p;
+  for (const c of cs) { add(e, c); }
+  return e;
+};
+
+const inputBox = (label, value, o = {}) => {
+  const e = dca('input');
+  e.setAttribute('type', 'checkbox');
+  if (o.oncheck) { e.onchange = o.oncheck; }
+  return e;
+};
+
+const messageBox = (value, boxed = false) => {
+  const e = boxed ? padder('var(--npad)') : dca('div');
+  // e.innerText = value;
+  ext(e, value);
+  if (boxed) { e.className = 'boxed'; }
+  return e;
+};
+
+const button = (label, onclick) => {
+  const b = messageBox(centered([label]), true);
+  b.style.cursor = 'pointer'; b.style.touchAction = 'none';
+  b.onclick = onclick;
+  b.onmouseenter = hovstart;
+  b.onmouseleave = hovend;
+  return b;
+};
+
+const dims = (e) => e.getBoundingClientRect();
 const rng = (b, e) => {const o = []; for (let i = b; i <= e; i++) { o.push(i); }; return o;};
 const stopevent = (e) => e.preventDefault();
 const sa = (e, k, v) => e.setAttribute(k, v);

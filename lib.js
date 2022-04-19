@@ -199,7 +199,7 @@ const search = (query, lat, lon, rad) => {
     }
     h.push(t, count);
   }
-  return h.data;
+  return h.take(50);
 };
 //console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no', 'length_mi_' : 4}, 39.071445, -108.549728, 0.2));
 

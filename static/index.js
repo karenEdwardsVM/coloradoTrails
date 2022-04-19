@@ -1,3 +1,6 @@
+// add search button, save trail, species selections
+//   click to zoom to trail
+
 let onsearchkey = null;
 
 const booleanParams = ['dogs', 'atv', 'hiking', 'horse', 'bike', 'motorcycle', 'access', 'ski'];
@@ -8,10 +11,11 @@ let query = {};
 const booleanBoxes = {};
 const changedBooleans = new Set();
 let places = {};
+let length_mi = 1.1;
 
 window.onload = async () => {
-  let lat = 39, lon = -108.66, rad = 0.15;
-  const finder = new Map(L, lat, lon, 'findermap', 5);
+  let lat = 39.0708, lon = -105.7, rad = 0.15;
+  const finder = new Map(L, lat, lon, 'findermap', 6);
   let mark = finder.plotMarker(lat, lon);
 
   const error = (err) => {
@@ -42,6 +46,7 @@ window.onload = async () => {
         query[b] = booleanBoxes[b].checked ? 'yes' : 'no';
       }
     }
+    query['length_mi_'] = length_mi;
     console.log('query is', query);
     const trails = await getTrailsInSearch(query, lat, lon, rad);
     results.innerHTML = '';
@@ -76,11 +81,22 @@ window.onload = async () => {
 
   const tlen = padder('1ch', [
     rangeoption((n, v) => {
-      query['length_mi_'] = v;
-    }, 'Target trail length', 0, 30, 1.1, {unit: ' miles'}), // allow plural
+      length_mi = v;
+    }, 'Target trail length', 0, 30, length_mi, {unit: ' miles'}), // allow plural
   ]);
-  tlen.style.width = '30vw';
+  tlen.style.width = '100%';
   add(ge('searchParams'), tlen);
 
+  const trad = padder('1ch', [
+    rangeoption((n, v) => {
+      rad = v / 69.8;
+    }, 'How far are you willing to travel?', 0, 200, rad * 69.8, {unit: ' miles'}), // allow plural
+  ]);
+  trad.style.width = '100%';
+  add(ge('searchParams'), trad);
+
+  const sb = button('Search', onChange);
+  sb.style.width = '100%';
+  add(ge('searchParams'), sb);
   onsearchkey = onChange;
 };
