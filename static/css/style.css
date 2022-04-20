@@ -39,9 +39,19 @@ html, body {
   justify-content: space-evenly;
 }
 
+#findermap {
+  width: 50%;
+  min-width: 500px;
+  height: 25vh;
+  flex: 1 0 500px;
+}
+
 #searchParams {
+  width: 50%;
+  min-width: 500px;
   display: flex; flex-wrap: wrap;
   align-content: start;
+  flex: 1 0 500px;
 }
 
 textarea, input, div { font-size: 1rem; }

@@ -1,8 +1,11 @@
 const lib = require('./lib.js');
 const express = require('express');
 const csv = require('./convertCSV.js');
+const https = require('https');
+const fs = require('fs');
 const app = express();
-const p = 5000;
+const config = require('./config.js');
+const httpport = 5001, httpsport = 5000;
 
 app.use('/', express.static('static'));
 
@@ -55,7 +58,17 @@ app.get('/observations', (req, res) => {
   res.send(lib.jw(obs));
 });
 
-app.listen(p, () => {
-  console.log(`Example app listening on port ${p}`);
+console.log('App loaded.');
+const server = https.createServer({
+  key: fs.readFileSync('localhost.key'),
+  cert: fs.readFileSync('localhost.crt'),
+}, app);
+
+const redirector = express();
+redirector.use('/', (req, res) => {
+  res.append('Location', 'https://' + config.httpsDomain + req.url);
+  res.sendStatus(307);
 });
 
+server.listen(httpsport, () => { console.log(`Example app listening on port ${httpsport}`); });
+redirector.listen(httpport, () => { console.log('http redirector started'); });
