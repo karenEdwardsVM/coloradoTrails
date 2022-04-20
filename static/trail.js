@@ -96,6 +96,9 @@ class Place {
     this.mapcontainer.style.height = (h - 8) + uh;
     this.mapcontainer.setAttribute('id', this.mapid);
     add(outer, this.mapcontainer)
+    outer.onclick = () => {
+      location.href = `/trail.html?id=${this.properties.place_id}`;
+    };
     add(container, outer);
 
     const bounds = this.bounds;

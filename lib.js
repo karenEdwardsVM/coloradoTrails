@@ -201,7 +201,7 @@ const search = (query, lat, lon, rad) => {
   }
   return h.take(25, true);
 };
-console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no', 'length_mi_' : 3}, 39.071445, -108.549728, 0.2));
+//console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no', 'length_mi_' : 3}, 39.071445, -108.549728, 0.2));
 
 const timetaken = timeit(() => {
   for (let i = 20; i < 100; i++) {
