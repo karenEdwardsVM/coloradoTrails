@@ -88,7 +88,7 @@ class Place {
     outer.style.maxWidth = w + uw;
     outer.style.maxHeight = h + uh;
     add(outer, messageBox(this.name));
-    add(outer, messageBox(this.observations.length + ' observations'));
+    add(outer, messageBox(this.observations.length + plural(this.observations.length, ' observation')));
     add(outer, messageBox(this.length_mi + ' miles long'));
 
     this.mapcontainer = document.createElement('div');
