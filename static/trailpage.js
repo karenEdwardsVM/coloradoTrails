@@ -17,6 +17,20 @@ window.onload = async () => {
   map.fitBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
   place.plotTrails(map, 'red', 2);
 
+  // here put the map info into trail-info div
+  const d = ge('trail-info');
+        p = place.properties;
+        pLabels = {'name': 'name', 'surface': 'surface', 'type': 'type', 
+                   'hiking': 'hiking', 'horse': 'horse', 'bike': 'bike', 
+                   'motorcycle': 'motorcycle', 'atv': 'atv', 'ohv_gt_50': 'ohv', 
+                   'highway_ve': 'highway vehicle', 'dogs': 'dogs', 'min_elevat': 'min elevation', 
+                   'max_elevat': 'max elevation', 'length_mi_': 'length (miles)'
+                   'ski': 'ski', 'snowshoe': 'snowshoe'};
+  for (k in pLabels) {
+    add(d, messageBox((p[k] == null) ? `<div>${pLabels[k]}: N/A</div>` : 
+                                       `<div>${pLabels[k]}: ${p[k]}</div>`));
+  }
+
   const observations = place.observations;
   const varieties = Array.from(new Set(
     observations.map(e => e.common_name || e.species_guess)
@@ -40,6 +54,10 @@ window.onload = async () => {
     };
   };
 
+  const hover = (el) => {
+    el.addEventListener('mouseover',() => {};);
+  }
+
   for (const o of observations) {
     let mark = map.plotMarker(Number(o.latitude), Number(o.longitude));
     const i = img(o.image_url);
@@ -48,8 +66,9 @@ window.onload = async () => {
     i.style.maxHeight = '7vh';
     c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
+    hover(i);
     add(ge('opics'), c);
-    mark.on('click', onClick(ge('varieties'), o)).addTo(map);
+    mark.on('click', onClick(ge('varieties'), o));
   }
 
 };
