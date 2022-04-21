@@ -108,7 +108,7 @@ function loadObservations() {
 
 const {Trail, Place} = require('./static/trail.js');
 
-let trails = loadjson('./static/trails.json');
+let trails = loadjson('./inat/trails.json');
 trails = {
   ...trails,
   features: trails.features.filter(f => f.geometry),
