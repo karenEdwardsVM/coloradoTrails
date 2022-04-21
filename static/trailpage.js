@@ -24,8 +24,24 @@ window.onload = async () => {
   ));
   ge('varieties').innerText += varieties.join('\n\t');
 
+  const onClick = (d, o) => { 
+    // add to a box with species name, etc.
+    return () => {
+      d.innerHTML = "";
+      add(d, messageBox(`<div>Kingdom: ${o.iconic_taxon_name}</div>
+                         <div>Scientific: ${o.scientific_name}</div>
+                         <div>Common: ${o.common_name}</div>`));
+      const i = img(o.image_url);
+      const c = centered([i]);
+      i.style.maxHeight = '40vh';
+      //i.style.objectFit = 'contain';
+      c.setAttribute('title', o.common_name || o.species_guess);
+      add(d, c);
+    };
+  };
+
   for (const o of observations) {
-    map.plotMarker(Number(o.latitude), Number(o.longitude));
+    let mark = map.plotMarker(Number(o.latitude), Number(o.longitude));
     const i = img(o.image_url);
     const c = centered([i]);
     i.style.maxWidth = '7vw';
@@ -33,5 +49,7 @@ window.onload = async () => {
     c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
     add(ge('opics'), c);
+    mark.on('click', onClick(ge('varieties'), o)).addTo(map);
   }
+
 };
