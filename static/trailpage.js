@@ -68,7 +68,7 @@ window.onload = async () => {
     i.style.maxHeight = '7vh';
     c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
-    hover(i);
+    //hover(i);
     add(ge('opics'), c);
     mark.on('click', onClick(ge('varieties'), o));
   }
