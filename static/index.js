@@ -22,7 +22,7 @@ const mapButton = (container, lat, lon, p) => {
   p.view(b, 20, 20);
 
   b.onclick = () => {
-    location.href = `/trail.html?id=${this.properties.place_id}`;
+    location.href = `/trail.html?id=${p.properties.place_id}`;
   };
 
   return b;
@@ -67,7 +67,7 @@ window.onload = async () => {
     results.innerHTML = '';
     places = {};
     for (const {d, v} of trails) {
-      if (v < 0) {
+      if (v < 0 || trails.length < 10) {
         const p = new Place(d);
         console.log('place is', d, p, p instanceof Place, p.properties);
         if (!(p.properties.place_id in places)) {

@@ -246,6 +246,7 @@ const placesAround = (lat, lon, rad) => {
 
 // length in the trails is length_mi_
 // dogs can be yes, no, leashed
+// observation count weighing
 const search = (query, lat, lon, rad) => {
   const ts = placesAround(lat, lon, rad);
   let h = new OrderedHeap(25);
