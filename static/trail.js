@@ -81,25 +81,28 @@ class Place {
     return observations;
   }
 
-  view(container, w, h, uw = 'vw', uh = 'vh') {
-    if (this.map) { return this.map; }
-    this.mapid = genid();
-    const outer = padder('1ch');
-    outer.style.maxWidth = w + uw;
-    outer.style.maxHeight = h + uh;
+  description(lat, lon) {
+    const outer = padder('0ch');
     add(outer, messageBox(this.name));
     add(outer, messageBox(this.observations.length + plural(this.observations.length, ' observation')));
     add(outer, messageBox(this.length_mi + ' miles long'));
+    const bounds = this.bounds;
+    add(outer, messageBox('about ' + toprec(toMi(distance(lat, lon,
+                                                          (bounds.bottom + bounds.top) / 2,
+                                                          (bounds.left + bounds.right) / 2)), 3) +
+                          ' miles away'));
+    return outer;
+  }
+
+  view(container, w, h, uw = 'vw', uh = 'vh') {
+    if (this.map) { return this.map; }
+    this.mapid = genid();
 
     this.mapcontainer = document.createElement('div');
-    this.mapcontainer.style.width = (w - 2) + uw;
-    this.mapcontainer.style.height = (h - 8) + uh;
+    this.mapcontainer.style.width = w + uw;
+    this.mapcontainer.style.height = h + uh;
     this.mapcontainer.setAttribute('id', this.mapid);
-    add(outer, this.mapcontainer)
-    outer.onclick = () => {
-      location.href = `/trail.html?id=${this.properties.place_id}`;
-    };
-    add(container, outer);
+    add(container, this.mapcontainer);
 
     const bounds = this.bounds;
     this.map = new Map(L, (bounds.bottom + bounds.top) / 2, (bounds.left + bounds.right) / 2, this.mapid, 7, {
@@ -110,6 +113,8 @@ class Place {
     });
     this.plotTrails(this.map, 'red', 2);
     this.map.fitBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
+
+    return this.mapcontainer;
   }
 
   toJSON() {

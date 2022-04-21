@@ -13,6 +13,21 @@ const changedBooleans = new Set();
 let places = {};
 let length_mi = 1.1;
 
+const mapButton = (container, lat, lon, p) => {
+  const b = padder('1ch');
+  add(container, b);
+
+  const d = p.description(lat, lon);
+  add(b, d);
+  p.view(b, 20, 20);
+
+  b.onclick = () => {
+    location.href = `/trail.html?id=${this.properties.place_id}`;
+  };
+
+  return b;
+};
+
 window.onload = async () => {
   let lat = 39.0708, lon = -105.7, rad = 0.15;
   const finder = new Map(L, lat, lon, 'findermap', 6);
@@ -58,7 +73,7 @@ window.onload = async () => {
         if (!(p.properties.place_id in places)) {
           if (p) {
             places[p.properties.place_id] = p;
-            p.view(ge('results'), 20, 28);
+            mapButton(ge('results'), lat, lon, p);
           }
         } else {
           console.log('already got', p.properties.place_id);
