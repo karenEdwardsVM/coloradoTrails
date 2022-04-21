@@ -12,9 +12,12 @@ const toprec = (i, p) => Math.floor(i * Math.pow(10, p)) / Math.pow(10, p);
 const after = async (t, f) => {
   if (f) { window.setTimeout(f, t); } else { return new Promise(resolve => after(t, resolve)); }
 };
+
 const distance = (x, y, x1, y1) => {
   return Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2));
 };
+const toLat = (mi) => mi / 69.8;
+const toMi = (lat) => lat * 69.8;
 
 const getjson = async (u) => {
   return (await (await window.fetch(u)).json());

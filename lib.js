@@ -106,17 +106,64 @@ function loadObservations() {
   return [].concat(obs2021, obs2022);
 }
 
-const Trail = require('./static/trail.js').Trail;
+const {Trail, Place} = require('./static/trail.js');
 
 let trails = loadjson('./static/trails.json');
 trails = {
   ...trails,
   features: trails.features.filter(f => f.geometry),
 };
-//console.log(trails.features);
+
+let byplace = {};
+for (const t of trails.features) {
+  if (t.properties && t.properties.place_id != null) {
+    byplace[t.properties.place_id] =
+      byplace[t.properties.place_id] ? byplace[t.properties.place_id].concat([t]) : [t];
+  }
+}
+
+const getPlace = (id) => { return byplace[id] || []; };
+
 const observations = loadObservations();
 const obsCoords = observations.map((e, i) => [Number(e.latitude), Number(e.longitude), i]); // array of [lat, long] arrays
 const sortedObs = obsCoords.sort((a, b) => a[0] - b[0]);
+
+const og = {};
+const o_increment = 0.02;
+const to_o_place = (lat, lon) => {
+  return {
+    lat: Math.floor((lat + 130) / o_increment),
+    lon: Math.floor((lon + 130) / o_increment),
+  };
+};
+for (const o of obsCoords) {
+  const {lat, lon} = to_o_place(o[0], o[1]);
+  if (!og[lat]) { og[lat] = {}; }
+  if (og[lat][lon]) {
+    og[lat][lon].push(o);
+  } else {
+    og[lat][lon] = [o]; // o[2];
+  }
+}
+const getObsBucket = (lat, lon) => {
+  return ((og[lat] || {})[lon]) || [];
+};
+const observationsNear = (lata, lona) => {
+  const {lat, lon} = to_o_place(lata, lona);
+  return Array.from(new Set([].concat(
+    getObsBucket(lat - 1, lon),
+    getObsBucket(lat, lon),
+    getObsBucket(lat + 1, lon),
+
+    getObsBucket(lat - 1, lon - 1),
+    getObsBucket(lat + 1, lon - 1),
+    getObsBucket(lat, lon - 1),
+
+    getObsBucket(lat - 1, lon + 1),
+    getObsBucket(lat + 1, lon + 1),
+    getObsBucket(lat, lon + 1),
+  )));
+};
 
 const fml = (cs) => {
   return [cs[0], cs[Math.floor(cs.length / 2)], cs[cs.length - 1]];
@@ -132,17 +179,24 @@ const timeit = (f) => {
   return Date.now() - now;
 };
 
-// trail is a list of all the coordinates in the trail
 const observationsAround = (trail, rad) => {
   let res = [];
   try {
     const bound = trail.bounds;
-    const cutObs = sortedObs.filter(e => ((e[0] >= bound.bottom - 1) && (e[0] <= bound.top + 1)));
     //const cutObs = sortedObs;
+    //const cutObs = sortedObs.filter(e => ((e[0] >= bound.bottom - 0.01) && (e[0] <= bound.top + 0.01)));
     const coords = trail.geometry;
+    let cutObs = new Set();
+    for (const c of coords) {
+      for (const o of observationsNear(c[0], c[1])) {
+        cutObs.add(o);
+      }
+    }
+    cutObs = Array.from(cutObs);
+
     for (let i = 0; i < coords.length; i++) {
       for (let j = 0; j < cutObs.length; j++) {
-        if (distance(coords[i][0], coords[i][1], cutObs[j][0], cutObs[j][1]) <= rad) {
+        if (coords[i] && cutObs[j] && (distance(coords[i][0], coords[i][1], cutObs[j][0], cutObs[j][1]) <= rad)) {
           res.push(cutObs[j][2]);
         }
       }
@@ -161,32 +215,43 @@ const trailFromID = (id, withobservations = false) => {
   return trail;
 };
 
-const trailsAround = (lat, lon, rad) => {
+const placesAround = (lat, lon, rad) => {
   const out = [];
-  for (let i = 0; i < trails.features.length; i++) {
-    const t = trailFromID(i);
-    if (t && t.geometry && t.geometry.length > 0) {
-      let ok = false;
-      // we can look at any coordinate instead of first, middle, last, if performance allows.
-      //   currently most of the time this route takes is in sending the response back.
-      for (const c of fml(t.geometry)) {
-        if (distance(lat, lon, c[0], c[1]) < rad) {
-          ok = true; break;
+  for (const i in byplace) {
+    const plt = getPlace(i);
+    for (const tf of plt) {
+      const t = new Trail({trail: tf});
+      if (t && t.geometry && t.geometry.length > 0) {
+        let ok = false;
+        for (const c of fml(t.geometry)) {
+          if (distance(lat, lon, c[0], c[1]) < rad) { ok = true; break; }
+        }
+        if (ok) {
+          const ts = plt.map(t2 => new Trail({trail: t2}));
+          for (const t2 of ts) {
+            if (t2.properties.name !== null) { // Are we filtering trails out that we shouldn't be?
+              console.log('OA TOOK', timeit(() => {
+                t2.observations = observationsAround(t2, 0.02);
+              }), t2.properties.name);
+            }
+          }
+          out.push(new Place({trails: ts}));
+          break;
         }
       }
-      if (ok) { out.push(t); }
     }
   }
   return out;
 };
 
 // length in the trails is length_mi_
+// dogs can be yes, no, leashed
 const search = (query, lat, lon, rad) => {
-  const ts = trailsAround(lat, lon, rad);
+  const ts = placesAround(lat, lon, rad);
   let h = new OrderedHeap(25);
   for (const t of ts) {
     let range = 0,
-        tp = t.trail.properties, 
+        tp = t.properties,
         count = 0;
     for (const k in query) {
       // for every half mile over or under, add 1 to the score
@@ -201,18 +266,8 @@ const search = (query, lat, lon, rad) => {
   }
   return h.take(25, true);
 };
-//console.log(search({'dogs': 'yes', 'hiking': 'no', 'horse': 'yes', 'bike': 'yes', 'motorcycle': 'no', 'length_mi_' : 3}, 39.071445, -108.549728, 0.2));
-
-const timetaken = timeit(() => {
-  for (let i = 20; i < 100; i++) {
-    t = trailFromID(i, true);
-    //console.log(t);
-    //console.log(t.observations.length);
-  }
-});
-//console.log("time = ", timetaken);
 
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
-  trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap, trailsAround, search,
+  trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap, placesAround, search, getPlace,
 };

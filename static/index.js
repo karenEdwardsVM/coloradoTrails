@@ -13,6 +13,21 @@ const changedBooleans = new Set();
 let places = {};
 let length_mi = 1.1;
 
+const mapButton = (container, lat, lon, p) => {
+  const b = padder('1ch');
+  add(container, b);
+
+  const d = p.description(lat, lon);
+  add(b, d);
+  p.view(b, 20, 20);
+
+  b.onclick = () => {
+    location.href = `/trail.html?id=${this.properties.place_id}`;
+  };
+
+  return b;
+};
+
 window.onload = async () => {
   let lat = 39.0708, lon = -105.7, rad = 0.15;
   const finder = new Map(L, lat, lon, 'findermap', 6);
@@ -49,20 +64,19 @@ window.onload = async () => {
     query['length_mi_'] = length_mi;
     console.log('query is', query);
     const trails = await getTrailsInSearch(query, lat, lon, rad);
-    console.log(trails);
     results.innerHTML = '';
     places = {};
     for (const {d, v} of trails) {
       if (v < 0) {
-        const t = new Trail(d);
-        if (!(t.properties.place_id in places)) {
-          const p = await getPlace(t.properties.place_id);
+        const p = new Place(d);
+        console.log('place is', d, p, p instanceof Place, p.properties);
+        if (!(p.properties.place_id in places)) {
           if (p) {
-            places[t.properties.place_id] = p;
-            p.view(ge('results'), 20, 28);
+            places[p.properties.place_id] = p;
+            mapButton(ge('results'), lat, lon, p);
           }
         } else {
-          console.log('already got', t.properties.place_id);
+          console.log('already got', p.properties.place_id);
         }
       }
     }

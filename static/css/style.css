@@ -41,14 +41,14 @@ html, body {
 
 #findermap {
   width: 50%;
-  min-width: 500px;
+  min-width: 300px;
   height: 25vh;
   flex: 1 0 500px;
 }
 
 #searchParams {
   width: 50%;
-  min-width: 500px;
+  min-width: 300px;
   display: flex; flex-wrap: wrap;
   align-content: start;
   flex: 1 0 500px;
