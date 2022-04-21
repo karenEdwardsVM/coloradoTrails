@@ -16,13 +16,7 @@ app.get('/gettrail/:id', (req, res) => {
 app.get('/getplace/:id', (req, res) => {
   const id = Number(req.params.id);
   if (!!id) {
-    const trails = [];
-    for (let i = 0; i < lib.trails.features.length; i++) { const t = lib.trails.features[i];
-      if (t.properties.place_id == id) {
-        trails.push(lib.trailFromID(i, true));
-      }
-    }
-    res.send(lib.jw({trails}));
+    res.send(lib.jw({trails: lib.getPlace(id)}));
   } else {
     res.send(lib.jw({trails: null}));
   }
@@ -32,7 +26,7 @@ app.get('/getaround/:lat/:lon/:rad', (req, res) => {
   const lat = Number(req.params.lat),
         lon = Number(req.params.lon),
         rad = Number(req.params.rad),
-        out = lib.trailsAround(lat, lon, rad);
+        out = lib.placesAround(lat, lon, rad);
   res.send(lib.jw({trails: out}));
 });
 

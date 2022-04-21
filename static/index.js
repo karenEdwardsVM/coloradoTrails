@@ -53,15 +53,15 @@ window.onload = async () => {
     places = {};
     for (const {d, v} of trails) {
       if (v < 0) {
-        const t = new Trail(d);
-        if (!(t.properties.place_id in places)) {
-          const p = await getPlace(t.properties.place_id);
+        const p = new Place(d);
+        console.log('place is', d, p, p instanceof Place, p.properties);
+        if (!(p.properties.place_id in places)) {
           if (p) {
-            places[t.properties.place_id] = p;
+            places[p.properties.place_id] = p;
             p.view(ge('results'), 20, 28);
           }
         } else {
-          console.log('already got', t.properties.place_id);
+          console.log('already got', p.properties.place_id);
         }
       }
     }

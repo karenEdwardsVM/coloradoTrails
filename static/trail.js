@@ -50,7 +50,7 @@ class Trail {
 
 class Place {
   constructor(data) {
-    this.trails = data.trails;
+    this.trails = data.trails.map(t => t instanceof Trail ? t : new Trail(t));
   }
 
   get name() { return String(this.trails[0].properties.name); }
@@ -107,6 +107,10 @@ class Place {
     });
     this.plotTrails(this.map, 'red', 2);
     this.map.fitBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
+  }
+
+  toJSON() {
+    return {trails: this.trails};
   }
 }
 
