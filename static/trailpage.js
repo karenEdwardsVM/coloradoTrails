@@ -54,9 +54,11 @@ window.onload = async () => {
     };
   };
 
-  const hover = (el) => {
-    el.addEventListener('mouseover',() => {};);
-  }
+  //const hover = (el) => {
+  //  el.addEventListener('mouseover',() => {
+  //  
+  //  });
+  //}
 
   for (const o of observations) {
     let mark = map.plotMarker(Number(o.latitude), Number(o.longitude));
