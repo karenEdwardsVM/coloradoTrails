@@ -49,7 +49,6 @@ window.onload = async () => {
     query['length_mi_'] = length_mi;
     console.log('query is', query);
     const trails = await getTrailsInSearch(query, lat, lon, rad);
-    console.log(trails);
     results.innerHTML = '';
     places = {};
     for (const {d, v} of trails) {

@@ -16,7 +16,13 @@ app.get('/gettrail/:id', (req, res) => {
 app.get('/getplace/:id', (req, res) => {
   const id = Number(req.params.id);
   if (!!id) {
-    res.send(lib.jw({trails: lib.getPlace(id)}));
+    res.send(lib.jw({
+      trails: lib.getPlace(id).map(t => {
+        const tp = new lib.Trail({trail: t});
+        tp.observations = lib.observationsAround(tp, 0.02);
+        return tp;
+      }),
+    }));
   } else {
     res.send(lib.jw({trails: null}));
   }
