@@ -10,8 +10,8 @@ module.exports = deployed ? {
   cert: 'trexpedition.crt',
 } : {
   deployed: false,
-  httpsDomain: 'localhost:5000',
-  httpDomain: 'localhost:5001',
+  httpsDomain: 'localhost:5050',
+  httpDomain: 'localhost:5000',
   key: 'localhost.key',
   cert: 'localhost.crt',
 };
