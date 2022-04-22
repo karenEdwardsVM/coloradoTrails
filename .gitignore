@@ -3,9 +3,9 @@ images/
 node_modules/
 CPW_Trails/
 Colorado_State_Boundary/
-static/trails.json
-static/trailhead.js
-static/designated_trail.js
+inat/trails.json
+inat/trailhead.js
+inat/designated_trail.js
 inat/observations-2022.csv
 inat/observations-2021.csv
 processed.txt

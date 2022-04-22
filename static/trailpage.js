@@ -44,7 +44,7 @@ window.onload = async () => {
       d.innerHTML = "";
       add(d, messageBox(`<div>Kingdom: ${o.iconic_taxon_name}</div>
                          <div>Scientific: ${o.scientific_name}</div>
-                         <div>Common: ${o.common_name}</div>`));
+                         <div>Common: ${o.common_name == null ? o.species_guess : o.common_name}</div>`));
       const i = img(o.image_url);
       const c = centered([i]);
       i.style.maxHeight = '40vh';
