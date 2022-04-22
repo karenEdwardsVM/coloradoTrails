@@ -24,8 +24,7 @@ window.onload = async () => {
                    'hiking': 'hiking', 'horse': 'horse', 'bike': 'bike', 
                    'motorcycle': 'motorcycle', 'atv': 'atv', 'ohv_gt_50': 'ohv', 
                    'highway_ve': 'highway vehicle', 'dogs': 'dogs', 'min_elevat': 'min elevation', 
-                   'max_elevat': 'max elevation', 'length_mi_': 'length (miles)',
-                   'ski': 'ski', 'snowshoe': 'snowshoe'};
+                   'max_elevat': 'max elevation', 'ski': 'ski', 'snowshoe': 'snowshoe'};
   for (k in pLabels) {
     add(d, messageBox((p[k] == null) ? `<div>${pLabels[k]}: N/A</div>` : 
                                        `<div>${pLabels[k]}: ${p[k]}</div>`));

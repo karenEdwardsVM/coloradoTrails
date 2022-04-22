@@ -55,6 +55,7 @@ class Place {
 
   get name() { return String(this.trails[0].properties.name); }
   get length_mi() { return toprec(this.trails.reduce((o, t) => o + t.length_mi, 0), 3); }
+  //get elevation() { return toprec(this.trails.reduce((o, t) => o + t.min_elevat, 0), 3); }
   get properties() { return this.trails[0].properties; }
 
   get bounds() {

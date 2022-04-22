@@ -16,6 +16,10 @@ if [ "$1" == deploy ]; then
   ssh -S sshconnection -i ~/.ssh/server_id_rsa -t $target_server "cd ~/coloradoTrails; bash deploy.sh run;"
 fi
 
+if [ "$1" == deployinat ]; then 
+  scp -o 'ControlPath sshconnection' -i ~/.ssh/server_id_rsa -Cr inat $target_server:~/coloradoTrails
+fi
+
 if [ "$1" == run ]; then 
   if tmux has-session -t $sess_name; then
     tmux send-keys -t $sess_name "C-cC-c"
@@ -23,14 +27,4 @@ if [ "$1" == run ]; then
     tmux kill-session -t $sess_name
   fi
   tmux new -s $sess_name "node server.js"
-fi
-
-
-if [ "$1" == run ]; then
-  node server.js
-fi
-
-
-if [ "$1" == repl ]; then
-  node --experimental-repl-await --experimental-worker -i -e 'lib = require("./lib.js")'
 fi
