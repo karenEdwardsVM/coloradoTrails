@@ -79,14 +79,15 @@ window.onload = async () => {
 
   for (const o of observations) {
     let mark = map.plotMarker(Number(o.latitude), Number(o.longitude));
-    const i = img(o.image_url);
+    const i = img(o.image_url); // don't repeat this.
     const c = centered([i]);
     i.style.maxWidth = '20vw';
     i.style.maxHeight = '20vh';
     c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
+    c.dataset.click = o.image_url;
     //hover(i);
-    onclicks[c.getAttribute('title')] = onClick(ge('varieties'), o);
+    onclicks[c.dataset.click] = onClick(ge('varieties'), o);
 
     add(ge('opics'), c);
     mark.on('click', onclicks[c.getAttribute('title')]);
@@ -107,7 +108,7 @@ window.onload = async () => {
       const af = nthVisible(ge('opics'), 4);
       if (af) { af.style.background = 'initial'; }
 
-      onclicks[f.getAttribute('title')]();
+      onclicks[f.dataset.click]();
     }
   };
 };
