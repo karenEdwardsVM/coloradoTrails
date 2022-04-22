@@ -1,6 +1,6 @@
 class Trail {
-  cache = {};
   constructor(data) {
+    this.cache = {};
     this.trail = data.trail;
     this.observations = data.observations;
   }

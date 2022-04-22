@@ -129,7 +129,8 @@ const obsCoords = observations.map((e, i) => [Number(e.latitude), Number(e.longi
 const sortedObs = obsCoords.sort((a, b) => a[0] - b[0]);
 
 const og = {};
-const o_increment = 0.02;
+const o_radius = 0.01;
+const o_increment = o_radius;
 const to_o_place = (lat, lon) => {
   return {
     lat: Math.floor((lat + 130) / o_increment),
@@ -179,7 +180,7 @@ const timeit = (f) => {
   return Date.now() - now;
 };
 
-const observationsAround = (trail, rad) => {
+const observationsAround = (trail, rad = o_radius) => {
   let res = [];
   try {
     const bound = trail.bounds;
@@ -210,7 +211,7 @@ const observationsAround = (trail, rad) => {
 const trailFromID = (id, withobservations = false) => {
   const trail = new Trail({trail: trails.features[id]});
   if (withobservations) {
-    trail.observations = observationsAround(trail, 0.02);
+    trail.observations = observationsAround(trail);
   }
   return trail;
 };
@@ -231,7 +232,7 @@ const placesAround = (lat, lon, rad) => {
           for (const t2 of ts) {
             if (t2.properties.name !== null) { // Are we filtering trails out that we shouldn't be?
               console.log('OA TOOK', timeit(() => {
-                t2.observations = observationsAround(t2, 0.02);
+                t2.observations = observationsAround(t2);
               }), t2.properties.name);
             }
           }

@@ -19,7 +19,7 @@ app.get('/getplace/:id', (req, res) => {
     res.send(lib.jw({
       trails: lib.getPlace(id).map(t => {
         const tp = new lib.Trail({trail: t});
-        tp.observations = lib.observationsAround(tp, 0.02);
+        tp.observations = lib.observationsAround(tp);
         return tp;
       }),
     }));
