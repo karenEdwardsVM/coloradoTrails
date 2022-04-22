@@ -21,7 +21,8 @@ window.onload = async () => {
   ge('length').innerText = 'is ' + String(place.length_mi) + ' miles long.';
 
   const map = new Map(L, 39.002, -108.666);
-  const bounds = place.bounds;
+  const bounds = boundingBox(place.bounds,
+                             place.observations.map(o => ([Number(o.latitude), Number(o.longitude)])));
 
   map.fitBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
   place.plotTrails(map, 'red', 2);
@@ -29,14 +30,16 @@ window.onload = async () => {
   // here put the map info into trail-info div
   const d = ge('trail-info'),
         p = place.properties,
-        pLabels = {'name': 'name', 'surface': 'surface', 'type': 'type', 
-                   'hiking': 'hiking', 'horse': 'horse', 'bike': 'bike', 
-                   'motorcycle': 'motorcycle', 'atv': 'atv', 'ohv_gt_50': 'ohv', 
-                   'highway_ve': 'highway vehicle', 'dogs': 'dogs', 'min_elevat': 'min elevation', 
+        pLabels = {'name': 'name', 'surface': 'surface', 'type': 'type',
+                   'hiking': 'hiking', 'horse': 'horse', 'bike': 'bike',
+                   'motorcycle': 'motorcycle', 'atv': 'atv', 'ohv_gt_50': 'ohv',
+                   'highway_ve': 'highway vehicle', 'dogs': 'dogs', 'min_elevat': 'min elevation',
                    'max_elevat': 'max elevation', 'ski': 'ski', 'snowshoe': 'snowshoe'};
   for (k in pLabels) {
-    add(d, messageBox((p[k] == null) ? `<div>${pLabels[k]}: N/A</div>` : 
-                                       `<div>${pLabels[k]}: ${p[k]}</div>`));
+    const b = messageBox((p[k] == null) ? `${pLabels[k]}: N/A` :
+                                          `${pLabels[k]}: ${p[k]}`);
+    b.style.padding = '0 1ch';
+    add(d, b);
   }
 
   const observations = place.observations;

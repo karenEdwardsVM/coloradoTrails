@@ -1,3 +1,21 @@
+const boundingBox = (o, cs) => {
+  return cs.reduce((o, c) => ({
+    left: isFinite(o.left) ? Math.min(o.left, c[1]) : c[1],
+    top: isFinite(o.top) ? Math.max(o.top, c[0]) : c[0],
+    right: isFinite(o.right) ? Math.max(o.right, c[1]) : c[1],
+    bottom: isFinite(o.bottom) ? Math.min(o.bottom, c[0]) : c[0],
+  }), o);
+};
+
+const mergeBounds = (bs) => {
+  return bs.reduce((a, b) => ({
+    left: Math.min(a.left, b.left),
+    top: Math.max(a.top, b.top),
+    right: Math.max(a.right, b.right),
+    bottom: Math.min(a.bottom, b.bottom),
+  }));
+};
+
 class Trail {
   constructor(data) {
     this.cache = {};
@@ -34,12 +52,7 @@ class Trail {
 
   get bounds() {
     if (typeof(this.cache.bounds) !== 'undefined') { return this.cache.bounds; }
-    this.cache.bounds = this.geometry.reduce((o, c) => ({
-                         left: isFinite(o.left) ? Math.min(o.left, c[1]) : c[1],
-                         top: isFinite(o.top) ? Math.max(o.top, c[0]) : c[0],
-                         right: isFinite(o.right) ? Math.max(o.right, c[1]) : c[1],
-                         bottom: isFinite(o.bottom) ? Math.min(o.bottom, c[0]) : c[0],
-                       }), {});
+    this.cache.bounds = boundingBox({}, this.geometry);
     return this.cache.bounds;
   }
 
@@ -59,12 +72,7 @@ class Place {
   get properties() { return this.trails[0].properties; }
 
   get bounds() {
-    return this.trails.map(t => t.bounds).reduce((a, b) => ({
-      left: Math.min(a.left, b.left),
-      top: Math.max(a.top, b.top),
-      right: Math.max(a.right, b.right),
-      bottom: Math.min(a.bottom, b.bottom),
-    }));
+    return mergeBounds(this.trails.map(t => t.bounds));
   }
 
   plotTrails(map, ...as) { map.plotTrails(this.trails, ...as); }

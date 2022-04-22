@@ -17,7 +17,7 @@ html, body {
   box-sizing: border-box;
 }
 
-#map { height: 40vh; width: 40vw; }
+#map { height: 100%; width: 100%; min-height: 30vh; }
 
 #opics {
   /*border: 1px solid black;*/
