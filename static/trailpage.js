@@ -90,7 +90,7 @@ window.onload = async () => {
     onclicks[c.dataset.click] = onClick(ge('varieties'), o);
 
     add(ge('opics'), c);
-    mark.on('click', onclicks[c.getAttribute('title')]);
+    mark.on('click', onclicks[c.dataset.click]);
   }
 
   add(ge('opics'), padder('10vw'));
