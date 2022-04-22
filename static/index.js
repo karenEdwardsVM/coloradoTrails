@@ -29,6 +29,7 @@ const mapButton = (container, lat, lon, p) => {
 };
 
 window.onload = async () => {
+  try {
   let lat = 39.0708, lon = -105.7, rad = 0.15;
   const finder = new Map(L, lat, lon, 'findermap', 6);
   let mark = finder.plotMarker(lat, lon);
@@ -114,4 +115,7 @@ window.onload = async () => {
   sb.style.width = '100%';
   add(ge('searchParams'), sb);
   onsearchkey = onChange;
+  } catch (e) {
+    alert(e.toString());
+  }
 };
