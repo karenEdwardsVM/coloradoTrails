@@ -44,7 +44,7 @@ window.onload = async () => {
     observations.map(e => e.common_name || e.species_guess)
                 .filter(e => e)
   ));
-  ge('varieties').innerText += varieties.join('\n\t');
+  // ge('varieties').innerText += varieties.join('\n\t');
 
   const onClick = (d, o) => {
     // add to a box with species name, etc.
@@ -55,7 +55,8 @@ window.onload = async () => {
                          <div>Common: ${o.common_name == null ? o.species_guess : o.common_name}</div>`));
       const i = img(o.image_url);
       const c = centered([i]);
-      i.style.maxHeight = '40vh';
+      // i.style.maxHeight = '40vh';
+      i.style.maxWidth  = '30vw';
       //i.style.objectFit = 'contain';
       c.setAttribute('title', o.common_name || o.species_guess);
       add(d, c);
@@ -92,6 +93,7 @@ window.onload = async () => {
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
 
+  // figure out middle index from here.
   ge('opics').onscroll = () => {
     const f = nthVisible(ge('opics'), 3);
     if (f.className === 'observation-icon') {

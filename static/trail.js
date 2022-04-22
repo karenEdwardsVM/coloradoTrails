@@ -2,7 +2,7 @@ class Trail {
   constructor(data) {
     this.cache = {};
     this.trail = data.trail;
-    this.observations = data.observations;
+    this.observations = data.observations || [];
   }
 
   get properties() { return this.trail.properties; }
