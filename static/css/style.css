@@ -19,8 +19,18 @@ html, body {
 
 #map { height: 40vh; width: 40vw; }
 
+#opics {
+  border: 1px solid black;
+  padding: 1ch;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+
 .observation-icon {
-  max-width: 10vw; max-height: 10vh;
+  /*max-width: 10vw; max-height: 10vh;*/
   margin: auto; padding: 1ch;
 }
 

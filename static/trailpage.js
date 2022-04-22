@@ -3,6 +3,15 @@ place = null;
 // Preemptive caching guide
 //   on map load, write it to an image and store it in localstorage
 //     or, write a map layer that preemptively caches tiles to localstorage
+//
+const nthVisible = (container, n) => {
+  let i = 0;
+  for (const c of container.children) {
+    const r = dims(c).right;
+    if (r > 0 && (i++ == n)) { return c; }
+  }
+  return null;
+};
 
 window.onload = async () => {
   const trailID = Number(queryParam('id'));
@@ -37,7 +46,7 @@ window.onload = async () => {
   ));
   ge('varieties').innerText += varieties.join('\n\t');
 
-  const onClick = (d, o) => { 
+  const onClick = (d, o) => {
     // add to a box with species name, etc.
     return () => {
       d.innerHTML = "";
@@ -58,18 +67,42 @@ window.onload = async () => {
   //  
   //  });
   //}
+  add(ge('opics'), padder('10vw'));
+  add(ge('opics'), padder('10vw'));
+  add(ge('opics'), padder('10vw'));
+
+  const onclicks = {};
 
   for (const o of observations) {
     let mark = map.plotMarker(Number(o.latitude), Number(o.longitude));
     const i = img(o.image_url);
     const c = centered([i]);
-    i.style.maxWidth = '7vw';
-    i.style.maxHeight = '7vh';
+    i.style.maxWidth = '20vw';
+    i.style.maxHeight = '20vh';
     c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
     //hover(i);
+    onclicks[c.getAttribute('title')] = onClick(ge('varieties'), o);
+
     add(ge('opics'), c);
-    mark.on('click', onClick(ge('varieties'), o));
+    mark.on('click', onclicks[c.getAttribute('title')]);
   }
 
+  add(ge('opics'), padder('10vw'));
+  add(ge('opics'), padder('10vw'));
+  add(ge('opics'), padder('10vw'));
+
+  ge('opics').onscroll = () => {
+    const f = nthVisible(ge('opics'), 3);
+    if (f.className === 'observation-icon') {
+      f.style.background = 'var(--mg)';
+
+      const bf = nthVisible(ge('opics'), 2);
+      if (bf) { bf.style.background = 'initial'; }
+      const af = nthVisible(ge('opics'), 4);
+      if (af) { af.style.background = 'initial'; }
+
+      onclicks[f.getAttribute('title')]();
+    }
+  };
 };
