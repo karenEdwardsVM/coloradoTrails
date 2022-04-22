@@ -4,8 +4,8 @@ const deployed = lib.loadjson('deployed.json');
 
 module.exports = deployed ? {
   dmployed: true,
-  httpsDomain: 'trexpedition',
-  httpDomain: 'trexpedition',
+  httpsDomain: 'trexpedition.org',
+  httpDomain: 'trexpedition.org',
   key: 'trexpedition.key',
   cert: 'trexpedition.crt',
 } : {
