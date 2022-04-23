@@ -59,10 +59,6 @@ window.onload = async () => {
       box.style.flex = '1 0 auto';
       add(d, box);
       const i = img(o.image_url);
-      //const i = dca('div');
-      //i.style.background = 'url(' + o.image_url + ')no-repeat';
-      //i.style.backgroundSize = 'cover';
-      //i.style.backgroundPosition = 'center';
       const b = dca('div');
       b.style.height = '100%';
       b.style.width = '100%';
@@ -72,21 +68,11 @@ window.onload = async () => {
       c.style.maxWidth = dims(b).width + 'px';
       i.style.maxHeight = dims(b).height + 'px';
       i.style.maxWidth = dims(b).width + 'px';
-      // i.style.height = 'inherit';
-      // c.style.height = '
-      // i.style.maxHeight = '40vh';
-      //i.style.maxWidth  = '30vw';
-      //i.style.objectFit = 'contain';
       c.setAttribute('title', o.common_name || o.species_guess);
       add(b, c);
     };
   };
 
-  //const hover = (el) => {
-  //  el.addEventListener('mouseover',() => {
-  //  
-  //  });
-  //}
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
