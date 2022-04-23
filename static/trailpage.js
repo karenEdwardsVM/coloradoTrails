@@ -101,7 +101,7 @@ window.onload = async () => {
   };
 
   const oData = {}, 
-        animal = createIcon('/bighorn.png', [25, 50]),
+        animal = createIcon('/bighorn.png', [30, 60]),
         plant = createIcon('/Columbine.png'),
         fungi = createIcon('/Amanita.png'),
         markerImage = {'Mammalia': animal, 'Animalia': animal, 'Plantae': plant, 'Fungi': fungi, 'Aves': animal};
