@@ -64,6 +64,7 @@ window.onload = async () => {
       b.style.width = '100%';
       add(d, b);
       const c = centered([i]);
+      c.style.height = '100%';
       c.style.maxHeight = dims(b).height + 'px';
       c.style.maxWidth = dims(b).width + 'px';
       i.style.maxHeight = dims(b).height + 'px';
@@ -105,7 +106,8 @@ window.onload = async () => {
   let myIcon = L.icon({
     iconUrl: '/pointer.png',
     iconSize: [50, 50], 
-    iconAnchor: [48 , 48]
+    iconAnchor: [48 , 48],
+    className: 'pointer-image',
   });
 
   // figure out middle index from here.
