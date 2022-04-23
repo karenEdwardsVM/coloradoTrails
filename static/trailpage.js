@@ -66,16 +66,13 @@ window.onload = async () => {
     };
   };
 
-  //const hover = (el) => {
-  //  el.addEventListener('mouseover',() => {
-  //  
-  //  });
-  //}
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
 
-  const onclicks = {};
+  let defaultIcon = null;
+  const onclicks = {},
+        markers = {};
 
   for (const o of observations) {
     let mark = map.plotMarker(Number(o.latitude), Number(o.longitude));
@@ -86,28 +83,40 @@ window.onload = async () => {
     c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
     c.dataset.click = o.image_url;
-    //hover(i);
     onclicks[c.dataset.click] = onClick(ge('varieties'), o);
+    markers[c.dataset.click] = mark;
 
     add(ge('opics'), c);
     mark.on('click', onclicks[c.dataset.click]);
+    defaultIcon = mark.getIcon();
   }
 
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
 
+  let myIcon = L.icon({
+    iconUrl: '/pointer.png',
+    iconSize: [50, 50], 
+    iconAnchor: [48 , 48]
+  });
+
   // figure out middle index from here.
   ge('opics').onscroll = () => {
     const f = nthVisible(ge('opics'), 3);
     if (f.className === 'observation-icon') {
       f.style.background = 'var(--mg)';
-
+      markers[f.dataset.click].setIcon(myIcon);
       const bf = nthVisible(ge('opics'), 2);
-      if (bf) { bf.style.background = 'initial'; }
+      if (bf && bf.className === 'observation-icon') { 
+        bf.style.background = 'initial';
+        markers[bf.dataset.click].setIcon(defaultIcon);
+      }
       const af = nthVisible(ge('opics'), 4);
-      if (af) { af.style.background = 'initial'; }
-
+      if (af && af.className === 'observation-icon') { 
+        af.style.background = 'initial'; 
+        markers[af.dataset.click].setIcon(defaultIcon);
+      }
       onclicks[f.dataset.click]();
     }
   };
