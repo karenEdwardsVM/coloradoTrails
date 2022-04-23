@@ -4,6 +4,21 @@ place = null;
 //   on map load, write it to an image and store it in localstorage
 //     or, write a map layer that preemptively caches tiles to localstorage
 //
+
+const middleChild = (container) => {
+  const mid = (dims(document.body).left + dims(document.body).right) / 2;
+  let bestc = null, bestd = 20000;
+  for (const c of container.children) {
+    const r = (dims(c).right + dims(c).left) / 2;
+    const d = Math.abs(mid - r);
+    if (d < bestd) {
+      bestc = c;
+      bestd = d;
+    }
+  }
+  return bestc;
+};
+
 const nthVisible = (container, n) => {
   let i = 0;
   for (const c of container.children) {
@@ -48,37 +63,43 @@ window.onload = async () => {
                 .filter(e => e)
   ));
   // ge('varieties').innerText += varieties.join('\n\t');
-  //
+
   const onClick = (d, o) => {
     // add to a box with species name, etc.
     return () => {
       d.innerHTML = "";
-      add(d, messageBox(`<div>Kingdom: ${o.iconic_taxon_name}</div>
-                         <div>Scientific: ${o.scientific_name}</div>
-                         <div>Common: ${o.common_name == null ? o.species_guess : o.common_name}</div>`));
+      const box = messageBox(`<div>Kingdom: ${o.iconic_taxon_name}</div>
+                              <div>Scientific: ${o.scientific_name}</div>
+                              <div>Common: ${o.common_name == null ? o.species_guess : o.common_name}</div>`);
+      box.style.flex = '1 0 auto';
+      add(d, box);
       const i = img(o.image_url);
+      const b = dca('div');
+      b.style.height = '100%';
+      b.style.width = '100%';
+      add(d, b);
       const c = centered([i]);
-      // i.style.maxHeight = '40vh';
-      i.style.maxWidth  = '30vw';
-      //i.style.objectFit = 'contain';
+      c.style.height = '100%';
+      c.style.maxHeight = dims(b).height + 'px';
+      c.style.maxWidth = dims(b).width + 'px';
+      i.style.maxHeight = dims(b).height + 'px';
+      i.style.maxWidth = dims(b).width + 'px';
       c.setAttribute('title', o.common_name || o.species_guess);
-      add(d, c);
+      add(b, c);
     };
   };
 
-  add(ge('opics'), padder('10vw'));
-  add(ge('opics'), padder('10vw'));
-  add(ge('opics'), padder('10vw'));
+  for (let i = 0; i < 3; i++) { add(ge('opics'), padder('10vw')); }
 
-  const createIcon = (image, size = [50, 50], anchor = [48, 48]) => {
+  const createIcon = (image, size = [50, 50], anchor = [48, 48], className = undefined) => {
     return L.icon({
       iconUrl: image,
       iconSize: size, 
       iconAnchor: anchor,
+      className,
     });
   };
 
-  let defaultIcon = null;
   const oData = {}, 
         animal = createIcon('/bighorn.png', [25, 50]),
         plant = createIcon('/Columbine.png'),
@@ -91,7 +112,7 @@ window.onload = async () => {
     const i = img(o.image_url); // don't repeat this.
     const c = centered([i]);
     i.style.maxWidth = '20vw';
-    i.style.maxHeight = '20vh';
+    i.style.maxHeight = '13vh';
     c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
     c.dataset.click = o.image_url;
@@ -103,33 +124,30 @@ window.onload = async () => {
     };
 
     add(ge('opics'), c);
-    mark.on('click', onclicks[c.dataset.click]);
+    mark.on('click', oData[c.dataset.click].onclick);
   }
 
-  add(ge('opics'), padder('10vw'));
-  add(ge('opics'), padder('10vw'));
-  add(ge('opics'), padder('10vw'));
+  for (let i = 0; i < 3; i++) { add(ge('opics'), padder('10vw')); }
 
-  let myIcon = createIcon('/pointer.png');
+  let myIcon = createIcon('/pointer.png', [50, 50], [48, 48], 'pointer-image'),
+      prev = null;
 
-  // figure out middle index from here.
   ge('opics').onscroll = () => {
-    const f = nthVisible(ge('opics'), 3);
-    if (f.className === 'observation-icon') {
+    const f = middleChild(ge('opics'));
+    if (f.className === 'observation-icon' && f.children[0].complete) {
+      if (prev) {
+        if (prev.className === 'observation-icon') {
+          const po = oData[prev.dataset.click];
+          prev.style.background = 'initial';
+          po.marker.setIcon(po.defaultIcon);
+        }
+      }
+
       const o = oData[f.dataset.click];
       f.style.background = 'var(--mg)';
       o.marker.setIcon(myIcon);
-      const bf = nthVisible(ge('opics'), 2);
-      if (bf && bf.className === 'observation-icon') { 
-        bf.style.background = 'initial';
-        //oData[bf.dataset.click].marker.setIcon(oData[bf.dataset.click][defaultIcon]);
-      }
-      const af = nthVisible(ge('opics'), 4);
-      if (af && af.className === 'observation-icon') { 
-        af.style.background = 'initial'; 
-        //oData[af.dataset.click].marker.setIcon(oData[af.dataset.click][defaultIcon]);
-      }
-      onclicks[f.dataset.click]();
+      o.onclick();
+      prev = f;
     }
   };
 };
