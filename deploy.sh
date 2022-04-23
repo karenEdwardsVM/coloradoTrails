@@ -28,3 +28,7 @@ if [ "$1" == run ]; then
   fi
   tmux new -s $sess_name "node server.js"
 fi
+
+if [ "$1" == repl ]; then
+  node --experimental-repl-await --experimental-worker -i -e 'lib = require("./lib.js")'
+fi
