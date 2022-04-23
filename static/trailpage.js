@@ -111,22 +111,21 @@ window.onload = async () => {
   });
 
   // figure out middle index from here.
+  let prev = null;
   ge('opics').onscroll = () => {
     const f = nthVisible(ge('opics'), 3);
     if (f.className === 'observation-icon' && f.children[0].complete) {
+      if (prev) {
+        if (prev.className === 'observation-icon') {
+          prev.style.background = 'initial';
+          markers[prev.dataset.click].setIcon(defaultIcon);
+        }
+      }
+
       f.style.background = 'var(--mg)';
       markers[f.dataset.click].setIcon(myIcon);
-      const bf = nthVisible(ge('opics'), 2);
-      if (bf && bf.className === 'observation-icon') { 
-        bf.style.background = 'initial';
-        markers[bf.dataset.click].setIcon(defaultIcon);
-      }
-      const af = nthVisible(ge('opics'), 4);
-      if (af && af.className === 'observation-icon') { 
-        af.style.background = 'initial'; 
-        markers[af.dataset.click].setIcon(defaultIcon);
-      }
       onclicks[f.dataset.click]();
+      prev = f;
     }
   };
 };

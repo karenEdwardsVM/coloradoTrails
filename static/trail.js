@@ -119,6 +119,7 @@ class Place {
       scrollWheelZoom: false,
       touchZoom: false,
       attributionControl: false,
+      dragging: false,
     });
     this.plotTrails(this.map, 'red', 2);
     this.map.fitBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
