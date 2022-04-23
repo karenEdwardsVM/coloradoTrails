@@ -111,7 +111,7 @@ const {Trail, Place} = require('./static/trail.js');
 let trails = loadjson('./inat/trails.json');
 trails = {
   ...trails,
-  features: trails.features.filter(f => f.geometry),
+  features: trails.features.filter(f => f.geometry && f.properties.name !== null),
 };
 
 let byplace = {};
