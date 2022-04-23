@@ -77,6 +77,7 @@ window.onload = async () => {
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
+  add(ge('opics'), padder('10vw'));
 
   let defaultIcon = null;
   const onclicks = {},
@@ -99,6 +100,7 @@ window.onload = async () => {
     defaultIcon = mark.getIcon();
   }
 
+  add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
   add(ge('opics'), padder('10vw'));
