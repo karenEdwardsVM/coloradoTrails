@@ -103,6 +103,9 @@ class Place {
     return outer;
   }
 
+  get minElevation() { return Math.min(...this.trails.map(t => t.properties.min_elevat)); }
+  get maxElevation() { return Math.max(...this.trails.map(t => t.properties.max_elevat)); }
+
   view(container, w, h, uw = 'vw', uh = 'vh') {
     if (this.map) { return this.map; }
     this.mapid = genid();

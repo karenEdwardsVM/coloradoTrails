@@ -33,7 +33,8 @@ window.onload = async () => {
   place = await getPlace(trailID);
 
   ge('title').innerText = place.name;
-  ge('length').innerText = 'is ' + String(place.length_mi) + ' miles long.';
+  ge('length').innerText = 'is ' + String(place.length_mi) + ' miles long';
+  ge('length').innerText += ' with ' + String(toprec(place.maxElevation - place.minElevation, 1)) + ' feet of elevation gain.';
 
   const map = new Map(L, 39.002, -108.666);
   const bounds = boundingBox(place.bounds,
@@ -45,17 +46,26 @@ window.onload = async () => {
   // here put the map info into trail-info div
   const d = ge('trail-info'),
         p = place.properties,
-        pLabels = {'name': 'name', 'surface': 'surface', 'type': 'type',
+        pLabels = {'surface': 'surface', 'type': 'type',
                    'hiking': 'hiking', 'horse': 'horse', 'bike': 'bike',
                    'motorcycle': 'motorcycle', 'atv': 'atv', 'ohv_gt_50': 'ohv',
-                   'highway_ve': 'highway vehicle', 'dogs': 'dogs', 'min_elevat': 'min elevation',
-                   'max_elevat': 'max elevation', 'ski': 'ski', 'snowshoe': 'snowshoe'};
+                   'highway_ve': 'highway vehicle', 'dogs': 'dogs',
+                   'ski': 'ski', 'snowshoe': 'snowshoe'};
   for (k in pLabels) {
     const b = messageBox((p[k] == null) ? `${pLabels[k]}: N/A` :
-                                          `${pLabels[k]}: ${p[k]}`);
+                                          `${pLabels[k]}: ${p[k]}`,
+                         true);
     b.style.padding = '0 1ch';
-    add(d, b);
+    add(d, padder('1px', [b]));
   }
+
+  const minElev = place.minElevation, maxElev = place.maxElevation;
+  const minb = messageBox(`min elevation: ${minElev}`, true);
+  minb.style.padding = '0 1ch';
+  add(d, padder('1px', [minb]));
+  const maxb = messageBox(`max elevation: ${maxElev}`, true);
+  maxb.style.padding = '0 1ch';
+  add(d, padder('1px', [maxb]));
 
   const observations = place.observations;
   const varieties = Array.from(new Set(
