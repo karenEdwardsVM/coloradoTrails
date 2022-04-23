@@ -4,6 +4,20 @@ place = null;
 //   on map load, write it to an image and store it in localstorage
 //     or, write a map layer that preemptively caches tiles to localstorage
 //
+const middleChild = (container) => {
+  const mid = (dims(document.body).left + dims(document.body).right) / 2;
+  let bestc = null, bestd = 20000;
+  for (const c of container.children) {
+    const r = (dims(c).right + dims(c).left) / 2;
+    const d = Math.abs(mid - r);
+    if (d < bestd) {
+      bestc = c;
+      bestd = d;
+    }
+  }
+  return bestc;
+};
+
 const nthVisible = (container, n) => {
   let i = 0;
   for (const c of container.children) {
@@ -74,10 +88,7 @@ window.onload = async () => {
     };
   };
 
-  add(ge('opics'), padder('10vw'));
-  add(ge('opics'), padder('10vw'));
-  add(ge('opics'), padder('10vw'));
-  add(ge('opics'), padder('10vw'));
+  for (let i = 0; i < 3; i++) { add(ge('opics'), padder('10vw')); }
 
   let defaultIcon = null;
   const onclicks = {},
@@ -100,10 +111,7 @@ window.onload = async () => {
     defaultIcon = mark.getIcon();
   }
 
-  add(ge('opics'), padder('10vw'));
-  add(ge('opics'), padder('10vw'));
-  add(ge('opics'), padder('10vw'));
-  add(ge('opics'), padder('10vw'));
+  for (let i = 0; i < 3; i++) { add(ge('opics'), padder('10vw')); }
 
   let myIcon = L.icon({
     iconUrl: '/pointer.png',
@@ -115,7 +123,8 @@ window.onload = async () => {
   // figure out middle index from here.
   let prev = null;
   ge('opics').onscroll = () => {
-    const f = nthVisible(ge('opics'), 3);
+    //const f = nthVisible(ge('opics'), 3);
+    const f = middleChild(ge('opics'));
     if (f.className === 'observation-icon' && f.children[0].complete) {
       if (prev) {
         if (prev.className === 'observation-icon') {
