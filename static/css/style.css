@@ -17,7 +17,31 @@ html, body {
   box-sizing: border-box;
 }
 
-#map { height: 100%; width: 100%; min-height: 30vh; }
+#maintrail {
+ display: flex;
+ justify-content: space-between;
+ /*flex-wrap: wrap;*/
+ height: 67vh;
+ flex-direction: row;
+}
+
+#varieties {
+  border: 1px solid black;
+  padding: 1ch;
+  flex: 1 0 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+#map-container {
+  padding-bottom: 1ch;
+  flex: 1 0 500px;
+}
+
+#map {
+  height: 100%; width: 100%;
+  min-height: 25vh;
+}
 
 #opics {
   /*border: 1px solid black;*/
@@ -29,6 +53,20 @@ html, body {
   scrollbar-width: none;
   position: fixed;
   bottom: 0; right: 0; left: 0;
+  height: 15vh;
+}
+
+#main-trail-info {
+  max-height: 15vh;
+}
+
+@media (max-width: 1200px) {
+  #maintrail { flex-direction: column; }
+  #map-container { flex: 1 0 25vh; }
+  #varieties {
+    flex: 1 0 25vh;
+    flex-direction: row;
+  }
 }
 
 .observation-icon {

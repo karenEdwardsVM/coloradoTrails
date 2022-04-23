@@ -10,18 +10,20 @@
      crossorigin=""/>
   </head>
   <body>
-    <h1 style="margin: 0;" id="title"></h1>
-    <div style="padding-bottom: 1ch;" id="info">
-      <div style="padding-left: 1ch;" id="length"></div>
+    <div id="main-trail-info">
+      <h1 style="margin: 0;" id="title"></h1>
+      <div style="padding-bottom: 1ch;" id="info">
+        <div style="padding-left: 1ch;" id="length"></div>
+      </div>
+      <div id = "trail-info" style="padding: 1ch; flex: 1 0 200px; display: flex; flex-wrap: wrap;">
+        <div>About this trail:</div>
+      </div>
     </div>
-    <div id = "trail-info" style="padding: 1ch; flex: 1 0 200px; display: flex; flex-wrap: wrap;">
-      <div>About this trail:</div>
-    </div>
-    <span style="display: flex; justify-content: space-between; flex-wrap: wrap; height: 50vh;">
-      <div id="map-container" style="padding-bottom: 1ch; flex: 1 0 300px;">
+    <span id="maintrail">
+      <div id="map-container">
         <div id="map"></div>
       </div>
-      <div style="border: 1px solid black; padding: 1ch; flex: 1 0 300px;" id="varieties">
+      <div id="varieties">
         Along this trail you might find:<br/>
       </div>
     </span>

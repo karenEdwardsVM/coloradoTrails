@@ -231,9 +231,7 @@ const placesAround = (lat, lon, rad) => {
           const ts = plt.map(t2 => new Trail({trail: t2}));
           for (const t2 of ts) {
             if (t2.properties.name !== null) { // Are we filtering trails out that we shouldn't be?
-              console.log('OA TOOK', timeit(() => {
-                t2.observations = observationsAround(t2);
-              }), t2.properties.name);
+              t2.observations = observationsAround(t2);
             }
           }
           out.push(new Place({trails: ts}));
@@ -249,7 +247,10 @@ const placesAround = (lat, lon, rad) => {
 // dogs can be yes, no, leashed
 // observation count weighing
 const search = (query, lat, lon, rad) => {
-  const ts = placesAround(lat, lon, rad);
+  let ts = [];
+  console.log('Place Fetch took', timeit(() => {
+    ts = placesAround(lat, lon, rad);
+  }), lat, lon, rad);
   let h = new OrderedHeap(25);
   for (const t of ts) {
     let range = 0,

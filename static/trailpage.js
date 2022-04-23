@@ -53,16 +53,32 @@ window.onload = async () => {
     // add to a box with species name, etc.
     return () => {
       d.innerHTML = "";
-      add(d, messageBox(`<div>Kingdom: ${o.iconic_taxon_name}</div>
-                         <div>Scientific: ${o.scientific_name}</div>
-                         <div>Common: ${o.common_name == null ? o.species_guess : o.common_name}</div>`));
+      const box = messageBox(`<div>Kingdom: ${o.iconic_taxon_name}</div>
+                              <div>Scientific: ${o.scientific_name}</div>
+                              <div>Common: ${o.common_name == null ? o.species_guess : o.common_name}</div>`);
+      box.style.flex = '1 0 auto';
+      add(d, box);
       const i = img(o.image_url);
+      //const i = dca('div');
+      //i.style.background = 'url(' + o.image_url + ')no-repeat';
+      //i.style.backgroundSize = 'cover';
+      //i.style.backgroundPosition = 'center';
+      const b = dca('div');
+      b.style.height = '100%';
+      b.style.width = '100%';
+      add(d, b);
       const c = centered([i]);
+      c.style.maxHeight = dims(b).height + 'px';
+      c.style.maxWidth = dims(b).width + 'px';
+      i.style.maxHeight = dims(b).height + 'px';
+      i.style.maxWidth = dims(b).width + 'px';
+      // i.style.height = 'inherit';
+      // c.style.height = '
       // i.style.maxHeight = '40vh';
-      i.style.maxWidth  = '30vw';
+      //i.style.maxWidth  = '30vw';
       //i.style.objectFit = 'contain';
       c.setAttribute('title', o.common_name || o.species_guess);
-      add(d, c);
+      add(b, c);
     };
   };
 
@@ -82,7 +98,7 @@ window.onload = async () => {
     const i = img(o.image_url); // don't repeat this.
     const c = centered([i]);
     i.style.maxWidth = '20vw';
-    i.style.maxHeight = '20vh';
+    i.style.maxHeight = '13vh';
     c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
     c.dataset.click = o.image_url;
@@ -100,7 +116,7 @@ window.onload = async () => {
   // figure out middle index from here.
   ge('opics').onscroll = () => {
     const f = nthVisible(ge('opics'), 3);
-    if (f.className === 'observation-icon') {
+    if (f.className === 'observation-icon' && f.children[0].complete) {
       f.style.background = 'var(--mg)';
 
       const bf = nthVisible(ge('opics'), 2);
