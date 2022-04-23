@@ -25,6 +25,10 @@ html, body {
  flex-direction: row;
 }
 
+.pointer-image {
+  z-index: 900 !important;
+}
+
 #varieties {
   border: 1px solid black;
   padding: 1ch;
