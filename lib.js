@@ -117,7 +117,10 @@ trails = {
   features: trails.features.filter(f => f.geometry && f.properties.name !== null),
 };
 
-let rocks = loadjson('./inat/geo.json'); 
+let rocks = loadjson('./inat/geology.json');
+console.log(rocks.features); 
+// this gets the actual info for the rocks
+// each has a .properties, and a .geometry
 
 let byplace = {};
 for (const t of trails.features) {
