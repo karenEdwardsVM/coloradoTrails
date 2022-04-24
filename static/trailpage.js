@@ -210,8 +210,11 @@ window.onload = async () => {
         animal = createIcon('/bighorn.png', [32, 70]),
         plant = createIcon('/Columbine.png'),
         fungi = createIcon('/Amanita.png'),
-        obsCounts = {'Mammalia': 0, 'Animalia': 0, 'Plantae': 0, 'Fungi': 0, 'Aves': 0, 'other': 0},
-        markerImage = {'Mammalia': animal, 'Animalia': animal, 'Plantae': plant, 'Fungi': fungi, 'Aves': animal};
+        obsCounts = {'Mammalia': 0, 'Animalia': 0, 'Reptilia': 0, 'Plantae': 0, 'Fungi': 0, 'Aves': 0, 'other': 0},
+        markerImage = {'Reptilia': animal, 'Mammalia': animal, 'Animalia': animal, 'Aves': animal,
+                       'Plantae': plant,
+                       'Fungi': fungi,
+                      };
 
   for (const o of observations) {
     let mark = map.plotMarker(Number(o.latitude), Number(o.longitude));
@@ -247,7 +250,7 @@ window.onload = async () => {
   const legend = dca('div');
   legend.id = 'legend';
   add(ge('map-container'), legend);
-  add(legend, padder('0 1ch 0 0', [`Animalia: ${obsCounts.Animalia + obsCounts.Mammalia + obsCounts.Aves}
+  add(legend, padder('0 1ch 0 0', [`Animalia: ${obsCounts.Animalia + obsCounts.Mammalia + obsCounts.Aves + obsCounts.Reptilia}
                                    <img style="height:1em;" src='bighorn.png'/>`]));
   add(legend, padder('0 1ch 0 0', [`Fungi: ${obsCounts.Fungi} <img style="height:1em;" src='Amanita.png'/>`]));
   add(legend, padder('0 1ch 0 0', [`Plantae: ${obsCounts.Plantae} <img style="height:1em;" src='Columbine.png'/>`]));
