@@ -49,6 +49,7 @@ html, body {
 }
 
 #legend {
+  display: flex;
   position: absolute;
   bottom: 0;
   left: 0;
