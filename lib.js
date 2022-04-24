@@ -117,6 +117,8 @@ trails = {
   features: trails.features.filter(f => f.geometry && f.properties.name !== null),
 };
 
+let rocks = loadjson('./inat/geo.json'); 
+
 let byplace = {};
 for (const t of trails.features) {
   if (t.properties && t.properties.place_id != null) {
