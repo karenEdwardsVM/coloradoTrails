@@ -102,8 +102,11 @@ const get = async (url) => {
 
 function loadObservations() {
   const obs2022 = csv.toJSON('inat/observations-2022.csv');
-  const obs2021 = csv.toJSON('inat/observations-2021.csv');
-  return [].concat(obs2021, obs2022);
+        obs2021 = csv.toJSON('inat/observations-2021.csv');
+        obs2020 = csv.toJSON('inat/observations-2020.csv');
+        obs2019 = csv.toJSON('inat/observations-2019.csv');
+        obs2018 = csv.toJSON('inat/observations-2018.csv');
+  return [].concat(obs2018, obs2019, obs2020, obs2021, obs2022);
 }
 
 const {Trail, Place} = require('./static/trail.js');
