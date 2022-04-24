@@ -3,7 +3,7 @@
 
 let onsearchkey = null;
 
-const booleanParams = ['dogs', 'atv', 'hiking', 'horse', 'bike', 'motorcycle', 'access', 'ski'];
+const booleanParams = ['dogs', 'atv', 'hiking', 'horse', 'bike', 'motorcycle', 'ski'];
 const textParams = ['name', 'surface', 'type', 'manager', 'url'];
 const numericParams = ['min_elevat', 'max_elevat', 'length_mi_'];
 // and, observation count, species type / frequency grades,
@@ -13,7 +13,7 @@ const speciesBoxes = {};
 const changedBooleans = new Set();
 const changedSpecies = new Set();
 let places = {};
-let length_mi = 1.1;
+let length_mi = 2;
 let speciesList = [
   'beetles', 'cacti', 'spiders', 'lichens', 'grasses', 'insects', 'lizards', 'weeds',
   'flowers', 'bees', 'mice',
@@ -101,9 +101,11 @@ window.onload = async () => {
   for (let b of booleanParams) {
     booleanBoxes[b] = inputBox(b, false, { oncheck: (e) => {
       changedBooleans.add(b);
-      // onChange();
     }, });
     label = document.createElement('label'); label.innerText = b;
+    label.style.userSelect = 'none';
+    label.style.cursor = 'pointer';
+    label.onclick = () => { booleanBoxes[b].click(); };
     const pad = padder('1ch', [
       centered([label, booleanBoxes[b]]),
     ]);
@@ -113,7 +115,7 @@ window.onload = async () => {
   const tlen = padder('1ch', [
     rangeoption((n, v) => {
       length_mi = v;
-    }, 'Target trail length', 0, 30, length_mi, {unit: ' miles'}), // allow plural
+    }, 'How far do you want to go?', 0, 30, length_mi, {unit: ' miles'}), // allow plural
   ]);
   tlen.style.width = '100%';
   add(ge('searchParams'), tlen);
@@ -121,7 +123,7 @@ window.onload = async () => {
   const trad = padder('1ch', [
     rangeoption((n, v) => {
       rad = v / 69.8;
-    }, 'How far are you willing to travel?', 0, 200, rad * 69.8, {unit: ' miles'}), // allow plural
+    }, 'How far are you willing to travel?', 0, 200, toprec(rad * 69.8, 0), {unit: ' miles'}), // allow plural
   ]);
   trad.style.width = '100%';
   add(ge('searchParams'), trad);
@@ -130,12 +132,18 @@ window.onload = async () => {
   speciesParams.style.display = 'flex';
   speciesParams.style.flexWrap = 'wrap';
 
-  add(speciesParams, messageBox('Are you looking for anything specific?'));
+  const smb = messageBox('Are you looking for anything specific?')
+  smb.style.width = '100%';
+  add(speciesParams, smb);
   for (const s of speciesList) {
     speciesBoxes[s] = inputBox(s, false, { oncheck: (e) => {
       changedSpecies.add(s);
     }, });
-    add(speciesParams, padder('0 0 0 1ch', [centered([messageBox(s), speciesBoxes[s]])]));
+    const label = messageBox(s);
+    label.style.userSelect = 'none';
+    label.style.cursor = 'pointer';
+    label.onclick = () => { speciesBoxes[s].click(); };
+    add(speciesParams, padder('0 0 0 1ch', [centered([label, speciesBoxes[s]])]));
   }
   add(ge('searchParams'), speciesParams);
 
