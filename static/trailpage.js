@@ -153,10 +153,10 @@ window.onload = async () => {
   const legend = dca('div');
   legend.id = 'legend';
   add(ge('map-container'), legend);
-  add(legend, messageBox(`Legend:`));
-  add(legend, messageBox(`Animalia (Aves, Mammalia): ${obsCounts.Animalia + obsCounts.Mammalia + obsCounts.Aves}`));
-  add(legend, messageBox(`Fungi: ${obsCounts.Fungi}`));
-  add(legend, messageBox(`Plantae: ${obsCounts.Plantae}`));
+  add(legend, messageBox(`Animalia: ${obsCounts.Animalia + obsCounts.Mammalia + obsCounts.Aves} 
+                          <img style="height:1em;" src='bighorn.png'/>`));
+  add(legend, messageBox(`Fungi: ${obsCounts.Fungi} <img style="height:1em;" src='Amanita.png'/>`));
+  add(legend, messageBox(`Plantae: ${obsCounts.Plantae} <img style="height:1em;" src='Columbine.png'/>`));
   add(legend, messageBox(`Other: ${obsCounts.other}`));
 
   ge('opics').onscroll = () => {
