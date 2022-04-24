@@ -40,11 +40,21 @@ html, body {
 #map-container {
   padding-bottom: 1ch;
   flex: 1 0 500px;
+  position: relative;
 }
 
 #map {
   height: 100%; width: 100%;
   min-height: 25vh;
+}
+
+#legend {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  background-color: var(--bg);
+  padding: var(--npad);
 }
 
 #opics {

@@ -111,14 +111,20 @@ window.onload = async () => {
   };
 
   const oData = {}, 
-        animal = createIcon('/bighorn.png', [30, 60]),
+        animal = createIcon('/bighorn.png', [32, 70]),
         plant = createIcon('/Columbine.png'),
         fungi = createIcon('/Amanita.png'),
+        obsCounts = {'Mammalia': 0, 'Animalia': 0, 'Plantae': 0, 'Fungi': 0, 'Aves': 0, 'other': 0},
         markerImage = {'Mammalia': animal, 'Animalia': animal, 'Plantae': plant, 'Fungi': fungi, 'Aves': animal};
 
   for (const o of observations) {
     let mark = map.plotMarker(Number(o.latitude), Number(o.longitude));
-    if (markerImage[o.iconic_taxon_name]) { mark.setIcon(markerImage[o.iconic_taxon_name]) }
+    if (markerImage[o.iconic_taxon_name]) { 
+      mark.setIcon(markerImage[o.iconic_taxon_name]);
+      obsCounts[o.iconic_taxon_name] += 1;
+    } else {
+      obsCounts.other += 1;
+    }
     const i = img(o.image_url); // don't repeat this.
     const c = centered([i]);
     i.style.maxWidth = '20vw';
@@ -141,6 +147,17 @@ window.onload = async () => {
 
   let myIcon = createIcon('/pointer.png', [50, 50], [48, 48], 'pointer-image'),
       prev = null;
+
+  console.log(obsCounts);
+
+  const legend = dca('div');
+  legend.id = 'legend';
+  add(ge('map-container'), legend);
+  add(legend, messageBox(`Legend:`));
+  add(legend, messageBox(`Animalia (Aves, Mammalia): ${obsCounts.Animalia + obsCounts.Mammalia + obsCounts.Aves}`));
+  add(legend, messageBox(`Fungi: ${obsCounts.Fungi}`));
+  add(legend, messageBox(`Plantae: ${obsCounts.Plantae}`));
+  add(legend, messageBox(`Other: ${obsCounts.other}`));
 
   ge('opics').onscroll = () => {
     const f = middleChild(ge('opics'));
