@@ -143,7 +143,7 @@ const img = (url) => {
 const padder = (p, cs = []) => {
   const e = dca('div');
   e.style.padding = p;
-  for (const c of cs) { add(e, c); }
+  for (const c of cs) { ext(e, c); }
   return e;
 };
 
