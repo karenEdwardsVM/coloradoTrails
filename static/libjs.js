@@ -23,6 +23,10 @@ const getjson = async (u) => {
   return (await (await window.fetch(u)).json());
 };
 
+const postjson = async (u) => {
+  return (await (await window.fetch(u, {method: 'POST'})).json());
+};
+
 const debounce = (f, t) => {
   let lastcall = 0, lastvalue = null;
   const w = async (...args) => {
@@ -161,6 +165,7 @@ const messageBox = (value, boxed = false) => {
 const button = (label, onclick) => {
   const b = messageBox(centered([label]), true);
   b.style.cursor = 'pointer'; b.style.touchAction = 'none';
+  b.style.textAlign = 'center';
   b.onclick = onclick;
   b.onmouseenter = hovstart;
   b.onmouseleave = hovend;
