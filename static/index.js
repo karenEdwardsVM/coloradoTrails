@@ -21,7 +21,7 @@ let speciesList = [
   'Amphibia', 'Mollusca', 'Animalia', 'Chromista', 'Protozoa', 'Orchids',
   'Cedars', 'Cactuses', 'Crickets',
   'Pinyon', 'Spruce', 'Sedges',
-];
+].map(s => s.toLowerCase());
 
 const mapButton = (container, lat, lon, p) => {
   const b = padder('1ch');
@@ -75,8 +75,6 @@ window.onload = async () => {
         query.species[s] = speciesBoxes[s].checked;
       }
     }
-    console.log('queery', query.species, btoa(JSON.stringify(query.species)));
-
     query.species = encodeURIComponent(btoa(JSON.stringify(query.species)));
 
     console.log('query is', query);
@@ -90,14 +88,11 @@ window.onload = async () => {
     for (const {d, v} of trails) {
       if (v < 0 || trails.length < 10 || i++ < 10) {
         const p = new Place(d);
-        console.log('place is', d, p, p instanceof Place, p.properties);
         if (!(p.properties.place_id in places)) {
           if (p) {
             places[p.properties.place_id] = p;
             mapButton(ge('results'), lat, lon, p);
           }
-        } else {
-          console.log('already got', p.properties.place_id);
         }
       }
     }

@@ -237,7 +237,7 @@ const placesAround = (lat, lon, rad) => {
         if (ok) {
           const ts = plt.map(t2 => new Trail({trail: t2}));
           for (const t2 of ts) {
-            if (t2.properties.name !== null) { // Are we filtering trails out that we shouldn't be?
+            if (t2.properties.name !== null) {
               t2.observations = observationsAround(t2);
             }
           }
@@ -271,10 +271,8 @@ const search = (query, lat, lon, rad) => {
         count += range;
       } else if (k == 'species') {
         const species = t.observations.map(o => (
-          (o.species_guess || '') + '.' +
-          (o.scientific_name || '') + '.' +
-          (o.iconic_taxon_name || '') + '.' +
-          (o.common_name || '')
+          (o.species_guess || '') + '.' + (o.scientific_name || '') + '.' +
+          (o.iconic_taxon_name || '') + '.' + (o.common_name || '')
         ).toLowerCase());
         if (species.length > 0) {
           for (const q in query.species) {
