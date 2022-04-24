@@ -9,6 +9,24 @@ const httpport = 5000, httpsport = 5050;
 
 app.use('/', express.static('static'));
 
+app.post('/issue/:place/:type/:lat/:lon', (req, res) => {
+  console.log({
+    place: req.params.place,
+    type: req.params.type,
+    lat: req.params.lat,
+    lon: req.params.lon,
+  });
+
+  lib.writejson('./issuereports.json', {
+    place: req.params.place,
+    type: req.params.type,
+    lat: req.params.lat,
+    lon: req.params.lon,
+  }, { append: true, });
+
+  res.send(lib.jw({}));
+});
+
 app.get('/gettrail/:id', (req, res) => {
   res.send(lib.jw(lib.trailFromID(parseInt(req.params.id), true)));
 });
