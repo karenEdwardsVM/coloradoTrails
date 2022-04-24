@@ -96,7 +96,6 @@ const issueModal = (then) => {
     };
 
     if (navigator.geolocation) {
-      console.log("Geolocation loop");
       navigator.geolocation.getCurrentPosition((p) => {
         issuelat = p.coords.latitude;
         issuelon = p.coords.longitude;
@@ -244,8 +243,6 @@ window.onload = async () => {
 
   let myIcon = createIcon('/pointer.png', [50, 50], [48, 48], 'pointer-image'),
       prev = null;
-
-  console.log(obsCounts);
 
   const legend = dca('div');
   legend.id = 'legend';

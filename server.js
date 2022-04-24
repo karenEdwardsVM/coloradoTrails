@@ -10,13 +10,6 @@ const httpport = 5000, httpsport = 5050;
 app.use('/', express.static('static'));
 
 app.post('/issue/:place/:type/:lat/:lon', (req, res) => {
-  console.log({
-    place: req.params.place,
-    type: req.params.type,
-    lat: req.params.lat,
-    lon: req.params.lon,
-  });
-
   lib.writejson('./issuereports.json', {
     place: req.params.place,
     type: req.params.type,
@@ -74,7 +67,7 @@ app.get('/observations', (req, res) => {
   res.send(lib.jw(obs));
 });
 
-console.log('App loaded.');
+console.log('Routes created.');
 const server = https.createServer({
   key: fs.readFileSync(config.key),
   cert: fs.readFileSync(config.cert),
@@ -86,5 +79,5 @@ redirector.use('/', (req, res) => {
   res.sendStatus(307);
 });
 
-server.listen(httpsport, () => { console.log(`Example app listening on port ${httpsport}`); });
-redirector.listen(httpport, () => { console.log('http redirector started'); });
+server.listen(httpsport, () => { console.log(`Listening on port ${httpsport}`); });
+redirector.listen(httpport, () => { console.log('Http redirector started on ' + httpport); });
