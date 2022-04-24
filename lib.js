@@ -1,6 +1,7 @@
 const fs = require('fs'),
       https = require('https'),
-      csv = require('./convertCSV.js');
+      csv = require('./convertCSV.js'),
+      buffer = require('buffer');
 
 class OrderedHeap {
   constructor(maxlen = 1) {
@@ -255,15 +256,32 @@ const search = (query, lat, lon, rad) => {
     ts = placesAround(lat, lon, rad);
   }), lat, lon, rad);
   let h = new OrderedHeap(25);
+  if (query.species) {
+    query.species = JSON.parse(buffer.atob(decodeURI(query.species)));
+  }
   for (const t of ts) {
-    let range = 0,
-        tp = t.properties,
-        count = 0;
+    let range = 0, tp = t.properties, count = 0;
     for (const k in query) {
       // for every half mile over or under, add 1 to the score
       if (k == 'length_mi_') {
         range = -5 + (Math.abs(query[k] - tp[k]) / 0.5);
         count += range;
+      } else if (k == 'species') {
+        const species = t.observations.map(o => (
+          (o.species_guess || '') + '.' +
+          (o.scientific_name || '') + '.' +
+          (o.iconic_taxon_name || '') + '.' +
+          (o.common_name || '')
+        ).toLowerCase());
+        if (species.length > 0) {
+          for (const q in query.species) {
+            for (const s of species) {
+              if (query.species[q] && s.includes(q.toLowerCase())) {
+                count -= 1;
+              }
+            }
+          }
+        }
       } else {
         count += ((tp[k] == null) ? 0 : ((query[k] == tp[k]) ? -1 : 1))
       }

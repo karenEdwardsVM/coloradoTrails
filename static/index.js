@@ -9,9 +9,19 @@ const numericParams = ['min_elevat', 'max_elevat', 'length_mi_'];
 // and, observation count, species type / frequency grades,
 let query = {};
 const booleanBoxes = {};
+const speciesBoxes = {};
 const changedBooleans = new Set();
+const changedSpecies = new Set();
 let places = {};
 let length_mi = 1.1;
+let speciesList = [
+  'beetles', 'cacti', 'spiders', 'lichens', 'grasses', 'insects', 'lizards', 'weeds',
+  'flowers', 'bees', 'mice',
+  'Mammalia', 'Aves', 'Plantae', 'Arachnida', 'Insecta', 'Fungi', 'Reptilia',
+  'Amphibia', 'Mollusca', 'Animalia', 'Chromista', 'Protozoa', 'Orchids',
+  'Cedars', 'Cactuses', 'Crickets',
+  'Pinyon', 'Spruce', 'Sedges',
+];
 
 const mapButton = (container, lat, lon, p) => {
   const b = padder('1ch');
@@ -39,20 +49,16 @@ window.onload = async () => {
   };
   //geolocation needs https 
   if (navigator.geolocation) {
-    console.log("Geolocation loop");
     navigator.geolocation.getCurrentPosition((p) => {
-      lat = p.coords.latitude;
-      lon = p.coords.longitude;
+      lat = p.coords.latitude; lon = p.coords.longitude;
       mark.setLatLng([lat, lon]);
     }, error);
   }
 
   finder.map.on('click', (e) => {
-    lat = e.latlng.lat;
-    lon = e.latlng.lng;
+    lat = e.latlng.lat; lon = e.latlng.lng;
     mark.setLatLng([lat, lon]);
     // display a circle of rad at lat lon
-    console.log('coo', lat, lon);
   });
 
   const onChange = debounce(async (e) => {
@@ -63,12 +69,26 @@ window.onload = async () => {
       }
     }
     query['length_mi_'] = length_mi;
+    query.species = {};
+    for (const s of speciesList) {
+      if (changedSpecies.has(s)) {
+        query.species[s] = speciesBoxes[s].checked;
+      }
+    }
+    console.log('queery', query.species, btoa(JSON.stringify(query.species)));
+
+    query.species = encodeURIComponent(btoa(JSON.stringify(query.species)));
+
     console.log('query is', query);
     const trails = await getTrailsInSearch(query, lat, lon, rad);
     results.innerHTML = '';
+    if (trails.length == 0) {
+      add(results, messageBox('No trails found!'));
+    }
     places = {};
+    let i = 0;
     for (const {d, v} of trails) {
-      if (v < 0 || trails.length < 10) {
+      if (v < 0 || trails.length < 10 || i++ < 10) {
         const p = new Place(d);
         console.log('place is', d, p, p instanceof Place, p.properties);
         if (!(p.properties.place_id in places)) {
@@ -110,6 +130,19 @@ window.onload = async () => {
   ]);
   trad.style.width = '100%';
   add(ge('searchParams'), trad);
+
+  const speciesParams = padder('1ch');
+  speciesParams.style.display = 'flex';
+  speciesParams.style.flexWrap = 'wrap';
+
+  add(speciesParams, messageBox('Are you looking for anything specific?'));
+  for (const s of speciesList) {
+    speciesBoxes[s] = inputBox(s, false, { oncheck: (e) => {
+      changedSpecies.add(s);
+    }, });
+    add(speciesParams, padder('0 0 0 1ch', [centered([messageBox(s), speciesBoxes[s]])]));
+  }
+  add(ge('searchParams'), speciesParams);
 
   const sb = button('Search', onChange);
   sb.style.width = '100%';
