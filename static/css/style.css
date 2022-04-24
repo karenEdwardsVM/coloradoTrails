@@ -49,10 +49,7 @@ html, body {
 }
 
 #legend {
-<<<<<<< HEAD
   display: flex;
-=======
->>>>>>> 52405a3... added inat datasets and added map legend
   position: absolute;
   bottom: 0;
   left: 0;
