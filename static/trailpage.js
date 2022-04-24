@@ -96,7 +96,6 @@ const issueModal = (then) => {
     };
 
     if (navigator.geolocation) {
-      console.log("Geolocation loop");
       navigator.geolocation.getCurrentPosition((p) => {
         issuelat = p.coords.latitude;
         issuelon = p.coords.longitude;
@@ -120,6 +119,7 @@ const issueModal = (then) => {
 window.onload = async () => {
   const trailID = Number(queryParam('id'));
   place = await getPlace(trailID);
+  rocks = place.rocks;
 
   ge('title').innerText = place.name;
   ge('length').innerText = 'is ' + String(place.length_mi) + ' miles long';
@@ -240,12 +240,32 @@ window.onload = async () => {
     mark.on('click', oData[c.dataset.click].onclick);
   }
 
+  const rIcon = createIcon('/rock.png', [30, 30], [15, 15]);
+  for (const r of rocks){
+    let coords = r.geometry.coordinates;
+    mark = map.plotMarker(coords[0], coords[1]);
+    mark.setIcon(rIcon);
+    const popup = dca('div');
+    add(popup, messageBox(r.properties.commod1));
+    if (r.properties.commod2) {
+      add(popup, messageBox(r.properties.commod2));
+    }
+    if (r.properties.commod3) {
+      add(popup, messageBox(r.properties.commod3));
+    }
+    if (r.properties.ore) {
+      add(popup, messageBox(r.properties.ore));
+    }
+    if (r.properties.oper_type) {
+      add(popup, messageBox(r.properties.oper_type));
+    }
+    mark.bindPopup(popup);
+  }
+
   for (let i = 0; i < 3; i++) { add(ge('opics'), padder('10vw')); }
 
   let myIcon = createIcon('/pointer.png', [50, 50], [48, 48], 'pointer-image'),
       prev = null;
-
-  console.log(obsCounts);
 
   const legend = dca('div');
   legend.id = 'legend';

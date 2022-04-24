@@ -21,6 +21,7 @@ class Trail {
     this.cache = {};
     this.trail = data.trail;
     this.observations = data.observations || [];
+    this.rocks = data.rocks || [];
   }
 
   get properties() { return this.trail.properties; }
@@ -57,7 +58,7 @@ class Trail {
   }
 
   toJSON() {
-    return {trail: this.trail, observations: this.observations};
+    return {trail: this.trail, observations: this.observations, rocks: this.rocks || []};
   }
 }
 
@@ -105,6 +106,7 @@ class Place {
 
   get minElevation() { return Math.min(...this.trails.map(t => t.properties.min_elevat)); }
   get maxElevation() { return Math.max(...this.trails.map(t => t.properties.max_elevat)); }
+  get rocks() { return [].concat(...this.trails.map(t => t.rocks)); }
 
   view(container, w, h, uw = 'vw', uh = 'vh') {
     if (this.map) { return this.map; }
@@ -131,7 +133,7 @@ class Place {
   }
 
   toJSON() {
-    return {trails: this.trails};
+    return {trails: this.trails, rocks: this.rocks || []};
   }
 }
 

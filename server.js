@@ -38,6 +38,9 @@ app.get('/getplace/:id', (req, res) => {
       trails: lib.getPlace(id).map(t => {
         const tp = new lib.Trail({trail: t});
         tp.observations = lib.observationsAround(tp);
+        const lat = (tp.bounds.bottom + tp.bounds.top) / 2;
+              lon = (tp.bounds.left + tp.bounds.right) / 2;
+        tp.rocks = lib.rocksAround(lat, lon);
         return tp;
       }),
     }));

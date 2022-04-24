@@ -119,9 +119,7 @@ trails = {
 };
 
 let rocks = loadjson('./inat/geology.json');
-console.log(rocks.features); 
-// this gets the actual info for the rocks
-// each has a .properties, and a .geometry
+for (const e of rocks.features) { e.geometry.coordinates.reverse(); }
 
 let byplace = {};
 for (const t of trails.features) {
@@ -134,7 +132,7 @@ for (const t of trails.features) {
 const getPlace = (id) => { return byplace[id] || []; };
 
 const observations = loadObservations();
-const obsCoords = observations.map((e, i) => [Number(e.latitude), Number(e.longitude), i]); // array of [lat, long] arrays
+const obsCoords = observations.map((e, i) => [Number(e.latitude), Number(e.longitude), i]); // array of [lat, long, index] arrays
 const sortedObs = obsCoords.sort((a, b) => a[0] - b[0]);
 
 const og = {};
@@ -296,7 +294,18 @@ const search = (query, lat, lon, rad) => {
   return h.take(25, true);
 };
 
+const rocksAround = (lat, lon) => {
+  let h = new OrderedHeap(10);
+  for (const e of rocks.features) {
+    let rLat = e.geometry.coordinates[0];
+        rLon = e.geometry.coordinates[1];
+    h.push(e, distance(lat, lon, rLat, rLon));
+  }
+  return h.take(10, false);
+};
+
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
   trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap, placesAround, search, getPlace,
+  rocksAround,
 };
