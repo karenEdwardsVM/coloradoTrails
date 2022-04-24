@@ -28,6 +28,95 @@ const nthVisible = (container, n) => {
   return null;
 };
 
+const issueModal = (then) => {
+  const b = padder('1ch');
+  b.style.position = 'fixed';
+  b.style.left = '0'; b.style.right = '0';
+  b.style.top = '0'; b.style.bottom = '0';
+  b.style.backgroundColor = 'var(--bg)';
+  b.style.zIndex = 99999;
+
+  const mi = dca('div');
+  mi.style.position = 'relative';
+  mi.style.height = '100%';
+  mi.style.width = '100%';
+
+  add(mi, messageBox('What\'s the issue?'));
+
+  let issuetype = null, issuelat = 0, issuelon = 0;
+
+  const makepicker = () => {
+    const typepicker = padder('1ch');
+    typepicker.id = 'type-picker';
+    typepicker.style.display = 'flex';
+    typepicker.style.justifyContent = 'space-around';
+    const issues = ['trash', 'obstructed trail', 'poorly maintained trail', 'broken signage',
+                    'broken infrastructure'];
+    for (const i of issues) {
+      const b = button(i, () => {
+        issuetype = i;
+        swap(ge('type-picker'), makepicker());
+      });
+      if (issuetype == i) { b.style.backgroundColor = 'var(--mg)'; }
+      add(typepicker, b);
+    }
+    return typepicker;
+  };
+
+  add(mi, makepicker());
+
+  const buttons = padder('1ch');
+  buttons.style.position = 'fixed';
+  buttons.style.left = '0'; buttons.style.right = '0'; buttons.style.bottom = '0';
+  buttons.style.backgroundColor = 'var(--bg)';
+  buttons.style.display = 'flex';
+  buttons.style.justifyContent = 'space-around';
+
+  add(buttons, button('There\'s no issue.', () => { del(b); }));
+  add(buttons, button('Report it!', () => {
+    then(issuetype, issuelat, issuelon);
+    del(b);
+  }));
+
+  add(mi, messageBox('Where was the issue?'));
+  const mapc = dca('div');
+  mapc.style.width = '100%';
+  mapc.style.height = '50vh';
+  mapc.id = 'issue-map';
+  add(mi, mapc);
+
+  after(20, () => {
+    const issuemap = new Map(L, 39.002, -108.666, 'issue-map');
+    issuemap.fitBounds(place.bounds.left, place.bounds.top, place.bounds.right, place.bounds.bottom);
+    place.plotTrails(issuemap, 'red', 2);
+
+    let mark = issuemap.plotMarker(issuelat, issuelon);
+    const error = (err) => {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    };
+
+    if (navigator.geolocation) {
+      console.log("Geolocation loop");
+      navigator.geolocation.getCurrentPosition((p) => {
+        issuelat = p.coords.latitude;
+        issuelon = p.coords.longitude;
+        mark.setLatLng([lat, lon]);
+      }, error);
+    }
+
+    issuemap.map.on('click', (e) => {
+      issuelat = e.latlng.lat;
+      issuelon = e.latlng.lng;
+      mark.setLatLng([issuelat, issuelon]);
+    });
+  });
+
+  add(mi, buttons);
+  add(b, mi);
+
+  return b;
+};
+
 window.onload = async () => {
   const trailID = Number(queryParam('id'));
   place = await getPlace(trailID);
@@ -35,6 +124,14 @@ window.onload = async () => {
   ge('title').innerText = place.name;
   ge('length').innerText = 'is ' + String(place.length_mi) + ' miles long';
   ge('length').innerText += ' with ' + String(toprec(place.maxElevation - place.minElevation, 1)) + ' feet of elevation gain.';
+  const onTrash = button('Report Issue', async () => {
+    const modal = issueModal(async (issuetype, issuelat, issuelon) => {
+      await postjson(`/issue/${place.properties.place_id}/${issuetype}/${issuelat}/${issuelon}`);
+    });
+    add(document.body, modal);
+  });
+  onTrash.style.marginLeft = '1ch';
+  add(ge('inner-info'), onTrash);
 
   const map = new Map(L, 39.002, -108.666);
   const bounds = boundingBox(place.bounds,
