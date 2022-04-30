@@ -69,7 +69,6 @@ class Place {
 
   get name() { return String(this.trails[0].properties.name); }
   get length_mi() { return toprec(this.trails.reduce((o, t) => o + t.length_mi, 0), 3); }
-  //get elevation() { return toprec(this.trails.reduce((o, t) => o + t.min_elevat, 0), 3); }
   get properties() { return this.trails[0].properties; }
 
   get bounds() {
@@ -106,7 +105,18 @@ class Place {
 
   get minElevation() { return Math.min(...this.trails.map(t => t.properties.min_elevat)); }
   get maxElevation() { return Math.max(...this.trails.map(t => t.properties.max_elevat)); }
-  get rocks() { return [].concat(...this.trails.map(t => t.rocks)); }
+  get rocks() {
+    let dep_ids = new Set(), out = [];
+    for (const t of this.trails) {
+      for (const r of t.rocks) {
+        if (!dep_ids.has(r.properties.dep_id)) {
+          dep_ids.add(r.properties.dep_id);
+          out.push(r);
+        }
+      }
+    }
+    return out;
+  }
 
   view(container, w, h, uw = 'vw', uh = 'vh') {
     if (this.map) { return this.map; }
