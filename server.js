@@ -84,3 +84,5 @@ redirector.use('/', (req, res) => {
 
 server.listen(httpsport, () => { console.log(`Listening on port ${httpsport}`); });
 redirector.listen(httpport, () => { console.log('Http redirector started on ' + httpport); });
+
+console.log('Memory usage at rest:', (process.memoryUsage().heapUsed / 1024) / 1024, 'mb');

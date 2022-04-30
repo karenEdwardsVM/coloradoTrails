@@ -102,11 +102,15 @@ const get = async (url) => {
 };
 
 function loadObservations() {
-  const obs2022 = csv.toJSON('inat/observations-2022.csv');
-        obs2021 = csv.toJSON('inat/observations-2021.csv');
-        obs2020 = csv.toJSON('inat/observations-2020.csv');
-        obs2019 = csv.toJSON('inat/observations-2019.csv');
-        obs2018 = csv.toJSON('inat/observations-2018.csv');
+  const weCareAbout = new Set([
+    'id', 'latitude', 'longitude', 'species_guess', 'scientific_name', 'iconic_taxon_name', 'common_name',
+    'image_url',
+  ]);
+  const obs2022 = csv.toJSON('inat/observations-2022.csv', weCareAbout);
+        obs2021 = csv.toJSON('inat/observations-2021.csv', weCareAbout);
+        obs2020 = csv.toJSON('inat/observations-2020.csv', weCareAbout);
+        obs2019 = csv.toJSON('inat/observations-2019.csv', weCareAbout);
+        obs2018 = csv.toJSON('inat/observations-2018.csv', weCareAbout);
   return [].concat(obs2018, obs2019, obs2020, obs2021, obs2022);
 }
 
@@ -188,12 +192,9 @@ const timeit = (f) => {
 };
 
 const observationsAround = (trail, rad = o_radius) => {
-  let res = [];
+  let res = new Set();
   try {
-    const bound = trail.bounds;
-    //const cutObs = sortedObs;
-    //const cutObs = sortedObs.filter(e => ((e[0] >= bound.bottom - 0.01) && (e[0] <= bound.top + 0.01)));
-    const coords = trail.geometry;
+    const bound = trail.bounds, coords = trail.geometry;
     let cutObs = new Set();
     for (const c of coords) {
       for (const o of observationsNear(c[0], c[1])) {
@@ -205,14 +206,14 @@ const observationsAround = (trail, rad = o_radius) => {
     for (let i = 0; i < coords.length; i++) {
       for (let j = 0; j < cutObs.length; j++) {
         if (coords[i] && cutObs[j] && (distance(coords[i][0], coords[i][1], cutObs[j][0], cutObs[j][1]) <= rad)) {
-          res.push(cutObs[j][2]);
+          res.add(cutObs[j][2]);
         }
       }
     }
   } catch (e) {
     console.log('Observations around:', trail, 'failed', e);
   }
-  return Array.from(new Set(res)).map(e => observations[e]);
+  return Array.from(res).map(e => observations[e]);
 };
 
 const trailFromID = (id, withobservations = false) => {
