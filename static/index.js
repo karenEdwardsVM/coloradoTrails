@@ -78,6 +78,10 @@ window.onload = async () => {
     query.species = encodeURIComponent(btoa(JSON.stringify(query.species)));
 
     console.log('query is', query);
+    const trailName = ge('searchbar').value;
+    if (trailName != '') {
+      query.trailName = trailName;
+    }
     const trails = await getTrailsInSearch(query, lat, lon, rad);
     results.innerHTML = '';
     if (trails.length == 0) {

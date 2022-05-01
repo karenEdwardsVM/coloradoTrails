@@ -35,10 +35,11 @@
       <div>Where are you?</div>
       <div style="display: flex; flex-wrap: wrap; justify-content: center;">
         <div id="findermap"></div>
-        <!--<div class="padded">
-          <input class="padded" type="text" id="searchbar" onkeyup="onsearchkey(event);"></input>
-        </div>-->
         <div id="searchParams" class="padded">
+          <div class="padded" style="width: 100%;">
+            Are you looking for a specific trail?
+            <input class="padded" type="text" id="searchbar" placeholder="Enter trail name" onkeyup="onsearchkey(event);"></input>
+          </div>
           <div style="width: 100%;">
             What special access do you need?
           </div>
