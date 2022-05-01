@@ -279,8 +279,7 @@ window.onload = async () => {
   add(legend, padder('0 1ch 0 0', [`Plantae: ${obsCounts.Plantae} <img style="height:1em;" src='Columbine.png'/>`]));
   add(legend, messageBox(`Other: ${obsCounts.other}`));
 
-  ge('opics').onscroll = () => {
-    const f = middleChild(ge('opics'));
+  const selectChild = (f) => {
     if (f.className === 'observation-icon' && f.children[0].complete) {
       if (prev) {
         if (prev.className === 'observation-icon') {
@@ -296,5 +295,15 @@ window.onload = async () => {
       o.onclick();
       prev = f;
     }
+  };
+
+  const fc = Array.from(ge('opics').children).reduce((a, b) => {
+    return (b.className == 'observation-icon' && a === null) ? b : a;
+  }, null);
+  fc.children[0].onload = () => { selectChild(fc); };
+
+  ge('opics').onscroll = () => {
+    const f = middleChild(ge('opics'));
+    selectChild(f);
   };
 };
