@@ -254,13 +254,13 @@ const placesAround = (lat, lon, rad) => {
 // length in the trails is length_mi_
 // dogs can be yes, no, leashed
 // observation count weighing
-// search by trailname
 const search = (query, lat, lon, rad) => {
-  //console.log("searched trail: ", trailName);
   if (query.trailName) {
     let trailSearch = [];
+    const tnLower = query.trailName.toLowerCase();
     for (const t of trails.features) {
-      if (t.properties.name.toLowerCase() == query.trailName.toLowerCase()) {
+      const tLower = t.properties.name.toLowerCase();
+      if (tLower == tnLower || tLower.includes(tnLower)) {
         trailSearch.push(t);
       }
     }
