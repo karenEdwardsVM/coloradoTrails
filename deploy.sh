@@ -26,7 +26,7 @@ if [ "$1" == run ]; then
     sleep 3.0
     tmux kill-session -t $sess_name
   fi
-  tmux new -s $sess_name "node server.js"
+  tmux new -s $sess_name "node server.js >> log.txt 2>&1"
 fi
 
 if [ "$1" == repl ]; then

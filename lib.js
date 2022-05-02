@@ -255,6 +255,24 @@ const placesAround = (lat, lon, rad) => {
 // dogs can be yes, no, leashed
 // observation count weighing
 const search = (query, lat, lon, rad) => {
+  if (query.trailName) {
+    let trailSearch = [];
+    const tnLower = query.trailName.toLowerCase();
+    for (const t of trails.features) {
+      const tLower = t.properties.name.toLowerCase();
+      if (tLower == tnLower || tLower.includes(tnLower)) {
+        trailSearch.push(t);
+      }
+    }
+    let places = new Set(trailSearch.map(e => e.properties.place_id))
+    places = Array.from(places).map(e => new Place({trails: getPlace(e).map(t => new Trail({trail: t}))}));
+    for (const p of places) {
+      for (const t of p.trails) {
+        t.observations = observationsAround(t);
+      }
+    }
+    return places.map(d => ({d, v: -2}));
+  }
   let ts = [];
   console.log('Place Fetch took', timeit(() => {
     ts = placesAround(lat, lon, rad);
