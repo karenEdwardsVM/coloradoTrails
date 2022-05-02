@@ -1,4 +1,5 @@
 :root {
+  --fs: 16px;
   --onevh: 1vh;
   --oneunit: 1vh;
   --npad: var(--oneunit);
@@ -74,6 +75,8 @@ html, body {
 #main-trail-info {
   max-height: 15vh;
 }
+
+@media (max-width: 1200px) { :root { --fs: 24px; } }
 
 @media (max-width: 1200px) {
   #maintrail { flex-direction: column; }
