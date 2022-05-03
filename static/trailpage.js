@@ -43,7 +43,7 @@ const issueModal = (then) => {
 
   add(mi, messageBox('What\'s the issue?'));
 
-  let issuetype = null, issuelat = 0, issuelon = 0;
+  let issuetype = null, issuelat = 0, issuelon = 0, image = null;
 
   const makepicker = () => {
     const typepicker = padder('1ch');
@@ -51,7 +51,7 @@ const issueModal = (then) => {
     typepicker.style.display = 'flex';
     typepicker.style.justifyContent = 'space-around';
     const issues = ['trash', 'obstructed trail', 'poorly maintained trail', 'broken signage',
-                    'broken infrastructure'];
+                    'broken infrastructure', 'invasive species'];
     for (const i of issues) {
       const b = button(i, () => {
         issuetype = i;
@@ -74,7 +74,7 @@ const issueModal = (then) => {
 
   add(buttons, button('There\'s no issue.', () => { del(b); }));
   add(buttons, button('Report it!', () => {
-    then(issuetype, issuelat, issuelon);
+    then(issuetype, issuelat, issuelon, image);
     del(b);
   }));
 
@@ -99,7 +99,7 @@ const issueModal = (then) => {
       navigator.geolocation.getCurrentPosition((p) => {
         issuelat = p.coords.latitude;
         issuelon = p.coords.longitude;
-        mark.setLatLng([lat, lon]);
+        mark.setLatLng([issuelat, issuelon]);
       }, error);
     }
 
@@ -109,6 +109,10 @@ const issueModal = (then) => {
       mark.setLatLng([issuelat, issuelon]);
     });
   });
+
+  const upload = imageUpload('Upload a photo', (a) => { image = a.target.result; });
+  upload.style.marginTop = 'var(--npad)';
+  add(mi, upload);
 
   add(mi, buttons);
   add(b, mi);
@@ -125,8 +129,9 @@ window.onload = async () => {
   ge('length').innerText = 'is ' + String(place.length_mi) + ' miles long';
   ge('length').innerText += ' with ' + String(toprec(place.maxElevation - place.minElevation, 1)) + ' feet of elevation gain.';
   const onTrash = button('Report Issue', async () => {
-    const modal = issueModal(async (issuetype, issuelat, issuelon) => {
-      await postjson(`/issue/${place.properties.place_id}/${issuetype}/${issuelat}/${issuelon}`);
+    const modal = issueModal(async (issuetype, issuelat, issuelon, image) => {
+      // TODO: Cache this
+      await postjson(`/issue/${place.properties.place_id}/${issuetype}/${issuelat}/${issuelon}`, JSON.stringify({image}));
     });
     add(document.body, modal);
   });
@@ -165,6 +170,9 @@ window.onload = async () => {
   add(d, padder('1px', [maxb]));
 
   const observations = place.observations;
+
+  // take each variety, make an observation grid at the bottom, what did you see?
+  // Perhaps use local area varieties for the grid as well.
   const varieties = Array.from(new Set(
     observations.map(e => e.common_name || e.species_guess)
                 .filter(e => e)
@@ -174,6 +182,7 @@ window.onload = async () => {
   const onClick = (d, o) => {
     // add to a box with species name, etc.
     return () => {
+      // also do selectchild on this (scroll carousel)
       d.innerHTML = "";
       const box = messageBox(`<div>Kingdom: ${o.iconic_taxon_name}</div>
                               <div>Scientific: ${o.scientific_name}</div>
@@ -300,7 +309,7 @@ window.onload = async () => {
   const fc = Array.from(ge('opics').children).reduce((a, b) => {
     return (b.className == 'observation-icon' && a === null) ? b : a;
   }, null);
-  fc.children[0].onload = () => { selectChild(fc); };
+  if (fc) { fc.children[0].onload = () => { selectChild(fc); }; }
 
   ge('opics').onscroll = () => {
     const f = middleChild(ge('opics'));

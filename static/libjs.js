@@ -23,8 +23,8 @@ const getjson = async (u) => {
   return (await (await window.fetch(u)).json());
 };
 
-const postjson = async (u) => {
-  return (await (await window.fetch(u, {method: 'POST'})).json());
+const postjson = async (u, data) => {
+  return (await (await window.fetch(u, {method: 'POST', body: data, headers: {'Content-Type': 'application/json'}})).json());
 };
 
 const debounce = (f, t) => {
@@ -156,7 +156,6 @@ const inputBox = (label, value, o = {}) => {
 
 const messageBox = (value, boxed = false) => {
   const e = boxed ? padder('var(--npad)') : dca('div');
-  // e.innerText = value;
   ext(e, value);
   if (boxed) { e.className = 'boxed'; }
   return e;
@@ -169,6 +168,23 @@ const button = (label, onclick) => {
   b.onclick = onclick;
   b.onmouseenter = hovstart;
   b.onmouseleave = hovend;
+  return b;
+};
+
+const imageUpload = (label, onupload) => {
+  const cap = dca('input');
+  cap.setAttribute('type', 'file');
+  cap.setAttribute('capture', 'environment');
+  cap.setAttribute('accept', 'image/*');
+  cap.style.display = 'none';
+  cap.addEventListener('change', () => {
+    for (const f of cap.files) {
+      const reader = new FileReader();
+      reader.onload = (e) => { onupload(e); };
+      reader.readAsBinaryString(f);
+    }
+  });
+  const b = button(centered([label, cap]), () => { cap.click(); });
   return b;
 };
 

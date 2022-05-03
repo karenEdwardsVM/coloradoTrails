@@ -276,7 +276,7 @@ const search = (query, lat, lon, rad) => {
   let ts = [];
   console.log('Place Fetch took', timeit(() => {
     ts = placesAround(lat, lon, rad);
-  }), lat, lon, rad);
+  }), 'ms', lat, lon, rad);
   let h = new OrderedHeap(25);
   if (query.species) {
     query.species = JSON.parse(buffer.atob(decodeURI(query.species)));
@@ -321,8 +321,18 @@ const rocksAround = (lat, lon) => {
   return h.take(10, false);
 };
 
+subdir('static/userimages');
+let imageID = ((loadjson('imageID.json') || {}).imageID) || 0;
+function saveImage(blob) {
+  const id = ++imageID;
+  writejson('imageID.json', {imageID});
+  const name = 'static/userimages/' + imageID + '.jpg';
+  fs.writeFileSync(name, blob, {encoding: 'binary'});
+  return name;
+}
+
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
   trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap, placesAround, search, getPlace,
-  rocksAround,
+  rocksAround, saveImage,
 };

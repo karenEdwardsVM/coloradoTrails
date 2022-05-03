@@ -8,13 +8,16 @@ const app = express();
 const httpport = 5000, httpsport = 5050;
 
 app.use('/', express.static('static'));
+app.use(express.json({ limit: '10mb', }));
 
 app.post('/issue/:place/:type/:lat/:lon', (req, res) => {
   lib.writejson('./issuereports.json', {
+    time: Date.now(),
     place: req.params.place,
     type: req.params.type,
     lat: req.params.lat,
     lon: req.params.lon,
+    image: lib.saveImage(req.body.image),
   }, { append: true, });
 
   res.send(lib.jw({}));
