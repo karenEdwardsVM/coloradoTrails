@@ -26,7 +26,13 @@ if [ "$1" == run ]; then
     sleep 3.0
     tmux kill-session -t $sess_name
   fi
-  tmux new -s $sess_name "node server.js >> log.txt 2>&1"
+  tmux new -s $sess_name "./deploy.sh runsession"
+fi
+
+if [ "$1" == runsession ]; then
+  (node server.js >> log.txt 2>&1) & pid=$!
+  tail -f log.txt
+  trap "echo 'Shutting server down.'; kill -9 $pid; exit 0" SIGINT SIGTERM
 fi
 
 if [ "$1" == repl ]; then
