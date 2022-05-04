@@ -7,6 +7,7 @@ const fs = require('fs');
 const app = express();
 const httpport = 5000, httpsport = 5050;
 
+app.use('/', (req, res, next) => { lib.log(req.ip, req.method, req.url); next(); });
 app.use('/', express.static('static'));
 app.use(express.json({ limit: '10mb', }));
 

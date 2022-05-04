@@ -103,7 +103,7 @@ html, body {
 }
 
 @media (max-width: 1200px) { :root { --fs: 24px; } }
-
+@media (max-width: 760px) { :root { --fs: 30px; } }
 @media (max-width: 1200px) {
   #maintrail { flex-direction: column; }
   #map-container { flex: 1 0 25vh; }

@@ -73,7 +73,6 @@ const loadchunkedjson = (path, opts) => {
 const log = (...a) => {
   const t = Date.now();
   console.log('Log:', t, ...a);
-  fs.writeFileSync('./data/log.txt', t.toString() + a.map(e => jw(e)).join('\t') + '\n', {flag: 'a+'});
 };
 
 const pickelt = (a) => a.length > 0 ? a[Math.floor(Math.random() * a.length)] : null;
