@@ -16,6 +16,7 @@ html, body {
   color: var(--fg);
   min-height: -webkit-fill-available;
   box-sizing: border-box;
+  margin: 0;
 }
 
 .navbar {
@@ -48,7 +49,7 @@ html, body {
  display: flex;
  justify-content: space-between;
  /*flex-wrap: wrap;*/
- height: 67vh;
+ height: 62vh;
  flex-direction: row;
 }
 
