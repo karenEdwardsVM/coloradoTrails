@@ -95,7 +95,7 @@ html, body {
   overflow-x: scroll;
   scrollbar-width: none;
   position: fixed;
-  bottom: 0; right: 0; left: 0;
+  top: calc(100vh - 15vh - 2vh); right: 0; left: 0;
   height: 15vh;
 }
 

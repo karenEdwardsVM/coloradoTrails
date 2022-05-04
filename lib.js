@@ -126,7 +126,7 @@ for (const e of rocks.features) { e.geometry.coordinates.reverse(); }
 
 let byplace = {};
 for (const t of trails.features) {
-  if (t.properties && t.properties.place_id != null) {
+  if (t.properties && t.properties.place_id != null && t.properties.place_id !== 0) {
     byplace[t.properties.place_id] =
       byplace[t.properties.place_id] ? byplace[t.properties.place_id].concat([t]) : [t];
   }
