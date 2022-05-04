@@ -86,6 +86,13 @@ html, body {
   padding: var(--npad);
 }
 
+#id-grid {
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  top: calc(100vh + 2vh); right: 0; left: 0;
+}
+
 #opics {
   /*border: 1px solid black;*/
   padding: 1ch;
@@ -94,7 +101,7 @@ html, body {
   overflow: hidden;
   overflow-x: scroll;
   scrollbar-width: none;
-  position: fixed;
+  position: absolute;
   top: calc(100vh - 15vh - 2vh); right: 0; left: 0;
   height: 15vh;
 }

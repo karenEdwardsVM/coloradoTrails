@@ -173,10 +173,10 @@ window.onload = async () => {
 
   // take each variety, make an observation grid at the bottom, what did you see?
   // Perhaps use local area varieties for the grid as well.
-  const varieties = Array.from(new Set(
-    observations.map(e => e.common_name || e.species_guess)
-                .filter(e => e)
-  ));
+  // const varieties = Array.from(new Set(
+  //   observations.map(e => e.common_name || e.species_guess)
+  //               .filter(e => e)
+  // ));
   // ge('varieties').innerText += varieties.join('\n\t');
 
   const onClick = (d, o) => {
@@ -315,4 +315,19 @@ window.onload = async () => {
     const f = middleChild(ge('opics'));
     selectChild(f);
   };
+
+  let maxVarieties = 20;
+  const varieties = JSON.parse(localStorage.getItem('varieties') || '{}');
+  for (const v in varieties) {
+    if (maxVarieties-- < 0) { break; }
+    const o = varieties[v];
+    const i = img(o.image_url);
+    const c = centered([i]);
+    i.style.maxWidth = '10vw';
+    i.style.maxHeight = '10vw';
+    i.style.width = '10vw';
+    c.setAttribute('title', o.common_name || o.species_guess);
+    c.className = 'observation-icon';
+    add(ge('id-grid'), c);
+  }
 };
