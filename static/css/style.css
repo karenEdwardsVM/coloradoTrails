@@ -9,6 +9,7 @@
   --bg:white;
   --fg:black;
   --mg:gray;
+  --ntxt:white;
 }
 
 html, body {
@@ -25,16 +26,15 @@ html, body {
   justify-content: space-between;
   /*justify-content: flex-end;*/
   align-items: center;
-  border-radius: 2px;
 }
 
 .nav-title {
   padding: 1ch;
-  color: white;
+  color: var(--ntxt);
 }
 
 .nav-links a {
-  color: white;
+  color: var(--ntxt);
   padding: 1ch;
 }
 

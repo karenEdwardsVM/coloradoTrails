@@ -125,6 +125,8 @@ trails = {
 let rocks = loadjson('./inat/geology.json');
 for (const e of rocks.features) { e.geometry.coordinates.reverse(); }
 
+let natPlants = loadchunkedjson('./inat/native.json');
+
 let byplace = {};
 for (const t of trails.features) {
   if (t.properties && t.properties.place_id != null) {
@@ -319,6 +321,31 @@ const rocksAround = (lat, lon) => {
     h.push(e, distance(lat, lon, rLat, rLon));
   }
   return h.take(10, false);
+};
+
+const checkNames = (oa, na) => {
+  let count = 0;
+  for (const i of oa) {
+    name = i.replace(/[^a-z0-9]/gi, '').toLowerCase();
+    if (na.includes(name)) { count += 1; }
+  }
+  return count / oa.length;
+};
+
+//in native plants: scientificName, commonName, otherNames, synonyms
+const isNativePlant = (sName, cName) => {
+  let snObs = Array.from(new Set(sName.split(' ')));
+      cnObs = Array.from(new Set(cName.split(' ')));
+  for (const e of natPlants) {
+    let natNames = [].concat((e.commonName || '').split(' '), (e.scientficName || '').split(' '), 
+                             (e.otherNames || '').split(' '), (e.synonyms || '').split(' '));
+    natNames = natNames.filter(e => e != 'var' && e != '');
+    natNames = natNames.map(e => e.replace(/[^a-z0-9]/gi, '').toLowerCase());
+    natNames = Array.from(new Set(natNames)).join(' ');
+    let ratio = Math.max(checkNames(snObs, natNames), checkNames(cnObs, natNames));
+    if (ratio  > 0.6) { return true; }
+  }
+  return false;
 };
 
 subdir('static/userimages');
