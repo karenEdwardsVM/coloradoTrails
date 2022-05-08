@@ -86,6 +86,13 @@ html, body {
   padding: var(--npad);
 }
 
+#id-grid {
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  top: calc(100vh + 2vh); right: 0; left: 0;
+}
+
 #opics {
   /*border: 1px solid black;*/
   padding: 1ch;
@@ -94,8 +101,8 @@ html, body {
   overflow: hidden;
   overflow-x: scroll;
   scrollbar-width: none;
-  position: fixed;
-  bottom: 0; right: 0; left: 0;
+  position: absolute;
+  top: calc(100vh - 15vh - 2vh); right: 0; left: 0;
   height: 15vh;
 }
 
@@ -104,7 +111,7 @@ html, body {
 }
 
 @media (max-width: 1200px) { :root { --fs: 24px; } }
-
+@media (max-width: 760px) { :root { --fs: 30px; } }
 @media (max-width: 1200px) {
   #maintrail { flex-direction: column; }
   #map-container { flex: 1 0 25vh; }

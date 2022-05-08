@@ -1,7 +1,7 @@
 // add search button, save trail, species selections
 //   click to zoom to trail
 
-let onsearchkey = null;
+let onsearchkey = null, trails = null, searchObservations = null, searchVarieties = null;
 
 const booleanParams = ['dogs', 'atv', 'hiking', 'horse', 'bike', 'motorcycle', 'ski'];
 const textParams = ['name', 'surface', 'type', 'manager', 'url'];
@@ -82,7 +82,19 @@ window.onload = async () => {
     if (trailName != '') {
       query.trailName = trailName;
     }
-    const trails = await getTrailsInSearch(query, lat, lon, rad);
+    trails = await getTrailsInSearch(query, lat, lon, rad);
+
+    searchObservations = [].concat(...[].concat(...trails.map(t => t.d.trails)).map(t => t.observations));
+    searchVarieties = searchObservations.reduce((vs, o) => {
+      const n = (o.species_guess || o.scientific_name || o.common_name).toLowerCase();
+      if (!(n in vs)) { vs[n] = o; }
+      return vs;
+    }, {});
+
+    localStorage.setItem('varieties', JSON.stringify(searchVarieties));
+
+    // searchVarieties = Array.from(new Set(searchObservations.map(o => (o.scientific_name || o.common_name).toLowerCase()))).filter(n => n != '');
+
     results.innerHTML = '';
     if (trails.length == 0) {
       add(results, messageBox('No trails found!'));

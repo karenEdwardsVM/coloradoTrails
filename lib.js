@@ -73,7 +73,6 @@ const loadchunkedjson = (path, opts) => {
 const log = (...a) => {
   const t = Date.now();
   console.log('Log:', t, ...a);
-  fs.writeFileSync('./data/log.txt', t.toString() + a.map(e => jw(e)).join('\t') + '\n', {flag: 'a+'});
 };
 
 const pickelt = (a) => a.length > 0 ? a[Math.floor(Math.random() * a.length)] : null;
@@ -129,7 +128,7 @@ let natPlants = loadchunkedjson('./inat/native.json');
 
 let byplace = {};
 for (const t of trails.features) {
-  if (t.properties && t.properties.place_id != null) {
+  if (t.properties && t.properties.place_id != null && t.properties.place_id !== 0) {
     byplace[t.properties.place_id] =
       byplace[t.properties.place_id] ? byplace[t.properties.place_id].concat([t]) : [t];
   }
