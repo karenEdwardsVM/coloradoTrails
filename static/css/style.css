@@ -93,6 +93,13 @@ html, body {
   top: calc(100vh + 2vh); right: 0; left: 0;
 }
 
+.id-grid-image {
+  max-width: 10vw;
+  max-height: 10vw;
+  width: 10vw;
+  object-fit: cover;
+}
+
 #opics {
   /*border: 1px solid black;*/
   padding: 1ch;

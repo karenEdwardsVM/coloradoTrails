@@ -1,4 +1,5 @@
 place = null;
+let observed = [];
 
 // Preemptive caching guide
 //   on map load, write it to an image and store it in localstorage
@@ -320,14 +321,20 @@ window.onload = async () => {
   const varieties = JSON.parse(localStorage.getItem('varieties') || '{}');
   for (const v in varieties) {
     if (maxVarieties-- < 0) { break; }
-    const o = varieties[v];
-    const i = img(o.image_url);
-    const c = centered([i]);
-    i.style.maxWidth = '10vw';
-    i.style.maxHeight = '10vw';
-    i.style.width = '10vw';
+    const o = varieties[v],
+          i = img(o.image_url),
+          c = button(i, () => { observed.push(o); });
+    i.className = 'id-grid-image';
+    c.style.border = 'none';
     c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
     add(ge('id-grid'), c);
   }
+
+  const so = button('Yep, I saw those.', () => {
+    submitObservations('a user', place.properties.place_id, observed);
+  });
+  so.style.width = '100%';
+  so.style.margin = 'var(--npad)';
+  add(ge('id-grid'), so);
 };

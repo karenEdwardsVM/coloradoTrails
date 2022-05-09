@@ -49,6 +49,14 @@ const getTrailsInSearch = async (query, lat, lon, rad) => {
   return (await getjson(addquery(`/searcharound/${lat}/${lon}/${rad}`, query)));
 };
 
+const submitObservations = async (user, placeID, observations) => {
+  return (await postjson('/submitobservations', JSON.stringify({
+    user,
+    placeID,
+    observations: observations.map(o => o.id),
+  })));
+};
+
 const getPlace = async (id) => {
   const p = await getjson(`/getplace/${id}`);
   if (p.trails !== null) {

@@ -330,8 +330,20 @@ function saveImage(blob) {
   return name;
 }
 
+function observationsById(ids) {
+  const out = [];
+  for (const o of observations) {
+    if (ids.has(o.id)) { out.push(o); }
+  }
+  return out;
+}
+
+function submitObservations(u, pID, os) {
+  writejson('./userobservations.json', {user: u, place: pID, time: Date.now(), observations: os,}, {append: true});
+}
+
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
   trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap, placesAround, search, getPlace,
-  rocksAround, saveImage,
+  rocksAround, saveImage, submitObservations,
 };
