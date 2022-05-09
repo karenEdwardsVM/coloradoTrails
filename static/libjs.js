@@ -173,6 +173,7 @@ const button = (label, onclick) => {
   const b = messageBox(centered([label]), true);
   b.style.cursor = 'pointer'; b.style.touchAction = 'none';
   b.style.textAlign = 'center';
+  b.style.borderRadius = '4px';
   b.onclick = onclick;
   b.onmouseenter = hovstart;
   b.onmouseleave = hovend;

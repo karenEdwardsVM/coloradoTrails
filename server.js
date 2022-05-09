@@ -79,6 +79,8 @@ app.get('/observations', (req, res) => {
   res.send(lib.jw(obs));
 });
 
+app.get('/getScores', (req, res) => {});
+
 console.log('Routes created.');
 const server = https.createServer({
   key: fs.readFileSync(config.key),
