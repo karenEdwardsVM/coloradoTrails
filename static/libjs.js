@@ -53,7 +53,7 @@ const submitObservations = async (user, placeID, observations) => {
   return (await postjson('/submitobservations', JSON.stringify({
     user,
     placeID,
-    observations: observations.map(o => o.id),
+    observations,
   })));
 };
 
