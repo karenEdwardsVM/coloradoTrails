@@ -93,6 +93,13 @@ html, body {
   top: calc(100vh + 2vh); right: 0; left: 0;
 }
 
+.id-grid-image {
+  max-width: 10vw;
+  max-height: 10vw;
+  width: 10vw;
+  object-fit: cover;
+}
+
 #opics {
   /*border: 1px solid black;*/
   padding: 1ch;
@@ -181,6 +188,7 @@ textarea, input { background-color: var(--bg); color: var(--fg); border-color: t
   left: 0; top: 0;
 }
 
+.selected { background-color: var(--fg); }
 .hover { background-color: var(--mg); color: var(--bg); }
 .boxed { border: var(--nbord) solid var(--fg); }
 .boxed-top { border-top: var(--nbord) solid var(--fg); }

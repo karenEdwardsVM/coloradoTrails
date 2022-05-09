@@ -24,6 +24,11 @@ app.post('/issue/:place/:type/:lat/:lon', (req, res) => {
   res.send(lib.jw({}));
 });
 
+app.post('/submitobservations', (req, res) => {
+  lib.submitObservations(req.body.user, req.body.placeID, req.body.observations);
+  res.send(lib.jw({}));
+});
+
 app.get('/gettrail/:id', (req, res) => {
   res.send(lib.jw(lib.trailFromID(parseInt(req.params.id), true)));
 });
