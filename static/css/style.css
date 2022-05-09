@@ -38,6 +38,11 @@ html, body {
   padding: 1ch;
 }
 
+#nav-trail {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 #searchbar {
   width: 100%;
   height: 2vh;

@@ -345,4 +345,5 @@ window.onload = async () => {
   so.style.width = '100%';
   so.style.margin = 'var(--npad)';
   add(ge('id-grid'), so);
+  localStorage.setItem('trail-nav', location.href);
 };
