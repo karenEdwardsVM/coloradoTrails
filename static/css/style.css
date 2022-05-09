@@ -163,6 +163,7 @@ textarea, input { background-color: var(--bg); color: var(--fg); border-color: t
   height: 2vh;
   background-color: var(--fg);
   width: 100%;
+  margin-left: 1ch;
 }
 
 .inputrange {

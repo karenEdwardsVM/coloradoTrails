@@ -128,7 +128,7 @@ window.onload = async () => {
     add(ge('searchParams'), pad);
   }
 
-  const tlen = padder('1ch', [
+  const tlen = padder('1ch 1ch 1ch 0ch', [
     rangeoption((n, v) => {
       length_mi = v;
     }, 'How far do you want to go?', 0, 30, length_mi, {unit: ' miles'}), // allow plural
@@ -136,7 +136,7 @@ window.onload = async () => {
   tlen.style.width = '100%';
   add(ge('searchParams'), tlen);
 
-  const trad = padder('1ch', [
+  const trad = padder('1ch 1ch 1ch 0ch', [
     rangeoption((n, v) => {
       rad = v / 69.8;
     }, 'How far are you willing to travel?', 0, 200, toprec(rad * 69.8, 0), {unit: ' miles'}), // allow plural
@@ -147,6 +147,7 @@ window.onload = async () => {
   const speciesParams = padder('1ch');
   speciesParams.style.display = 'flex';
   speciesParams.style.flexWrap = 'wrap';
+  speciesParams.style.paddingLeft = '0ch';
 
   const smb = messageBox('Are you looking for anything specific?')
   smb.style.width = '100%';
