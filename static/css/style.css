@@ -20,6 +20,11 @@ html, body {
   margin: 0;
 }
 
+#input-div {
+  width: 100%;
+  margin: 1ch;
+}
+
 .navbar {
   background-color: black;
   display: flex;

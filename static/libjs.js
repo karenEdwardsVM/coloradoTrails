@@ -162,6 +162,17 @@ const inputBox = (label, value, o = {}) => {
   return e;
 };
 
+const textBox = (id, ph) => {
+  const e = dca('input');
+  e.setAttribute('type', 'text');
+  e.setAttribute('placeholder', ph);
+  e.setAttribute('id', id);
+  e.style.width = '100%';
+  e.style.borderRadius = '2px';
+  e.style.border = '1px solid black';
+  return e;
+};
+
 const messageBox = (value, boxed = false) => {
   const e = boxed ? padder('var(--npad)') : dca('div');
   ext(e, value);

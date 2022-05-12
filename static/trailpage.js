@@ -339,8 +339,14 @@ window.onload = async () => {
     add(ge('id-grid'), c);
   }
 
+  const ud = dca('div');
+  ud.setAttribute('id', 'input-div');
+  ext(ge('id-grid'), ud);
+  const ui = textBox('user', 'Enter Username');
+  ext(ge('input-div'), ui);
   const so = button('Yep, I saw those.', () => {
-    submitObservations('a user', place.properties.place_id, Array.from(observed));
+    const user = ge('user').value;
+    submitObservations(user, place.properties.place_id, Array.from(observed));
   });
   so.style.width = '100%';
   so.style.margin = 'var(--npad)';
