@@ -31,11 +31,7 @@ const nthVisible = (container, n) => {
 
 const issueModal = (then) => {
   const b = padder('1ch');
-  b.style.position = 'fixed';
-  b.style.left = '0'; b.style.right = '0';
-  b.style.top = '0'; b.style.bottom = '0';
-  b.style.backgroundColor = 'var(--bg)';
-  b.style.zIndex = 99999;
+  b.className = 'modal';
 
   const mi = dca('div');
   mi.style.position = 'relative';
@@ -339,6 +335,7 @@ window.onload = async () => {
     c.style.border = 'none';
     c.setAttribute('title', o.common_name || o.species_guess);
     c.className = 'observation-icon';
+    c.style.margin = '1px';
     add(ge('id-grid'), c);
   }
 

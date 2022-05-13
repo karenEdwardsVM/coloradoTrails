@@ -113,7 +113,7 @@ window.onload = async () => {
       }
     }
 
-    for (const l of oldLines) { if (l) { l.remove(); } } //From(finder); } }
+    for (const l of oldLines) { if (l) { l.remove(); } }
     oldLines = [];
     if (Object.values(places).length > 0) {
       const searchBounds = mergeBounds(Object.values(places).map(p => p.bounds));
