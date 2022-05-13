@@ -1,7 +1,7 @@
 // add search button, save trail, species selections
 //   click to zoom to trail
 
-let onsearchkey = null, trails = null, searchObservations = null, searchVarieties = null;
+let onsearchkey = null, trails = null, searchObservations = null, searchVarieties = null, oldLines = [];
 
 const booleanParams = ['dogs', 'atv', 'hiking', 'horse', 'bike', 'motorcycle', 'ski'];
 const textParams = ['name', 'surface', 'type', 'manager', 'url'];
@@ -111,6 +111,16 @@ window.onload = async () => {
           }
         }
       }
+    }
+
+    for (const l of oldLines) { if (l) { l.remove(); } } //From(finder); } }
+    oldLines = [];
+    if (Object.values(places).length > 0) {
+      const searchBounds = mergeBounds(Object.values(places).map(p => p.bounds));
+      for (const k in places) {
+        oldLines = oldLines.concat(places[k].plotTrails(finder, 'red', 2));
+      }
+      finder.fitBounds(searchBounds.left, searchBounds.top, searchBounds.right, searchBounds.bottom);
     }
   }, 200);
 

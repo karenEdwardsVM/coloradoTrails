@@ -99,13 +99,16 @@ class Map {
     }).addTo(this.map);
   }
 
-  plotTrails(l, c, w, o) {
+  plotTrails(l, c, w, o = 1) {
+    const lines = [];
     for (const p of l) {
       const coords = p.trail.geometry.coordinates;
       const thPolyline = this.L.polyline(coords);
       thPolyline.setStyle({color: c, weight: w, opacity: o});
       thPolyline.addTo(this.map);
+      lines.push(thPolyline);
     }
+    return lines;
   }
 
   plotMarker(lat, lon) {

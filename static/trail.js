@@ -74,7 +74,7 @@ class Place {
   get minElevation() { return Math.min(...this.trails.map(t => t.properties.min_elevat)); }
   get maxElevation() { return Math.max(...this.trails.map(t => t.properties.max_elevat)); }
 
-  plotTrails(map, ...as) { map.plotTrails(this.trails, ...as); }
+  plotTrails(map, ...as) { return map.plotTrails(this.trails, ...as); }
 
   get observations() {
     const oseen = new Set(), observations = [];
