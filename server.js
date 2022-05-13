@@ -79,7 +79,10 @@ app.get('/observations', (req, res) => {
   res.send(lib.jw(obs));
 });
 
-app.get('/getScores', (req, res) => {});
+app.get('/scores', (req, res) => {
+  const userScores = lib.jw(lib.loadUserObs());
+  res.send(userScores);
+});
 
 console.log('Routes created.');
 const server = https.createServer({

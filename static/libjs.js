@@ -57,6 +57,10 @@ const submitObservations = async (user, placeID, observations) => {
   })));
 };
 
+const getScores = async () => {
+  return (await getjson('/scores'));
+};
+
 const getPlace = async (id) => {
   const p = await getjson(`/getplace/${id}`);
   if (p.trails !== null) {

@@ -20,6 +20,11 @@ html, body {
   margin: 0;
 }
 
+/*#score-div {
+  margin: 1ch;
+  border: 1px solid black;
+}*/
+
 #input-div {
   width: 100%;
   margin: 1ch;
