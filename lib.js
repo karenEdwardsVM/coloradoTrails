@@ -369,10 +369,25 @@ function submitObservations(u, pID, os) {
   writejson('./userobservations.json', {user: u, place: pID, time: Date.now(), observations: os,}, {append: true});
 }
 
-const users = loadchunkedjson('./userobservations.json');
+//scientific_name
+//common_name
+const loadUserObs = () => {
+  let users = loadchunkedjson('./userobservations.json'),
+      scores = {},
+      obs = [];
+  for (const u of users) {
+    // find which ones are native vs nonnative, then send that to the client side
+    scores[u.user] = {"native": 0, "non-native": 0};
+    obs = observationsById(new Set(u.observations));
+    for (const o of obs) {
+      (isNativePlant(o.scientific_name, o.common_name)) ? (scores[u.user]["native"] += 1) : (scores[u.user]["non-native"] += 1);
+    }
+  }
+  return scores;
+};
 
 module.exports = {
   omap, subdir, jw, jr, after, loadjson, writejson, loadchunkedjson, log, pickelt, fe, isError, get, almost,
   trails, fml, distance, observationsAround, Trail, trailFromID, OrderedHeap, placesAround, search, getPlace,
-  rocksAround, saveImage, submitObservations, isNativePlant,
+  rocksAround, saveImage, submitObservations, isNativePlant, loadUserObs,
 };
