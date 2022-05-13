@@ -155,11 +155,14 @@ window.onload = async () => {
                    'highway_ve': 'highway vehicle', 'dogs': 'dogs',
                    'ski': 'ski', 'snowshoe': 'snowshoe'};
   for (k in pLabels) {
-    const b = messageBox((p[k] == null) ? `${pLabels[k]}: N/A` :
-                                          `${pLabels[k]}: ${p[k]}`,
-                         true);
-    b.style.padding = '0 1ch';
-    add(d, padder('1px', [b]));
+    //const b = messageBox((p[k] == null) ? `${pLabels[k]}: N/A` :
+    //                                      `${pLabels[k]}: ${p[k]}`,
+    //                     true);
+    if (p[k] != null) {
+      const b = messageBox(`${pLabels[k]}: ${p[k]}`, true);
+      b.style.padding = '0 1ch';
+      add(d, padder('1px', [b]));
+    }
   }
 
   const minElev = place.minElevation, maxElev = place.maxElevation;
