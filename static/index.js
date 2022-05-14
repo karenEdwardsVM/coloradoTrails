@@ -14,27 +14,39 @@ const changedBooleans = new Set();
 const changedSpecies = new Set();
 let places = {};
 let length_mi = 2;
-let speciesList = [
-  'beetles', 'cacti', 'spiders', 'lichens', 'grasses', 'insects', 'lizards', 'weeds',
-  'flowers', 'bees', 'mice',
-  'Mammalia', 'Aves', 'Plantae', 'Arachnida', 'Insecta', 'Fungi', 'Reptilia',
-  'Amphibia', 'Mollusca', 'Animalia', 'Chromista', 'Protozoa', 'Orchids',
-  'Cedars', 'Cactuses', 'Crickets',
-  'Pinyon', 'Spruce', 'Sedges',
-].map(s => s.toLowerCase());
+let species = {
+  mammals: 'Mammalia',
+  birds: 'Aves',
+  plants: 'Plantae',
+  spiders: 'Arachnida',
+  insects: 'Insecta',
+  fungi: 'Fungi',
+  reptiles: 'Reptilia',
+  amphibians: 'Amphibia',
+  molluscs: 'Mollusca',
+  animals: 'Animalia',
+  protozoa: 'Protozoa',
+  cacti: ['Cactuses', 'cacti'],
+  lichen: 'lichens',
+  orchids: 'Orchids',
+  cedars: 'Cedars',
+  pinyon: 'Pinyon',
+  spruce: 'Spruce',
+};
+// lots of natives, lots of invasives?
 
 const mapButton = (container, lat, lon, p) => {
   const b = padder('1ch');
   add(container, b);
+  const a = dca('a');
+  add(b, a);
 
   const d = p.description(lat, lon);
-  add(b, d);
-  p.view(b, 20, 20);
-
-  b.onclick = () => {
-    location.href = `/trail.html?id=${p.properties.place_id}`;
-  };
-
+  add(a, d);
+  a.setAttribute('href', `/trail.html?id=${p.properties.place_id}`);
+  a.style.textDecoration = 'none';
+  a.style.color = 'var(--fg)';
+  p.view(a, 20, 20);
   return b;
 };
 
@@ -70,9 +82,13 @@ window.onload = async () => {
     }
     query['length_mi_'] = length_mi;
     query.species = {};
-    for (const s of speciesList) {
-      if (changedSpecies.has(s)) {
-        query.species[s] = speciesBoxes[s].checked;
+    for (const k of Object.keys(species)) {
+      if (changedSpecies.has(k)) {
+        if (species[k] instanceof Array) {
+          for (const s of species[k]) { query.species[species[s]] = speciesBoxes[k].checked; }
+        } else {
+          query.species[species[k]] = speciesBoxes[k].checked;
+        }
       }
     }
     query.species = encodeURIComponent(btoa(JSON.stringify(query.species)));
@@ -162,15 +178,15 @@ window.onload = async () => {
   const smb = messageBox('Are you looking for anything specific?')
   smb.style.width = '100%';
   add(speciesParams, smb);
-  for (const s of speciesList) {
-    speciesBoxes[s] = inputBox(s, false, { oncheck: (e) => {
-      changedSpecies.add(s);
+  for (const k of Object.keys(species)) {
+    speciesBoxes[k] = inputBox(k, false, { oncheck: (e) => {
+      changedSpecies.add(k);
     }, });
-    const label = messageBox(s);
+    const label = messageBox(k);
     label.style.userSelect = 'none';
     label.style.cursor = 'pointer';
-    label.onclick = () => { speciesBoxes[s].click(); };
-    add(speciesParams, padder('0 0 0 1ch', [centered([label, speciesBoxes[s]])]));
+    label.onclick = () => { speciesBoxes[k].click(); };
+    add(speciesParams, padder('0 0 0 1ch', [centered([label, speciesBoxes[k]])]));
   }
   add(ge('searchParams'), speciesParams);
 
