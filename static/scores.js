@@ -1,7 +1,6 @@
 window.onload = async () => {
   const scores = await getScores(),
-        sa = Object.entries(scores).sort((a, b) => (b.native + b["non-native"]) - (a.native + a["non-native"]));
-  sa.sort((a, b) => b - a);
+        sa = Object.entries(scores).sort((a, b) => (b[1].native + b[1]["non-native"]) - (a[1].native + a[1]["non-native"]));
   for (const u of sa) {
     let sDiv = dca('div');
     sDiv.setAttribute("id", "score-div");
