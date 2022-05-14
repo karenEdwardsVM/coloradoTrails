@@ -148,7 +148,7 @@ window.onload = async () => {
         pLabels = {'surface': 'surface', 'type': 'type',
                    'hiking': 'hiking', 'horse': 'horse', 'bike': 'bike',
                    'motorcycle': 'motorcycle', 'atv': 'atv', 'ohv_gt_50': 'ohv',
-                   'highway_ve': 'highway vehicle', 'dogs': 'dogs',
+                   'highway_ve': 'hv', 'dogs': 'dogs',
                    'ski': 'ski', 'snowshoe': 'snowshoe'};
   for (k in pLabels) {
     //const b = messageBox((p[k] == null) ? `${pLabels[k]}: N/A` :
@@ -157,16 +157,19 @@ window.onload = async () => {
     if (p[k] != null) {
       const b = messageBox(`${pLabels[k]}: ${p[k]}`, true);
       b.style.padding = '0 1ch';
+      b.style.width = 'max-content';
       add(d, padder('1px', [b]));
     }
   }
 
   const minElev = place.minElevation, maxElev = place.maxElevation;
-  const minb = messageBox(`min elevation: ${minElev}`, true);
+  const minb = messageBox(`min elevation: ${minElev.toFixed(2)}`, true);
   minb.style.padding = '0 1ch';
+  minb.style.width = 'max-content';
   add(d, padder('1px', [minb]));
-  const maxb = messageBox(`max elevation: ${maxElev}`, true);
+  const maxb = messageBox(`max elevation: ${maxElev.toFixed(2)}`, true);
   maxb.style.padding = '0 1ch';
+  maxb.style.width = 'max-content';
   add(d, padder('1px', [maxb]));
 
   const observations = place.observations;
