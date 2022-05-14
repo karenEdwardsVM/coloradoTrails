@@ -130,7 +130,16 @@ html, body {
 }
 
 #main-trail-info {
-  max-height: 15vh;
+  max-height: 20vh;
+}
+
+#trail-info {
+  display: flex;
+  flex: 1 0 200px; 
+  padding: 1ch;
+  overflow-x: scroll;
+  max-height: 7vh;
+  scrollbar-width: none;
 }
 
 @media (max-width: 1200px) { :root { --fs: 24px; } }
