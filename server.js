@@ -9,7 +9,7 @@ const httpport = 5000, httpsport = 5050;
 
 app.use('/', (req, res, next) => { lib.log(req.ip, req.method, req.url); next(); });
 app.use('/', express.static('static'));
-app.use(express.json({ limit: '10mb', }));
+app.use(express.json({ limit: '5mb', }));
 
 app.post('/issue/:place/:type/:lat/:lon', (req, res) => {
   lib.writejson('./issuereports.json', {
