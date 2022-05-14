@@ -116,7 +116,7 @@ class Place {
   }
 
   view(container, w, h, uw = 'vw', uh = 'vh') {
-    if (this.map) { return this.map; }
+    if (this.map) { return this.mapcontainer; }
     this.mapid = genid();
 
     this.mapcontainer = document.createElement('div');
