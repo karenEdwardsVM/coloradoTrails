@@ -171,14 +171,6 @@ window.onload = async () => {
 
   const observations = place.observations;
 
-  // take each variety, make an observation grid at the bottom, what did you see?
-  // Perhaps use local area varieties for the grid as well.
-  // const varieties = Array.from(new Set(
-  //   observations.map(e => e.common_name || e.species_guess)
-  //               .filter(e => e)
-  // ));
-  // ge('varieties').innerText += varieties.join('\n\t');
-
   const onClick = (d, o) => {
     // add to a box with species name, etc.
     return () => {

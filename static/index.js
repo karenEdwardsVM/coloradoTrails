@@ -15,28 +15,18 @@ const changedSpecies = new Set();
 let places = {};
 let length_mi = 2;
 let species = {
-  mammals: 'Mammalia',
-  birds: 'Aves',
-  plants: 'Plantae',
-  spiders: 'Arachnida',
-  insects: 'Insecta',
-  fungi: 'Fungi',
-  reptiles: 'Reptilia',
-  amphibians: 'Amphibia',
-  molluscs: 'Mollusca',
-  animals: 'Animalia',
-  protozoa: 'Protozoa',
-  cacti: ['Cactuses', 'cacti'],
-  lichen: 'lichens',
-  orchids: 'Orchids',
-  cedars: 'Cedars',
-  pinyon: 'Pinyon',
-  spruce: 'Spruce',
+  mammals: 'Mammalia', birds: 'Aves', plants: 'Plantae',
+  spiders: 'Arachnida', insects: 'Insecta', fungi: 'Fungi',
+  reptiles: 'Reptilia', amphibians: 'Amphibia', molluscs: 'Mollusca',
+  animals: 'Animalia', protozoa: 'Protozoa', cacti: ['Cactuses', 'cacti'],
+  lichen: 'lichens', orchids: 'Orchids', cedars: 'Cedars',
+  pinyon: 'Pinyon', spruce: 'Spruce',
 };
 // lots of natives, lots of invasives?
 
 const mapButton = (container, lat, lon, p) => {
   const b = padder('1ch');
+  b.style.width = 'max-content';
   add(container, b);
   const a = dca('a');
   add(b, a);
@@ -108,8 +98,6 @@ window.onload = async () => {
     }, {});
 
     localStorage.setItem('varieties', JSON.stringify(searchVarieties));
-
-    // searchVarieties = Array.from(new Set(searchObservations.map(o => (o.scientific_name || o.common_name).toLowerCase()))).filter(n => n != '');
 
     results.innerHTML = '';
     if (trails.length == 0) {
