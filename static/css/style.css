@@ -12,6 +12,8 @@
   --ntxt:white;
 }
 
+h1 { margin: 0; }
+
 html, body {
   background-color: var(--bg);
   color: var(--fg);
