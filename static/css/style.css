@@ -167,9 +167,8 @@ html, body {
   scrollbar-width: none;
 }
 
-@media (max-width: 1200px) { :root { --fs: 20px; } }
-@media (max-width: 760px) { :root { --fs: 24px; } }
 @media (max-width: 1200px) {
+  /*:root { --fs: 20px; }*/
   #maintrail { flex-direction: column; }
   #map-container { flex: 1 0 25vh; }
   #varieties {
@@ -180,6 +179,8 @@ html, body {
     max-width: 25vw; max-height: 25vw; width: 25vw; height: 25vw; object-fit: cover;
   }
 }
+@media (max-width: 1024px) { :root { --fs: 26px; } }
+@media (max-width: 900px) { :root { --fs: 30px; } }
 
 .observation-icon {
   /*max-width: 10vw; max-height: 10vh;*/
