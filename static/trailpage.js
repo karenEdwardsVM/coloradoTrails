@@ -357,10 +357,14 @@ window.onload = async () => {
   ext(ge('id-grid'), ud);
   const ui = textBox('user', 'Enter Username');
   ext(ge('input-div'), ui);
+  let submitted = false;
   const so = button('Yep, I saw those.', () => {
-    const user = ge('user').value;
-    submitObservations(user, place.properties.place_id, Array.from(observed));
-    //so.setAttribute('disabled', true);
+    if (!submitted) {
+      submitted = true;
+      const user = ge('user').value;
+      submitObservations(user, place.properties.place_id, Array.from(observed));
+      so.style.backgroundColor = 'var(--scolor)';
+    }
   });
   so.style.width = '100%';
   so.style.margin = 'var(--npad)';

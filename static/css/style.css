@@ -109,12 +109,12 @@ html, body {
   align-items: center;
   border: 1px solid black;
   margin: 1ch;
-  overflow: hidden;
+  overflow-x: scroll;
 }
 
 .user-scores {
   margin: 1ch;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   width: max-content;
 }
 
