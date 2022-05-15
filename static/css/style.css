@@ -1,5 +1,4 @@
 :root {
-  --fs: 16px;
   --onevh: 1vh;
   --oneunit: 1vh;
   --npad: var(--oneunit);
@@ -179,8 +178,8 @@ html, body {
     max-width: 25vw; max-height: 25vw; width: 25vw; height: 25vw; object-fit: cover;
   }
 }
-@media (max-width: 1024px) { :root { --fs: 26px; } }
-@media (max-width: 900px) { :root { --fs: 30px; } }
+/* @media (max-width: 1024px) { :root { --fs: 150%; } } */
+@media (max-width: 900px) { :root { font-size: 150%; } }
 
 .observation-icon {
   /*max-width: 10vw; max-height: 10vh;*/
@@ -217,7 +216,7 @@ html, body {
   flex: 1 0 500px;
 }
 
-textarea, input, div { font-size: var(--fs); }
+textarea, input, div { font-size: 1rem; }
 textarea, input { background-color: var(--bg); color: var(--fg); border-color: transparent; }
 
 .inputrangewrapper {
