@@ -132,17 +132,19 @@ window.onload = async () => {
   }, 200);
 
   for (let b of booleanParams) {
-    booleanBoxes[b] = inputBox(b, false, { oncheck: (e) => {
-      changedBooleans.add(b);
-    }, });
+    booleanBoxes[b] = inputBox(b, false, { oncheck: (e) => {} });
     label = document.createElement('label'); label.innerText = b;
     label.style.userSelect = 'none';
     label.style.cursor = 'pointer';
-    label.onclick = () => { booleanBoxes[b].click(); };
-    const pad = padder('1ch', [
-      centered([label, booleanBoxes[b]]),
-    ]);
-    add(ge('searchParams'), pad);
+
+    const p = button(centered([label, booleanBoxes[b]]), (e) => {
+      e.preventDefault();
+      booleanBoxes[b].checked = !booleanBoxes[b].checked;
+      changedBooleans.add(b);
+    });
+    p.style.margin = '0 0 1ch 1ch';
+
+    add(ge('searchParams'), p);
   }
 
   const tlen = padder('1ch 1ch 1ch 0ch', [
@@ -170,14 +172,19 @@ window.onload = async () => {
   smb.style.width = '100%';
   add(speciesParams, smb);
   for (const k of Object.keys(species)) {
-    speciesBoxes[k] = inputBox(k, false, { oncheck: (e) => {
-      changedSpecies.add(k);
-    }, });
+    speciesBoxes[k] = inputBox(k, false, { oncheck: (e) => {} });
     const label = messageBox(k);
     label.style.userSelect = 'none';
     label.style.cursor = 'pointer';
-    label.onclick = () => { speciesBoxes[k].click(); };
-    add(speciesParams, padder('0 0 0 1ch', [centered([label, speciesBoxes[k]])]));
+
+    const p = button(centered([label, speciesBoxes[k]]), (e) => {
+      e.preventDefault();
+      speciesBoxes[k].checked = !speciesBoxes[k].checked;
+      changedSpecies.add(k);
+    });
+    p.style.margin = '0 0 1ch 1ch';
+
+    add(speciesParams, p);
   }
   add(ge('searchParams'), speciesParams);
 
