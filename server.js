@@ -33,6 +33,13 @@ app.get('/gettrail/:id', (req, res) => {
   res.send(lib.jw(lib.trailFromID(parseInt(req.params.id), true)));
 });
 
+app.get('/issues', (req, res) => {
+  res.send(lib.jw(lib.loadchunkedjson('./issuereports.json').map(e => ({
+    ...e,
+    place: lib.getPlace(e.place)[0]?.properties?.name,
+  }))));
+});
+
 app.get('/getplace/:id', (req, res) => {
   const id = Number(req.params.id);
   if (!!id) {

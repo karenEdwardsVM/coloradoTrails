@@ -278,7 +278,7 @@ window.onload = async () => {
   legend.id = 'legend';
   add(ge('map-container'), legend);
   add(legend, padder('0 1ch 0 0', [`Animalia: ${obsCounts.Animalia + obsCounts.Mammalia + obsCounts.Aves + obsCounts.Reptilia}
-                                   <img style="height:1em;" src='bighorn.png'/>`]));
+                                    <img style="height:1em;" src='bighorn.png'/>`]));
   add(legend, padder('0 1ch 0 0', [`Fungi: ${obsCounts.Fungi} <img style="height:1em;" src='Amanita.png'/>`]));
   add(legend, padder('0 1ch 0 0', [`Plantae: ${obsCounts.Plantae} <img style="height:1em;" src='Columbine.png'/>`]));
   add(legend, messageBox(`Other: ${obsCounts.other}`));
@@ -311,27 +311,45 @@ window.onload = async () => {
     selectChild(f);
   };
 
+  const miniDescription = (o, onclick = null) => {
+    const i = img(o.image_url);
+    const d = onclick ?
+      button(i, onclick) :
+      dca('div', {class: 'observation-icon'}, {'textAlign': 'center'}, [i]);
+
+    if (onclick) {
+      d.style.border = 'none';
+      d.className = 'observation-icon';
+      d.style.margin = '1px';
+    }
+
+    i.className = 'id-grid-image';
+    d.setAttribute('title', o.common_name || o.species_guess);
+    d.style.margin = '1px';
+    if (onclick) {
+      ext(d, dca('div', {}, {'fontSize': '0.5rem', 'padding': '1ch'}, [o.common_name || o.species_guess]));
+    } else {
+      ext(d, dca('div', {}, {'fontSize': '0.5rem'}, [o.common_name || o.species_guess]));
+    }
+    return d;
+  };
+
   let maxVarieties = 20;
   const varieties = JSON.parse(localStorage.getItem('varieties') || '{}');
   for (const v in varieties) {
     if (maxVarieties-- < 0) { break; }
-    const o = varieties[v],
-          i = img(o.image_url),
-          c = button(i, () => {
-            if (observed.has(o.id)) {
-              c.className = 'observation-icon';
-              observed.delete(o.id);
-            } else {
-              c.className = 'observation-icon selected';
-              observed.add(o.id);
-            }
-          });
-    i.className = 'id-grid-image';
-    c.style.border = 'none';
-    c.setAttribute('title', o.common_name || o.species_guess);
-    c.className = 'observation-icon';
-    c.style.margin = '1px';
-    add(ge('id-grid'), c);
+    const o = varieties[v];
+    const d = miniDescription(o, () => {
+      if (observed.has(o.id)) {
+        c.className = 'observation-icon';
+        observed.delete(o.id);
+      } else {
+        c.className = 'observation-icon selected';
+        observed.add(o.id);
+      }
+    });
+
+    add(ge('id-grid'), d);
   }
 
   const ud = dca('div');
@@ -347,4 +365,29 @@ window.onload = async () => {
   so.style.margin = 'var(--npad)';
   add(ge('id-grid'), so);
   localStorage.setItem('trail-nav', location.href);
+
+  const frequencies = {};
+  for (let o of place.observations.filter(o => o.iconic_taxon_name !== o.scientific_name)) {
+    if (frequencies[o.scientific_name || o.species_guess]) {
+      frequencies[o.scientific_name || o.species_guess].push(o);
+    } else {
+      frequencies[o.scientific_name || o.species_guess] = [o];
+    }
+  };
+
+  const es = Array.from(Object.entries(frequencies));
+  es.sort((a, b) => a[1].length - b[1].length);
+
+  add(ge('trail-summary'), dca('div', {id: 'common-sightings'}, {display: 'flex', 'flexWrap': 'wrap'}, [
+    dca('div', {}, {width: '100%'}, [padder('0 0 0 1ch', ['Commonly found in the area:'])]),
+  ].concat(es.slice(0, 8).map(([k, [o]]) => miniDescription(o)))));
+
+  if (es.length > 10) {
+    add(ge('trail-summary'), dca('div', {id: 'rare-sightings'}, {display: 'flex', 'flexWrap': 'wrap'}, [
+      dca('div', {}, {width: '100%'}, [padder('0 0 0 1ch', ['Rarely found in the area:'])]),
+    ].concat(es.slice(es.length - 8).map(([k, [o]]) => miniDescription(o)))));
+  }
+
+  //add(ge('trail-summary'), dca('div', {id: 'mineral-sightings'}, {}, [
+  //]));
 };

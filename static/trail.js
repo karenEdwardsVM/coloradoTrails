@@ -139,6 +139,10 @@ class Place {
     return this.mapcontainer;
   }
 
+  markHead(map) {
+    return map.plotMarker(this.trails[0].geometry[0][0], this.trails[0].geometry[0][1]);
+  }
+
   toJSON() {
     return {trails: this.trails, rocks: this.rocks || []};
   }

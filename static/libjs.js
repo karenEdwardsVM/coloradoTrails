@@ -134,7 +134,13 @@ class Map {
   }
 }
 
-const dca = t => document.createElement(t);
+const dca = (t, as = {}, s = {}, cs = []) => {
+  const e = document.createElement(t);
+  for (let k in as) { e.setAttribute(k, as[k]); }
+  for (let k in s) { e.style[k] = s[k]; }
+  for (let c of cs) { ext(e, c); }
+  return e;
+};
 const ext = async (pe1, ce1) => {
   if (!pe1 || !ce1) {
     // console.log('Rendering error, cannot extend', pe1, ' by ', ce1);

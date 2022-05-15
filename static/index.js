@@ -123,6 +123,9 @@ window.onload = async () => {
       const searchBounds = mergeBounds(Object.values(places).map(p => p.bounds));
       for (const k in places) {
         oldLines = oldLines.concat(places[k].plotTrails(finder, 'red', 2));
+        // const m = places[k].markHead(finder);
+        // m.bindPopup(places[k].properties.name);
+        // oldLines.push(m);
       }
       finder.fitBounds(searchBounds.left, searchBounds.top, searchBounds.right, searchBounds.bottom);
     }

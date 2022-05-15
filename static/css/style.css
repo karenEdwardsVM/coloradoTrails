@@ -106,8 +106,11 @@ html, body {
 #id-grid {
   display: flex;
   flex-wrap: wrap;
-  position: absolute;
+}
+
+#under-carousel {
   top: calc(100vh + 2vh); right: 0; left: 0;
+  position: absolute;
 }
 
 .id-grid-image {
