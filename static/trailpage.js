@@ -229,7 +229,7 @@ window.onload = async () => {
     } else {
       obsCounts.other += 1;
     }
-    const i = img(o.image_url); // don't repeat this.
+    const i = img(o.image_url.replace('medium', 'small'));
     const c = centered([i]);
     i.style.maxWidth = '20vw';
     i.style.maxHeight = '13vh';
@@ -312,7 +312,7 @@ window.onload = async () => {
   };
 
   const miniDescription = (o, onclick = null) => {
-    const i = img(o.image_url);
+    const i = img(o.image_url.replace('medium', 'small'));
     const d = onclick ?
       button(i, onclick) :
       dca('div', {class: 'observation-icon'}, {'textAlign': 'center'}, [i]);
