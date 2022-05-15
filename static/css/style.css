@@ -7,6 +7,7 @@
   --iconh: calc(var(--oneunit) * 12);
   --bg:seashell;
   --fg:black;
+  --scolor:darkgray;
   --mg:gray;
   --ntxt:white;
 }
@@ -167,7 +168,6 @@ html, body {
 }
 
 @media (max-width: 1200px) {
-  /*:root { --fs: 20px; }*/
   #maintrail { flex-direction: column; }
   #map-container { flex: 1 0 25vh; }
   #varieties {
@@ -241,7 +241,7 @@ textarea, input { background-color: var(--bg); color: var(--fg); border-color: t
   left: 0; top: 0;
 }
 
-.selected { background-color: var(--fg); }
+.selected { background-color: var(--scolor); }
 .hover { background-color: var(--mg); color: var(--bg); }
 .boxed { border: var(--nbord) solid var(--fg); }
 .boxed-top { border-top: var(--nbord) solid var(--fg); }
