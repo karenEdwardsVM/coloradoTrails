@@ -341,10 +341,10 @@ window.onload = async () => {
     const o = varieties[v];
     const d = miniDescription(o, () => {
       if (observed.has(o.id)) {
-        c.className = 'observation-icon';
+        d.className = 'observation-icon';
         observed.delete(o.id);
       } else {
-        c.className = 'observation-icon selected';
+        d.className = 'observation-icon selected';
         observed.add(o.id);
       }
     });
@@ -360,6 +360,7 @@ window.onload = async () => {
   const so = button('Yep, I saw those.', () => {
     const user = ge('user').value;
     submitObservations(user, place.properties.place_id, Array.from(observed));
+    //so.setAttribute('disabled', true);
   });
   so.style.width = '100%';
   so.style.margin = 'var(--npad)';
