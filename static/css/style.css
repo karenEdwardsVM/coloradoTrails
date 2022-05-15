@@ -178,8 +178,11 @@ html, body {
     max-width: 25vw; max-height: 25vw; width: 25vw; height: 25vw; object-fit: cover;
   }
 }
-/* @media (max-width: 1024px) { :root { --fs: 150%; } } */
-@media (max-width: 900px) { :root { font-size: 150%; } }
+@media (max-width: 1400px) {
+  @media (-Webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+    :root { font-size: 150%; }
+  }
+}
 
 .observation-icon {
   /*max-width: 10vw; max-height: 10vh;*/
