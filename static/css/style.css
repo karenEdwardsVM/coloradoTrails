@@ -7,6 +7,7 @@
   --iconh: calc(var(--oneunit) * 12);
   --bg:white;
   --fg:black;
+  --scolor:darkgray;
   --mg:gray;
   --ntxt:white;
 }
@@ -240,7 +241,7 @@ textarea, input { background-color: var(--bg); color: var(--fg); border-color: t
   left: 0; top: 0;
 }
 
-.selected { background-color: var(--fg); }
+.selected { background-color: var(--scolor); }
 .hover { background-color: var(--mg); color: var(--bg); }
 .boxed { border: var(--nbord) solid var(--fg); }
 .boxed-top { border-top: var(--nbord) solid var(--fg); }
