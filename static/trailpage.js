@@ -184,7 +184,7 @@ window.onload = async () => {
                               <div>Common: ${o.common_name == null ? o.species_guess : o.common_name}</div>`);
       box.style.flex = '1 0 auto';
       add(d, box);
-      const i = img(o.image_url);
+      const i = img(o.image_url); // .replace('medium', 'small'));
       const b = dca('div');
       b.style.height = '100%';
       b.style.width = '100%';
@@ -229,7 +229,7 @@ window.onload = async () => {
     } else {
       obsCounts.other += 1;
     }
-    const i = img(o.image_url.replace('medium', 'small'));
+    const i = img(o.image_url); // .replace('medium', 'small'));
     const c = centered([i]);
     i.style.maxWidth = '20vw';
     i.style.maxHeight = '13vh';
