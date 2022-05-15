@@ -167,7 +167,6 @@ html, body {
 }
 
 @media (max-width: 1200px) {
-  /*:root { --fs: 20px; }*/
   #maintrail { flex-direction: column; }
   #map-container { flex: 1 0 25vh; }
   #varieties {

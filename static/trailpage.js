@@ -367,6 +367,11 @@ window.onload = async () => {
   add(ge('id-grid'), so);
   localStorage.setItem('trail-nav', location.href);
 
+  const minerals = Array.from(new Set(rocks.map(r => r.properties.commod1 || r.properties.commod2)));
+  add(ge('trail-summary'), dca('div', {id: 'mineral-sightings'}, {display: 'flex', 'flexWrap': 'wrap'}, [
+    dca('div', {}, {}, [padder('0 0 0 1ch', ['You\'ll likely see some: ' + minerals.map(s => s.split(',')[0]).join(', ') + '.'])]),
+  ]));
+
   const frequencies = {};
   for (let o of place.observations.filter(o => o.iconic_taxon_name !== o.scientific_name)) {
     if (frequencies[o.scientific_name || o.species_guess]) {
@@ -388,7 +393,4 @@ window.onload = async () => {
       dca('div', {}, {width: '100%'}, [padder('0 0 0 1ch', ['Rarely found in the area:'])]),
     ].concat(es.slice(es.length - 8).map(([k, [o]]) => miniDescription(o)))));
   }
-
-  add(ge('trail-summary'), dca('div', {id: 'mineral-sightings'}, {}, [
-  ]));
 };
