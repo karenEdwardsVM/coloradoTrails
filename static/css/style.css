@@ -121,6 +121,7 @@ html, body {
 #id-grid {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
 #under-carousel {
@@ -170,6 +171,9 @@ html, body {
   #varieties {
     flex: 1 0 25vh;
     flex-direction: row;
+  }
+  .id-grid-image {
+    max-width: 25vw; max-height: 25vw; width: 25vw; height: 25vw; object-fit: cover;
   }
 }
 

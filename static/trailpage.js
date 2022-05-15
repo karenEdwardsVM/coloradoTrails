@@ -378,16 +378,16 @@ window.onload = async () => {
   const es = Array.from(Object.entries(frequencies));
   es.sort((a, b) => a[1].length - b[1].length);
 
-  add(ge('trail-summary'), dca('div', {id: 'common-sightings'}, {display: 'flex', 'flexWrap': 'wrap'}, [
+  add(ge('trail-summary'), dca('div', {id: 'common-sightings'}, {display: 'flex', 'flexWrap': 'wrap', 'justifyContent': 'space-evenly'}, [
     dca('div', {}, {width: '100%'}, [padder('0 0 0 1ch', ['Commonly found in the area:'])]),
   ].concat(es.slice(0, 8).map(([k, [o]]) => miniDescription(o)))));
 
   if (es.length > 10) {
-    add(ge('trail-summary'), dca('div', {id: 'rare-sightings'}, {display: 'flex', 'flexWrap': 'wrap'}, [
+    add(ge('trail-summary'), dca('div', {id: 'rare-sightings'}, {display: 'flex', 'flexWrap': 'wrap', 'justifyContent': 'space-evenly'}, [
       dca('div', {}, {width: '100%'}, [padder('0 0 0 1ch', ['Rarely found in the area:'])]),
     ].concat(es.slice(es.length - 8).map(([k, [o]]) => miniDescription(o)))));
   }
 
-  //add(ge('trail-summary'), dca('div', {id: 'mineral-sightings'}, {}, [
-  //]));
+  add(ge('trail-summary'), dca('div', {id: 'mineral-sightings'}, {}, [
+  ]));
 };
