@@ -369,18 +369,16 @@ function submitObservations(u, pID, os) {
   writejson('./userobservations.json', {user: u, place: pID, time: Date.now(), observations: os,}, {append: true});
 }
 
-//scientific_name
-//common_name
 const loadUserObs = () => {
   let users = loadchunkedjson('./userobservations.json'),
       scores = {},
       obs = [];
   for (const u of users) {
-    // find which ones are native vs nonnative, then send that to the client side
-    scores[u.user] = {"native": 0, "non-native": 0};
+    scores[u.user] = {"native": 0, "nonnative": 0, "images": []};
     obs = observationsById(new Set(u.observations));
+    scores[u.user].images = obs.slice(0, 5).map(e => e["image_url"]);
     for (const o of obs) {
-      (isNativePlant(o.scientific_name, o.common_name)) ? (scores[u.user]["native"] += 1) : (scores[u.user]["non-native"] += 1);
+      (isNativePlant(o.scientific_name, o.common_name)) ? (scores[u.user]["native"] += 1) : (scores[u.user]["nonnative"] += 1);
     }
   }
   return scores;
