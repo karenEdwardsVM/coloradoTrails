@@ -103,6 +103,21 @@ html, body {
   padding: var(--npad);
 }
 
+.scores {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid black;
+  margin: 1ch;
+  overflow: hidden;
+}
+
+.user-scores {
+  margin: 1ch;
+  border: 1px solid black;
+  width: max-content;
+}
+
 #id-grid {
   display: flex;
   flex-wrap: wrap;
