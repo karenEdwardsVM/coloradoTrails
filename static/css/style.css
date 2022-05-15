@@ -167,8 +167,8 @@ html, body {
   scrollbar-width: none;
 }
 
-@media (max-width: 1200px) { :root { --fs: 24px; } }
-@media (max-width: 760px) { :root { --fs: 30px; } }
+@media (max-width: 1200px) { :root { --fs: 20px; } }
+@media (max-width: 760px) { :root { --fs: 24px; } }
 @media (max-width: 1200px) {
   #maintrail { flex-direction: column; }
   #map-container { flex: 1 0 25vh; }
@@ -216,7 +216,7 @@ html, body {
   flex: 1 0 500px;
 }
 
-textarea, input, div { font-size: 1rem; }
+textarea, input, div { font-size: var(--fs); }
 textarea, input { background-color: var(--bg); color: var(--fg); border-color: transparent; }
 
 .inputrangewrapper {
