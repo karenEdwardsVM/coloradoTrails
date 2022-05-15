@@ -1,4 +1,5 @@
 :root {
+  --fs:16px;
   --onevh: 1vh;
   --oneunit: 1vh;
   --npad: var(--oneunit);
@@ -180,7 +181,7 @@ html, body {
 }
 @media (max-width: 1400px) {
   @media (-Webkit-min-device-pixel-ratio: 2), (-moz-min-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-    :root { font-size: 150%; }
+    :root { --fs:24px; }
   }
 }
 
@@ -219,7 +220,7 @@ html, body {
   flex: 1 0 500px;
 }
 
-textarea, input, div { font-size: 1rem; }
+textarea, input, div { font-size: var(--fs); }
 textarea, input { background-color: var(--bg); color: var(--fg); border-color: transparent; }
 
 .inputrangewrapper {
