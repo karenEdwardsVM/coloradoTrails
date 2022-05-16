@@ -328,9 +328,9 @@ window.onload = async () => {
     d.style.margin = '1px';
     d.style.maxWidth = '25vw';
     if (onclick) {
-      ext(d, dca('div', {}, {'fontSize': '0.75rem', 'padding': '1ch'}, [o.common_name || o.species_guess]));
+      ext(d, dca('div', {}, {'fontSize': '0.80rem', 'padding': '1ch'}, [o.common_name || o.species_guess]));
     } else {
-      ext(d, dca('div', {}, {'fontSize': '0.75rem'}, [o.common_name || o.species_guess]));
+      ext(d, dca('div', {}, {'fontSize': '0.80rem'}, [o.common_name || o.species_guess]));
     }
     return d;
   };
@@ -374,7 +374,7 @@ window.onload = async () => {
 
   const minerals = Array.from(new Set(rocks.map(r => r.properties.commod1 || r.properties.commod2)));
   add(ge('trail-summary'), dca('div', {id: 'mineral-sightings'}, {display: 'flex', 'flexWrap': 'wrap'}, [
-    dca('div', {}, {}, [padder('0 0 0 1ch', ['You\'ll likely see some: ' + minerals.map(s => s.split(',')[0]).join(', ') + '.'])]),
+    dca('div', {}, {}, [padder('0 0 0 1ch', ['You\'ll likely see some: ' + minerals.filter(s => s).map(s => s.split(',')[0]).join(', ') + '.'])]),
   ]));
 
   const frequencies = {};
