@@ -36,6 +36,7 @@ const mapButton = (container, lat, lon, p) => {
   a.setAttribute('href', `/trail.html?id=${p.properties.place_id}`);
   a.style.textDecoration = 'none';
   a.style.color = 'var(--fg)';
+  a.style.touchAction = 'manipulation';
   p.view(a, 20, 20);
   return b;
 };
@@ -99,9 +100,9 @@ window.onload = async () => {
 
     localStorage.setItem('varieties', JSON.stringify(searchVarieties));
 
-    results.innerHTML = '';
+    ge('results').innerHTML = '';
     if (trails.length == 0) {
-      add(results, messageBox('No trails found!'));
+      add(ge('results'), messageBox('No trails found!'));
     }
     places = {};
     let i = 0;

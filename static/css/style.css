@@ -67,7 +67,7 @@ html, body {
  display: flex;
  justify-content: space-between;
  /*flex-wrap: wrap;*/
- height: 69vh;
+ height: 67.5vh;
  flex-direction: row;
 }
 
