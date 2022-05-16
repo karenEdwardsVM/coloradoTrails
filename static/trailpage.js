@@ -326,10 +326,11 @@ window.onload = async () => {
     i.className = 'id-grid-image';
     d.setAttribute('title', o.common_name || o.species_guess);
     d.style.margin = '1px';
+    d.style.maxWidth = '25vw';
     if (onclick) {
-      ext(d, dca('div', {}, {'fontSize': '0.5rem', 'padding': '1ch'}, [o.common_name || o.species_guess]));
+      ext(d, dca('div', {}, {'fontSize': '0.75rem', 'padding': '1ch'}, [o.common_name || o.species_guess]));
     } else {
-      ext(d, dca('div', {}, {'fontSize': '0.5rem'}, [o.common_name || o.species_guess]));
+      ext(d, dca('div', {}, {'fontSize': '0.75rem'}, [o.common_name || o.species_guess]));
     }
     return d;
   };
