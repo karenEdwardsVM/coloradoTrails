@@ -31,7 +31,7 @@ const mapButton = (container, lat, lon, p) => {
   const a = dca('a');
   add(b, a);
 
-  const d = p.description(lat, lon);
+  const d = p.description(lat, lon, '20vw');
   add(a, d);
   a.setAttribute('href', `/trail.html?id=${p.properties.place_id}`);
   a.style.textDecoration = 'none';

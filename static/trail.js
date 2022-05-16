@@ -89,8 +89,9 @@ class Place {
     return observations;
   }
 
-  description(lat, lon) {
+  description(lat, lon, w) {
     const outer = padder('0ch');
+    outer.style.width = w;
     add(outer, messageBox(this.name));
     add(outer, messageBox(this.observations.length + plural(this.observations.length, ' observation')));
     add(outer, messageBox(this.length_mi + ' miles long'));
@@ -122,6 +123,7 @@ class Place {
     this.mapcontainer = document.createElement('div');
     this.mapcontainer.style.width = w + uw;
     this.mapcontainer.style.height = h + uh;
+    this.mapcontainer.style.maxWidth = w + uw;
     this.mapcontainer.setAttribute('id', this.mapid);
     add(container, this.mapcontainer);
 
